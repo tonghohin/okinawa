@@ -7,7 +7,7 @@ const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "沖繩味之賞",
-    description: "沖繩味之賞 website."
+    description: "沖繩味之賞 關東煮"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
