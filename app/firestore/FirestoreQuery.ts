@@ -14,7 +14,6 @@ export default class FirestoreQuery {
         if (!FirestoreQuery.instance) {
             FirestoreQuery.instance = new FirestoreQuery();
         }
-
         return FirestoreQuery.instance;
     }
 
@@ -39,7 +38,7 @@ export default class FirestoreQuery {
             this._pathToRiceDocument = `${pathToMenuDocument}/rice/${riceId}`;
             return this._pathToRiceDocument;
         } else {
-            return this._pathToMenuDocument;
+            return this._pathToRiceDocument;
         }
     }
 
