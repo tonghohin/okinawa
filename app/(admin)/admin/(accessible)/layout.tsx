@@ -1,11 +1,11 @@
-import AuthGuard from "@/components/AuthGuard";
-import NavBar from "@/components/NavBar";
+import AdminNavBar from "@/components/admin/AdminNavBar";
+import AuthGuard from "@/components/admin/AuthGuard";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <AuthGuard isAccessible={true}>
             <main className="flex flex-col">
-                <NavBar />
+                <AdminNavBar />
                 <main className="bg-zinc-300 rounded">{children}</main>
             </main>
         </AuthGuard>

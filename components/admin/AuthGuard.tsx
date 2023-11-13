@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContextProvider";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 interface AuthGuardProps {
     isAccessible: boolean;
