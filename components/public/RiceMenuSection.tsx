@@ -1,4 +1,4 @@
-import { RiceCategories, RiceCategory, RiceItem } from "@/app/types/Menu";
+import { RiceCategories, RiceCategory, RiceItem } from "@/types/Menu";
 
 interface RiceMenuSectionProps {
     menu: RiceItem[];

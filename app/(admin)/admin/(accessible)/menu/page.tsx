@@ -1,7 +1,7 @@
-import FirestoreQuery from "@/app/firestore/FirestoreQuery";
+import FirestoreService from "@/firestore/FirestoreService";
 
 export default async function AdminMenu() {
-    const riceMenu = await FirestoreQuery.getInstance().getRiceMenu();
+    const riceMenu = await FirestoreService.getInstance().getRiceMenu();
     console.log("AdminMenu --- riceMenu", riceMenu);
 
     return <div>AdminMenu</div>;

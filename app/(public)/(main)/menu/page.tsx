@@ -1,24 +1,25 @@
-import FirestoreQuery from "@/app/firestore/FirestoreQuery";
 import Tab from "@/components/Tab";
 import RiceMenu from "@/components/public/RiceMenu";
+import SnacksMenu from "@/components/public/SnacksMenu";
+import FirestoreService from "@/firestore/FirestoreService";
+import { MenuCategories } from "@/types/Menu";
 
 export default async function Menu() {
-    const riceMenu = await FirestoreQuery.getInstance().getRiceMenu();
+    const riceMenu = await FirestoreService.getInstance().getRiceMenu();
+    const snacksMenu = await FirestoreService.getInstance().getSnacksMenu();
 
     return (
-        <main className="flex gap-2 justify-around flex-wrap">
-            <Tab
-                tabs={[
-                    {
-                        label: "Rice",
-                        component: <RiceMenu riceMenu={riceMenu} />
-                    },
-                    {
-                        label: "Snacks",
-                        component: <div>test</div>
-                    }
-                ]}
-            />
-        </main>
+        <Tab
+            tabs={[
+                {
+                    label: MenuCategories.rice,
+                    component: <RiceMenu riceMenu={riceMenu} />
+                },
+                {
+                    label: MenuCategories.snacks,
+                    component: <SnacksMenu snacksMenu={snacksMenu} />
+                }
+            ]}
+        />
     );
 }
