@@ -1,6 +1,6 @@
 import { db } from "@/firebase/configuration";
 import { collection, doc, getDocs, writeBatch } from "firebase/firestore";
-import { RiceItem, SnackItem } from "../types/Menu";
+import { NoodleItem, RiceItem, SnackItem } from "../types/Menu";
 
 export default class FirestoreService {
     private static instance: FirestoreService;
@@ -27,36 +27,85 @@ export default class FirestoreService {
     }
 
     public async getSnacksMenu(): Promise<SnackItem[]> {
-        const riceData = await getDocs(collection(db, "snacks"));
-        return riceData.docs.map((rice) => {
+        const snacksData = await getDocs(collection(db, "snacks"));
+        return snacksData.docs.map((snack) => {
             return {
-                id: rice.id,
-                name: rice.data().name,
-                price: rice.data().price
+                id: snack.id,
+                name: snack.data().name,
+                price: snack.data().price
+            };
+        });
+    }
+
+    public async getNoodlesMenu(): Promise<NoodleItem[]> {
+        const noodlesData = await getDocs(collection(db, "noodles"));
+        return noodlesData.docs.map((noodle) => {
+            return {
+                id: noodle.id,
+                category: noodle.data().category,
+                name: noodle.data().name,
+                price: noodle.data().price
             };
         });
     }
 
     public async addDocs() {
         const data = [
-            { name: "日本南瓜可樂餅", price: 20 },
-            { name: "日本和牛可樂餅", price: 25 },
-            { name: "一口燒小甘薯（10件）", price: 20 },
-            { name: "日本芝士年糕", price: 28 },
-            { name: "日本蟹肉忌廉薯餅", price: 28 },
-            { name: "日本雞皮餃子（10件）", price: 30 },
-            { name: "玉子燒", price: 15 },
-            { name: "唐揚炸雞（50件）", price: 30 },
-            { name: "香烤雞泡魚乾", price: 40 },
-            { name: "台灣夜市甜不辣", price: 35 },
-            { name: "香芋地瓜球", price: 30 },
-            { name: "流心芝士火腿吉列豬堡", price: 38 },
-            { name: "日式炸蝦（4件）", price: 30 },
-            { name: "炸豚肉餃子（6件）", price: 25 },
-            { name: "香脆日本冰花餃子（6件）", price: 40 }
+            { category: "main", name: "稻庭真打鳥冬", price: 15 },
+            { category: "main", name: "稻庭真打鳥冬（大盛）", price: 25 },
+            { category: "main", name: "北海道野葛麵", price: 15 },
+            { category: "main", name: "北海道野葛麵（大盛）", price: 25 },
+            { category: "main", name: "鮮牛蒡野菜炊飯", price: 25 },
+
+            { category: "addOn", name: "冬菇", price: 8 },
+            { category: "addOn", name: "竹笛", price: 8 },
+            { category: "addOn", name: "蟹棒", price: 8 },
+            { category: "addOn", name: "油揚", price: 8 },
+            { category: "addOn", name: "粟米丸", price: 8 },
+            { category: "addOn", name: "鳴門片", price: 8 },
+            { category: "addOn", name: "淮山卷", price: 8 },
+            { category: "addOn", name: "時令蔬菜", price: 8 },
+            { category: "addOn", name: "什莱魚丸", price: 8 },
+            { category: "addOn", name: "海帶結", price: 8 },
+            { category: "addOn", name: "慢煮1小時溫泉蛋", price: 8 },
+            { category: "addOn", name: "有機低卡路里蒟蒻", price: 8 },
+
+            { category: "addOn", name: "大根", price: 10 },
+            { category: "addOn", name: "火炙鱈寶", price: 10 },
+            { category: "addOn", name: "國產油豆腐", price: 10 },
+            { category: "addOn", name: "台灣蛋餃", price: 10 },
+            { category: "addOn", name: "台灣甜不辣", price: 10 },
+            { category: "addOn", name: "腐皮年糕袋", price: 10 },
+
+            { category: "addOn", name: "日式溏心蛋", price: 12 },
+            { category: "addOn", name: "芝士竹輪", price: 12 },
+            { category: "addOn", name: "魷魚餅", price: 12 },
+            { category: "addOn", name: "白肉炸魚餅", price: 12 },
+            { category: "addOn", name: "手工和牛餃子", price: 12 },
+            { category: "addOn", name: "墨汁花枝球", price: 12 },
+
+            { category: "addOn", name: "豆腐魚球", price: 16 },
+            { category: "addOn", name: "和風牛肉", price: 16 },
+            { category: "addOn", name: "日式醬燒叉燒", price: 16 },
+            { category: "addOn", name: "明太子魚堡", price: 16 },
+            { category: "addOn", name: "照燒雞肉", price: 16 },
+            { category: "addOn", name: "燒魚卷", price: 16 },
+            { category: "addOn", name: "帶子餅", price: 16 },
+
+            { category: "addOn", name: "韓式麻藥流心蛋（2隻）", price: 28 },
+            { category: "addOn", name: "手工和牛餃子（6隻）（湯煮）", price: 30 },
+            { category: "addOn", name: "手工和牛餃子（6隻）（生餃）", price: 30 },
+            { category: "addOn", name: "手工和牛餃子（12隻）（湯煮）", price: 55 },
+            { category: "addOn", name: "手工和牛餃子（12隻）（生餃）", price: 55 },
+            { category: "addOn", name: "懶人自煮方便包", price: 45 },
+            { category: "addOn", name: "利尻昆布鰹魚湯包（1200 ml）", price: 35 },
+
+            { category: "set", name: "招牌關東煮", price: 38 },
+            { category: "set", name: "招牌關東煮烏冬", price: 53 },
+            { category: "set", name: "開胃日式冷麵（青瓜絲，蟹籽，蟹捧，魚片，北海道野葛麵）", price: 45 }
         ];
 
-        const collectionRef = collection(db, "snacks");
+        const collectionRef = collection(db, "noodles");
         const batch = writeBatch(db);
         for (const item of data) {
             const docRef = doc(collectionRef);

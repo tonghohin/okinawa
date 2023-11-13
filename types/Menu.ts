@@ -1,6 +1,7 @@
 export enum MenuCategories {
     rice = "丼飯",
-    snacks = "小食"
+    snacks = "小食",
+    noodles = "自選日式車仔麵/關東煮"
 }
 
 export enum RiceCategories {
@@ -23,6 +24,21 @@ export interface RiceItem {
 
 export interface SnackItem {
     id: string;
+    name: string;
+    price: number;
+}
+
+export enum NoodleCategories {
+    main = "主食",
+    set = "定食",
+    addOn = "追加"
+}
+
+export type NoodleCategory = keyof typeof NoodleCategories;
+
+export interface NoodleItem {
+    id: string;
+    category: NoodleCategory;
     name: string;
     price: number;
 }
