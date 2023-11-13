@@ -8,7 +8,9 @@ export default function PublicNavBar() {
 
     return (
         <nav className="flex flex-col items-center gap-4 p-4">
-            <h1 className="text-2xl">沖繩味之賞</h1>
+            <Link href="/" className="text-2xl">
+                沖繩味之賞
+            </Link>
             <div className="flex items-center  gap-6">
                 <Link href="/menu" className={`${pathname === "/menu" && "border-b-2 border-zinc-800"} hover:border-b-2 hover:border-zinc-800`}>
                     睇Menu
