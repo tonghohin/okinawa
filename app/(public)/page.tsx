@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <main className="flex flex-col gap-2 items-center justify-center">
+        <section className="flex flex-col gap-2 items-center justify-center">
             <h1>No Logo</h1>
             <nav className="flex gap-4">
                 <Link href="/menu" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-zinc-50 transition-all">
@@ -11,7 +11,10 @@ export default function Home() {
                 <Link href="/order" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-zinc-50 transition-all">
                     落Order
                 </Link>
+                <Link href="/contact" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-zinc-50 transition-all">
+                    搵我地
+                </Link>
             </nav>
-        </main>
+        </section>
     );
 }

@@ -1,5 +1,5 @@
-import RotateRightRoundedIcon from "@mui/icons-material/RotateRightRounded";
+import { IconLoader2, IconLoaderQuarter } from "@tabler/icons-react";
 
 export default function Loading() {
-    return <RotateRightRoundedIcon className="animate-spin text-zinc-50 text-6xl" />;
+    return <IconLoader2 className="animate-spin text-zinc-50" size={48} />;
 }

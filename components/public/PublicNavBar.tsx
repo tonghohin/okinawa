@@ -18,6 +18,9 @@ export default function PublicNavBar() {
                 <Link href="/order" className={`${pathname === "/order" && "border-b-2 border-zinc-800"} hover:border-b-2 hover:border-zinc-800`}>
                     落Order
                 </Link>
+                <Link href="/contact" className={`${pathname === "/contact" && "border-b-2 border-zinc-800"} hover:border-b-2 hover:border-zinc-800`}>
+                    搵我地
+                </Link>
             </div>
         </nav>
     );
