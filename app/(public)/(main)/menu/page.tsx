@@ -1,7 +1,7 @@
 import Tab from "@/components/Tab";
-import NoodlesMenu from "@/components/public/NoodlesMenu";
-import RiceMenu from "@/components/public/RiceMenu";
-import SnacksMenu from "@/components/public/SnacksMenu";
+import SnacksMenu from "@/components/public/menu/SnacksMenu";
+import NoodlesMenu from "@/components/public/menu/NoodlesMenu";
+import RiceMenu from "@/components/public/menu/RiceMenu";
 import FirestoreService from "@/firestore/FirestoreService";
 import { MenuCategories } from "@/types/Menu";
 

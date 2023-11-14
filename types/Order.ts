@@ -1,4 +1,18 @@
-export interface OrderItem {
+export interface RiceOrderItem {
+    id: string;
+    quantity: number;
+    udon: boolean;
+    addOn: string;
+}
+
+export interface NoodlesOrderItem {
+    id: string;
+    main: string;
+    addOns: string[];
+    quantity: number;
+}
+
+export interface SnacksOrderItem {
     id: string;
     quantity: number;
 }
@@ -8,9 +22,14 @@ export interface Order {
     name: string;
     email: string;
     phone: string;
-    items: OrderItem[];
+    items: {
+        rice: RiceOrderItem[];
+        noodles: RiceOrderItem[];
+        snacks: SnacksOrderItem[];
+    };
     total: number;
     delivery: boolean;
+    address: string;
     date: Date;
     comments: string;
 }
