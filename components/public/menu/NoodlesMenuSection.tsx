@@ -12,7 +12,7 @@ export default function NoodlesMenuSection({ menu, category }: NoodlesMenuSectio
             {menu
                 .filter((noodle) => noodle.category === category)
                 .map((noodle) => (
-                    <p key={noodle.id} className="flex justify-between">
+                    <p key={noodle.id} className="flex justify-between gap-4">
                         <span>{noodle.name}</span>
                         <span>${noodle.price}</span>
                     </p>
