@@ -2,7 +2,7 @@ import { IconBrandWhatsapp, IconClock, IconHome, IconMapPin, IconPhone } from "@
 
 export default function Contact() {
     return (
-        <section className="bg-yellow-400 rounded p-4 flex flex-col gap-2 items-center">
+        <section className="bg-yellow-400 rounded p-4 flex flex-col gap-4 items-center">
             <div className="flex items-center gap-2">
                 <IconHome />
                 <span>葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</span>

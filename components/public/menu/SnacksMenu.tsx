@@ -6,9 +6,9 @@ interface SnacksMenuProps {
 
 export default function SnacksMenu({ snacksMenu }: SnacksMenuProps) {
     return (
-        <section className="border rounded p-4 flex flex-col gap-2">
+        <section className="border rounded p-4 flex flex-col gap-4">
             {snacksMenu.map((snack) => (
-                <p key={snack.id} className="flex justify-between gap-2">
+                <p key={snack.id} className="flex justify-between">
                     <span>{snack.name}</span>
                     <span>${snack.price}</span>
                 </p>
