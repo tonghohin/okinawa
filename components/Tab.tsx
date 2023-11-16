@@ -18,6 +18,7 @@ export default function Tab({ tabs }: TabProps) {
                     </button>
                 ))}
             </nav>
+            {/* todo */}
             <div className="overflow-auto">
                 <article className="rounded-es rounded-e p-4 bg-yellow-400">{tabs[activeTab].component}</article>
             </div>

@@ -1,7 +1,6 @@
 export interface RiceOrderItem {
     id: string;
-    quantity: number;
-    udon: boolean;
+    toUdon: boolean;
     addOn: string;
 }
 
@@ -9,7 +8,6 @@ export interface NoodlesOrderItem {
     id: string;
     main: string;
     addOns: string[];
-    quantity: number;
 }
 
 export interface SnacksOrderItem {
@@ -24,7 +22,7 @@ export interface Order {
     phone: string;
     items: {
         rice: RiceOrderItem[];
-        noodles: RiceOrderItem[];
+        noodles: NoodlesOrderItem[];
         snacks: SnacksOrderItem[];
     };
     total: number;

@@ -30,7 +30,6 @@ export interface SnackItem {
 
 export enum NoodleCategories {
     main = "主食",
-    set = "定食",
     addOn = "追加"
 }
 
