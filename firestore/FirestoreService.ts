@@ -1,5 +1,5 @@
 import { db } from "@/firebase/configuration";
-import { collection, doc, getDocs, writeBatch } from "firebase/firestore";
+import { collection, doc, getDocs, orderBy, query, writeBatch } from "firebase/firestore";
 import { NoodleItem, RiceItem, SnackItem } from "../types/Menu";
 
 export default class FirestoreService {
@@ -15,7 +15,7 @@ export default class FirestoreService {
     }
 
     public async getRiceMenu(): Promise<RiceItem[]> {
-        const riceData = await getDocs(collection(db, "rice"));
+        const riceData = await getDocs(query(collection(db, "rice"), orderBy("price")));
         return riceData.docs.map((rice) => {
             return {
                 id: rice.id,
@@ -27,7 +27,7 @@ export default class FirestoreService {
     }
 
     public async getSnacksMenu(): Promise<SnackItem[]> {
-        const snacksData = await getDocs(collection(db, "snacks"));
+        const snacksData = await getDocs(query(collection(db, "snacks"), orderBy("price")));
         return snacksData.docs.map((snack) => {
             return {
                 id: snack.id,
@@ -38,7 +38,7 @@ export default class FirestoreService {
     }
 
     public async getNoodlesMenu(): Promise<NoodleItem[]> {
-        const noodlesData = await getDocs(collection(db, "noodles"));
+        const noodlesData = await getDocs(query(collection(db, "noodles"), orderBy("price")));
         return noodlesData.docs.map((noodle) => {
             return {
                 id: noodle.id,
