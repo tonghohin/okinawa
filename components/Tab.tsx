@@ -18,7 +18,9 @@ export default function Tab({ tabs }: TabProps) {
                     </button>
                 ))}
             </nav>
-            <article className="rounded-es rounded-e p-4 bg-yellow-400">{tabs[activeTab].component}</article>
+            <div className="border h-3/5 overflow-auto">
+                <article className="rounded-es rounded-e p-4 bg-yellow-400">{tabs[activeTab].component}</article>
+            </div>
         </section>
     );
 }

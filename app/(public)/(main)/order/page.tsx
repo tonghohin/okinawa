@@ -10,8 +10,8 @@ export default async function Order() {
     const noodlesMenu = await FirestoreService.getInstance().getNoodlesMenu();
 
     return (
-        <section className="flex flex-col gap-2">
-            <article className="fixed bottom-10 left-1/2 -translate-x-1/2 flex gap-4 bg-sky-700 text-zinc-50 rounded-full px-6 py-2 cursor-pointer transition-all hover:bg-sky-800 hover:shadow-md">
+        <section className="flex flex-col items-start gap-2">
+            <article className="flex items-center gap-4 bg-sky-700 text-zinc-50 rounded-full px-4 py-2 cursor-pointer transition-all hover:bg-sky-800 hover:shadow-md">
                 <IconShoppingCart />
                 <span>View Cart</span>
                 <span>Total: $0</span>
