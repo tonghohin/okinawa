@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AuthGuard isAccessible={true}>
             <main className="flex flex-col">
                 <AdminNavBar />
-                <main className="bg-zinc-300 rounded">{children}</main>
+                <main className="bg-slate-300 rounded">{children}</main>
             </main>
         </AuthGuard>
     );

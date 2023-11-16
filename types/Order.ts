@@ -1,11 +1,13 @@
 export interface RiceOrderItem {
     id: string;
+    quantity: number;
     toUdon: boolean;
     addOn: string;
 }
 
 export interface NoodlesOrderItem {
     id: string;
+    quantity: number;
     main: string;
     addOns: string[];
 }

@@ -1,7 +1,4 @@
-"use client";
-
-import { useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
-import { MenuCategories, RiceItem } from "@/types/Menu";
+import { RiceItem } from "@/types/Menu";
 import RiceOrderFormSection from "./RiceOrderFormSection";
 
 interface RiceOrderFormProps {
