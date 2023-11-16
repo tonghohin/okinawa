@@ -9,8 +9,6 @@ interface RiceOrderFormProps {
 }
 
 export default function RiceOrderForm({ riceMenu }: RiceOrderFormProps) {
-    const setOrderFormData = useSetOrderFormData();
-
     return (
         <section className="flex flex-col gap-4">
             <RiceOrderFormSection menu={riceMenu} category="beef" />
