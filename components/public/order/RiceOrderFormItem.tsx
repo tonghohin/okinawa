@@ -44,7 +44,6 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     function handleAddOnChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         const { name, value } = e.currentTarget;
-        console.log(name, value);
         setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, [name]: value }));
     }
 
@@ -96,7 +95,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                             <span>{orderFormData.quantity}</span>
                             <IconCaretRightFilled className="text-yellow-800 cursor-pointer" size={24} onClick={() => handleQuantityChange(true)} />
                         </div>
-                        <button className="bg-">加落購物車</button>
+                        <button className="bg-sky-700 text-slate-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all">加落購物車</button>
                     </article>
                 </section>
             )}
