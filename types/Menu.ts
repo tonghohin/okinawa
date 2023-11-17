@@ -10,7 +10,8 @@ export enum RiceCategories {
     combo = "豪華二重奏丼",
     eel = "蒲燒鰻魚丼",
     chicken = "照燒烤雞丼",
-    curry = "濃厚日式咖哩丼"
+    curry = "濃厚日式咖哩丼",
+    addOn = "套餐"
 }
 
 export type RiceCategory = keyof typeof RiceCategories;
