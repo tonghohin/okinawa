@@ -3,6 +3,7 @@ export interface RiceOrderItem {
     quantity: number;
     toUdon: boolean;
     addOn: string;
+    subTotal: number;
 }
 
 export interface NoodlesOrderItem {
@@ -10,11 +11,19 @@ export interface NoodlesOrderItem {
     quantity: number;
     main: string;
     addOns: string[];
+    subTotal: number;
 }
 
 export interface SnacksOrderItem {
     id: string;
     quantity: number;
+    subTotal: number;
+}
+
+export interface OrderItems {
+    rice: RiceOrderItem[];
+    noodles: NoodlesOrderItem[];
+    snacks: SnacksOrderItem[];
 }
 
 export interface Order {
@@ -22,11 +31,7 @@ export interface Order {
     name: string;
     email: string;
     phone: string;
-    items: {
-        rice: RiceOrderItem[];
-        noodles: NoodlesOrderItem[];
-        snacks: SnacksOrderItem[];
-    };
+    items: OrderItems;
     total: number;
     delivery: boolean;
     address: string;
