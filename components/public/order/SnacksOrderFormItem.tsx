@@ -4,7 +4,7 @@ import { InitialStates } from "@/InitialStates/InitialStates";
 import { useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { SnackItem } from "@/types/Menu";
 import { SnacksOrderItem } from "@/types/Order";
-import { IconCaretLeftFilled, IconCaretRightFilled, IconPlus, IconX } from "@tabler/icons-react";
+import { IconCaretLeftFilled, IconCaretRightFilled, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 interface SnacksOrderFormItemProps {
@@ -59,12 +59,17 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                         <h1 className="text-xl border-b border-slate-800">
                             {snack.name} ${snack.price}
                         </h1>
-                        <div className="flex gap-4 items-center rounded-full bg-slate-100 p-2">
-                            <IconCaretLeftFilled className={`text-yellow-800 cursor-pointer ${snacksOrderFormData.quantity === 0 && "text-slate-400"}`} size={24} onClick={() => handleQuantityChange(false)} />
-                            <span>{snacksOrderFormData.quantity}</span>
-                            <IconCaretRightFilled className="text-yellow-800 cursor-pointer" size={24} onClick={() => handleQuantityChange(true)} />
+                        <div className="flex gap-4 items-center">
+                            <button className={`rounded-full bg-yellow-400 p-6 hover:bg-yellow-500 transition-all ${snacksOrderFormData.quantity === 0 && "bg-slate-400"}`} onClick={() => handleQuantityChange(false)}>
+                                <IconMinus className="text-yellow-800" size={24} />
+                            </button>
+                            <span className="text-xl">{snacksOrderFormData.quantity}</span>
+                            <button className={`rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all ${snacksOrderFormData.quantity === 0 && "bg-slate-400"}`} onClick={() => handleQuantityChange(true)}>
+                                <IconPlus className="text-yellow-800" size={24} />
+                            </button>
                         </div>
-                        <button className="bg-sky-700 text-slate-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
+
+                        <button className="flex-1 bg-sky-700 text-slate-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
                             加落購物車
                         </button>
                     </article>

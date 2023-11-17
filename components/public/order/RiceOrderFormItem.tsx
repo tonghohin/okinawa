@@ -4,7 +4,7 @@ import { InitialStates } from "@/InitialStates/InitialStates";
 import { useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { RiceItem } from "@/types/Menu";
 import { RiceOrderItem } from "@/types/Order";
-import { IconCaretLeftFilled, IconCaretRightFilled, IconCircleCheck, IconCircleCheckFilled, IconCircleX, IconCircleXFilled, IconPlus, IconX } from "@tabler/icons-react";
+import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
 import React, { useState } from "react";
 
 interface RiceOrderFormItemProps {
@@ -74,39 +74,40 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                         <h1 className="text-xl border-b border-slate-800">
                             {rice.name} ${rice.price}
                         </h1>
-                        <div className="flex gap-4 items-center">
+                        <div className="flex flex-col gap-4 items-center">
                             <label htmlFor="toUdon">轉烏冬</label>
-                            {riceOrderFormData.toUdon ? (
-                                <>
-                                    <IconCircleCheckFilled className="text-yellow-800 cursor-pointer" size={24} />
-                                    <IconCircleX className="text-yellow-600 cursor-pointer" onClick={() => handleToUdonChange(false)} size={24} />
-                                </>
-                            ) : (
-                                <>
-                                    <IconCircleCheck className="text-yellow-600 cursor-pointer" onClick={() => handleToUdonChange(true)} size={24} />
-                                    <IconCircleXFilled className="text-yellow-800 cursor-pointer" size={24} />
-                                </>
-                            )}
+                            <div className="flex items-center gap-4">
+                                <button className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.toUdon ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleToUdonChange(true)}>
+                                    <IconCheck className="text-yellow-800 cursor-pointer" size={24} />
+                                </button>
+                                <button className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${!riceOrderFormData.toUdon ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleToUdonChange(false)}>
+                                    <IconX className="text-yellow-800" size={24} />
+                                </button>
+                            </div>
                         </div>
                         <div className="flex flex-col gap-4 items-center">
                             <label htmlFor="addOn">轉套餐</label>
                             <div className="flex gap-4">
                                 {addOns.map((addOn) => (
-                                    <button key={addOn.id} name="addOn" value={addOn.id} className={`cursor-pointer rounded-full border border-yellow-400 p-2 ${riceOrderFormData.addOn === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
+                                    <button key={addOn.id} name="addOn" value={addOn.id} className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
                                         {addOn.name} ＋${addOn.price}
                                     </button>
                                 ))}
-                                <button name="addOn" value="" className={`cursor-pointer rounded-full border border-yellow-400 p-2 ${riceOrderFormData.addOn === "" && "bg-yellow-500"}`} onClick={handleAddOnChange}>
+                                <button name="addOn" value="" className={`rounded-full border border-yellow-400 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn === "" && "bg-yellow-500"}`} onClick={handleAddOnChange}>
                                     唔使了
                                 </button>
                             </div>
                         </div>
-                        <div className="flex gap-4 items-center rounded-full bg-slate-100 p-2">
-                            <IconCaretLeftFilled className={`text-yellow-800 cursor-pointer ${riceOrderFormData.quantity === 0 && "text-slate-400"}`} size={24} onClick={() => handleQuantityChange(false)} />
-                            <span>{riceOrderFormData.quantity}</span>
-                            <IconCaretRightFilled className="text-yellow-800 cursor-pointer" size={24} onClick={() => handleQuantityChange(true)} />
+                        <div className="flex gap-4 items-center">
+                            <button className={`rounded-full bg-yellow-400 p-6 hover:bg-yellow-500 transition-all ${riceOrderFormData.quantity === 0 && "bg-slate-400"}`} onClick={() => handleQuantityChange(false)}>
+                                <IconMinus className="text-yellow-800" size={24} />
+                            </button>
+                            <span className="text-xl">{riceOrderFormData.quantity}</span>
+                            <button className={`rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all ${riceOrderFormData.quantity === 0 && "bg-slate-400"}`} onClick={() => handleQuantityChange(true)}>
+                                <IconPlus className="text-yellow-800" size={24} />
+                            </button>
                         </div>
-                        <button className="bg-sky-700 text-slate-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
+                        <button className="flex-1 bg-sky-700 text-slate-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
                             加落購物車
                         </button>
                     </article>
