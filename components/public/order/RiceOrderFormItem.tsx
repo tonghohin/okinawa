@@ -87,7 +87,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                         </div>
                         <div className="flex flex-col gap-4 items-center">
                             <label htmlFor="addOn">轉套餐</label>
-                            <div className="flex gap-4">
+                            <div className="flex gap-4 flex-wrap justify-center">
                                 {addOns.map((addOn) => (
                                     <button key={addOn.id} name="addOn" value={addOn.id} className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
                                         {addOn.name} ＋${addOn.price}
