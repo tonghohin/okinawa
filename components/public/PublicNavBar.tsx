@@ -11,7 +11,7 @@ export default function PublicNavBar() {
             <Link href="/" className="text-2xl">
                 沖繩味之賞
             </Link>
-            <div className="flex items-center  gap-6">
+            <div className="flex items-center gap-6">
                 <Link href="/menu" className={`${pathname === "/menu" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
                     睇Menu
                 </Link>

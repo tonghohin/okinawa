@@ -7,8 +7,8 @@ interface RiceMenuSectionProps {
 
 export default function RiceMenuSection({ menu, category }: RiceMenuSectionProps) {
     return (
-        <article className="border rounded p-4 flex flex-col gap-4">
-            <h1 className="text-lg text-center">{RiceCategories[category]}</h1>
+        <article className="flex flex-col gap-4">
+            <h1 className="text-lg text-center border-b border-yellow-600">{RiceCategories[category]}</h1>
             {menu
                 .filter((rice) => rice.category === category)
                 .map((rice) => (

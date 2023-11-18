@@ -6,7 +6,7 @@ import { Tools } from "@/tools/Tools";
 import { RiceItem } from "@/types/Menu";
 import { RiceOrderItem } from "@/types/Order";
 import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface RiceOrderFormItemProps {
     rice: RiceItem;
@@ -18,15 +18,11 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [riceOrderFormData, setRiceOrderFormData] = useState<RiceOrderItem>(InitialStates.RiceOrderItem(rice.id));
+    const [riceOrderFormData, setRiceOrderFormData] = useState<RiceOrderItem.Frontend>(InitialStates.RiceOrderItem(rice));
 
-    const itemCount = useMemo(() => (orderFormData ? Tools.getNumberOfItems(orderFormData.items, "rice", rice.id) : 0), [orderFormData]);
+    const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "rice", rice.id) : 0), [orderFormData]);
 
     const isValidOrder = riceOrderFormData.quantity > 0;
-
-    useEffect(() => {
-        setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, subTotal: Tools.getRiceOrderSubtotal(prevRiceOrderFormData, rice, addOns) }));
-    }, [riceOrderFormData.addOn, riceOrderFormData.quantity]);
 
     function handleQuantityChange(increment: boolean) {
         if (increment) {
@@ -48,26 +44,24 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     function handleAddOnChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         const { name, value } = e.currentTarget;
-        setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, [name]: value }));
+        const addOn = addOns.find((addOn) => addOn.id === value);
+        setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, addOn: addOn || null }));
     }
 
     function handleAddToCart() {
         if (riceOrderFormData.quantity > 0) {
-            const addOnPrice = addOns.find((addOn) => addOn.id === riceOrderFormData.addOn)?.price || 0;
-            const subTotal = (rice.price + addOnPrice) * riceOrderFormData.quantity;
-
             if (setOrderFormData) {
                 setOrderFormData((prevOrderFormData) => ({
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        rice: [...prevOrderFormData.items.rice, { ...riceOrderFormData, subTotal: subTotal }]
+                        rice: [...prevOrderFormData.items.rice, riceOrderFormData]
                     }
                 }));
             }
         }
         setIsModalOpen(false);
-        setRiceOrderFormData(InitialStates.RiceOrderItem(rice.id));
+        setRiceOrderFormData(InitialStates.RiceOrderItem(rice));
     }
 
     return (
@@ -90,7 +84,9 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                         <button className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)}>
                             <IconX size={24} />
                         </button>
-                        <h1 className="text-xl border-b border-neutral-800">{rice.name}</h1>
+                        <h1 className="text-xl border-b border-neutral-800">
+                            <span>{rice.name}</span> <span>${rice.price}</span>
+                        </h1>
                         <div className="flex flex-col gap-4 items-center">
                             <label htmlFor="toUdon">轉烏冬</label>
                             <div className="flex items-center gap-4">
@@ -106,11 +102,11 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                             <label htmlFor="addOn">轉套餐</label>
                             <div className="flex gap-4 flex-wrap justify-center">
                                 {addOns.map((addOn) => (
-                                    <button key={addOn.id} name="addOn" value={addOn.id} className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
+                                    <button key={addOn.id} name="addOn" value={addOn.id} className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn?.id === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
                                         {addOn.name} ＋${addOn.price}
                                     </button>
                                 ))}
-                                <button name="addOn" value="" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn === "" && "bg-yellow-500"}`} onClick={handleAddOnChange}>
+                                <button name="addOn" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${!riceOrderFormData.addOn && "bg-yellow-500"}`} onClick={handleAddOnChange}>
                                     唔使了
                                 </button>
                             </div>
@@ -126,7 +122,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                         </div>
                         <button className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
-                            <span>${riceOrderFormData.subTotal || rice.price}</span>
+                            <span>${Tools.Frontend.getRiceOrderSubtotal(riceOrderFormData) || rice.price}</span>
                         </button>
                     </article>
                 </section>

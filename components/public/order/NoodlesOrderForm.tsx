@@ -10,8 +10,8 @@ export default function NoodlesOrderForm({ noodlesMenu }: NoodlesOrderFormProps)
     const noodlesMenuAddOns = noodlesMenu.filter((noodles) => noodles.category === "addOn");
 
     return (
-        <section className="border border-yellow-600 rounded p-4 flex flex-col gap-4">
-            <h1 className="text-lg text-center">揀樣{NoodlesCategories.main}先</h1>
+        <section className="flex flex-col gap-4">
+            <h1 className="text-lg text-center border-b border-yellow-600">揀樣{NoodlesCategories.main}先</h1>
             {noodlesMenuMain.map((noodles) => (
                 <NoodlesOrderFormItem key={noodles.id} noodles={noodles} addOns={noodlesMenuAddOns} />
             ))}

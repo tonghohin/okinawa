@@ -6,7 +6,7 @@ import { Tools } from "@/tools/Tools";
 import { SnacksItem } from "@/types/Menu";
 import { SnacksOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus, IconX } from "@tabler/icons-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface SnacksOrderFormItemProps {
     snack: SnacksItem;
@@ -17,15 +17,11 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [snacksOrderFormData, setSnacksOrderFormData] = useState<SnacksOrderItem>(InitialStates.SnacksOrderItem(snack.id));
+    const [snacksOrderFormData, setSnacksOrderFormData] = useState<SnacksOrderItem.Frontend>(InitialStates.SnacksOrderItem(snack));
 
-    const itemCount = useMemo(() => (orderFormData ? Tools.getNumberOfItems(orderFormData.items, "snacks", snack.id) : 0), [orderFormData]);
+    const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "snacks", snack.id) : 0), [orderFormData]);
 
     const isValidOrder = snacksOrderFormData.quantity > 0;
-
-    useEffect(() => {
-        setSnacksOrderFormData((prevSnacksOrderFormData) => ({ ...prevSnacksOrderFormData, subTotal: Tools.getSnacksOrderSubtotal(prevSnacksOrderFormData, snack) }));
-    }, [snacksOrderFormData.quantity]);
 
     function handleQuantityChange(increment: boolean) {
         if (increment) {
@@ -39,20 +35,18 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
 
     function handleAddToCart() {
         if (snacksOrderFormData.quantity > 0) {
-            const subTotal = snack.price * snacksOrderFormData.quantity;
-
             if (setOrderFormData) {
                 setOrderFormData((prevOrderFormData) => ({
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        snacks: [...prevOrderFormData.items.snacks, { ...snacksOrderFormData, subTotal: subTotal }]
+                        snacks: [...prevOrderFormData.items.snacks, snacksOrderFormData]
                     }
                 }));
             }
         }
         setIsModalOpen(false);
-        setSnacksOrderFormData(InitialStates.SnacksOrderItem(snack.id));
+        setSnacksOrderFormData(InitialStates.SnacksOrderItem(snack));
     }
 
     return (
@@ -75,7 +69,9 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                         <button className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)}>
                             <IconX size={24} />
                         </button>
-                        <h1 className="text-xl border-b border-neutral-800">{snack.name}</h1>
+                        <h1 className="text-xl border-b border-neutral-800">
+                            <span>{snack.name}</span> <span>${snack.price}</span>
+                        </h1>
                         <div className="flex gap-4 items-center">
                             <button className={`rounded-full p-6 transition-all ${snacksOrderFormData.quantity === 0 ? "bg-neutral-300 cursor-default" : "bg-yellow-400 hover:bg-yellow-500"}`} onClick={() => handleQuantityChange(false)}>
                                 <IconMinus className="text-yellow-800" size={24} />
@@ -87,7 +83,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                         </div>
                         <button className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
-                            <span>${snacksOrderFormData.subTotal || snack.price}</span>
+                            <span>${Tools.Frontend.getSnacksOrderSubtotal(snacksOrderFormData) || snack.price}</span>
                         </button>
                     </article>
                 </section>

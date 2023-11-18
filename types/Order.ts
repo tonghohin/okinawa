@@ -1,39 +1,85 @@
-export interface RiceOrderItem {
-    id: string;
-    quantity: number;
-    toUdon: boolean;
-    addOn: string;
-    subTotal: number;
+import { NoodlesItem, RiceItem, SnacksItem } from "./Menu";
+
+export namespace RiceOrderItem {
+    export interface Frontend {
+        item: RiceItem;
+        quantity: number;
+        toUdon: boolean;
+        addOn: RiceItem | null;
+    }
+
+    export interface Backend {
+        id: string;
+        quantity: number;
+        toUdon: boolean;
+        addOn: string;
+    }
 }
 
-export interface NoodlesOrderItem {
-    id: string;
-    quantity: number;
-    addOns: string[];
-    subTotal: number;
+export namespace NoodlesOrderItem {
+    export interface Frontend {
+        item: NoodlesItem;
+        quantity: number;
+        addOns: NoodlesItem[];
+    }
+
+    export interface Backend {
+        id: string;
+        quantity: number;
+        addOns: string[];
+    }
 }
 
-export interface SnacksOrderItem {
-    id: string;
-    quantity: number;
-    subTotal: number;
+export namespace SnacksOrderItem {
+    export interface Frontend {
+        item: SnacksItem;
+        quantity: number;
+    }
+
+    export interface Backend {
+        id: string;
+        quantity: number;
+    }
 }
 
-export interface OrderItems {
-    rice: RiceOrderItem[];
-    noodles: NoodlesOrderItem[];
-    snacks: SnacksOrderItem[];
+export namespace OrderItems {
+    export interface Frontend {
+        rice: RiceOrderItem.Frontend[];
+        noodles: NoodlesOrderItem.Frontend[];
+        snacks: SnacksOrderItem.Frontend[];
+    }
+
+    export interface Backend {
+        rice: RiceOrderItem.Backend[];
+        noodles: NoodlesOrderItem.Backend[];
+        snacks: SnacksOrderItem.Backend[];
+    }
 }
 
-export interface Order {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    items: OrderItems;
-    total: number;
-    delivery: boolean;
-    address: string;
-    date: Date;
-    comments: string;
+export namespace Order {
+    export interface Frontend {
+        id: string;
+        name: string;
+        email: string;
+        phone: string;
+        items: OrderItems.Frontend;
+        total: number;
+        delivery: boolean;
+        address: string;
+        date: Date;
+        comments: string;
+    }
+
+    export interface Backend {
+        id: string;
+        name: string;
+        email: string;
+        phone: string;
+        items: OrderItems.Backend;
+        total: number;
+        delivery: boolean;
+        address: string;
+        date: Date;
+        comments: string;
+    }
 }

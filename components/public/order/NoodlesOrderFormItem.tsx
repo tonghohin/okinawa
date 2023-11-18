@@ -6,7 +6,7 @@ import { Tools } from "@/tools/Tools";
 import { NoodlesCategories, NoodlesItem } from "@/types/Menu";
 import { NoodlesOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus, IconX } from "@tabler/icons-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface NoodlesOrderFormItemProps {
     noodles: NoodlesItem;
@@ -18,15 +18,11 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<NoodlesOrderItem>(InitialStates.NoodlesOrderItem(noodles.id));
+    const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<NoodlesOrderItem.Frontend>(InitialStates.NoodlesOrderItem(noodles));
 
-    const itemCount = useMemo(() => (orderFormData ? Tools.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
+    const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
 
     const isValidOrder = noodlesOrderFormData.quantity > 0 && noodlesOrderFormData.addOns.length >= (noodles.minimumAddOns || 0);
-
-    useEffect(() => {
-        setNoodlesOrderFormData((prevNoodlesOrderFormData) => ({ ...prevNoodlesOrderFormData, subTotal: Tools.getNoodlesOrderSubtotal(prevNoodlesOrderFormData, noodles, addOns) }));
-    }, [noodlesOrderFormData.addOns, noodlesOrderFormData.quantity]);
 
     function handleQuantityChange(increment: boolean) {
         if (increment) {
@@ -40,26 +36,26 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     function handleAddOnsChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         const { name, value } = e.currentTarget;
-        setNoodlesOrderFormData((prevNoodlesOrderFormData) => (prevNoodlesOrderFormData.addOns.includes(value) ? { ...prevNoodlesOrderFormData, addOns: prevNoodlesOrderFormData.addOns.filter((addOn) => addOn !== value) } : { ...prevNoodlesOrderFormData, addOns: [...prevNoodlesOrderFormData.addOns, value] }));
+        const addOn = addOns.find((addOn) => addOn.id === value);
+        if (addOn) {
+            setNoodlesOrderFormData((prevNoodlesOrderFormData) => (prevNoodlesOrderFormData.addOns.find((addOn) => addOn.id === value) ? { ...prevNoodlesOrderFormData, addOns: prevNoodlesOrderFormData.addOns.filter((addOn) => addOn.id !== value) } : { ...prevNoodlesOrderFormData, addOns: [...prevNoodlesOrderFormData.addOns, addOn] }));
+        }
     }
 
     function handleAddToCart() {
         if (noodlesOrderFormData.quantity > 0) {
-            const addOnsPrice = noodlesOrderFormData.addOns.reduce((total, addOn) => total + (addOns.find((addOnItem) => addOnItem.id === addOn)?.price || 0), 0);
-            const subTotal = (noodles.price + addOnsPrice) * noodlesOrderFormData.quantity;
-
             if (setOrderFormData) {
                 setOrderFormData((prevOrderFormData) => ({
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        noodles: [...prevOrderFormData.items.noodles, { ...noodlesOrderFormData, subTotal: subTotal }]
+                        noodles: [...prevOrderFormData.items.noodles, noodlesOrderFormData]
                     }
                 }));
             }
         }
         setIsModalOpen(false);
-        setNoodlesOrderFormData(InitialStates.NoodlesOrderItem(noodles.id));
+        setNoodlesOrderFormData(InitialStates.NoodlesOrderItem(noodles));
     }
 
     return (
@@ -82,15 +78,17 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                         <button className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)}>
                             <IconX size={24} />
                         </button>
-                        <h1 className="text-xl border-b border-neutral-800">{noodles.name}</h1>
-                        <h1 className="text-lg text-center">
+                        <h1 className="text-xl border-b border-neutral-800">
+                            <span>{noodles.name}</span> <span>${noodles.price}</span>
+                        </h1>
+                        <h1 className="text-lg text-center border-b border-yellow-600 self-stretch">
                             <span>{NoodlesCategories.addOn}配料</span> <span>{noodles.minimumAddOns ? `（${noodles.minimumAddOns}款起）` : "（唔加都得）"}</span>
                         </h1>
-                        <div className="flex flex-col overflow-auto border border-yellow-600 rounded p-4">
-                            {Object.entries(Tools.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
-                                <section className="flex gap-4 items-center border-b border-b-yellow-400 flex-wrap py-4">
+                        <div className="flex flex-col overflow-auto">
+                            {Object.entries(Tools.Frontend.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
+                                <section className="flex gap-4 items-center border-b border-b-yellow-500 flex-wrap py-4">
                                     {addOn.map((addOn) => (
-                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 transition-all ${noodlesOrderFormData.addOns.includes(addOn.id) ? "bg-yellow-500" : "hover:bg-yellow-500"}`} onClick={handleAddOnsChange}>
+                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 transition-all ${noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id) ? "bg-yellow-500" : "hover:bg-yellow-500"}`} onClick={handleAddOnsChange}>
                                             <span>{addOn.name}</span>
                                             <span>＋${addOn.price}</span>
                                         </button>
@@ -109,7 +107,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                         </div>
                         <button className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
-                            <span>${noodlesOrderFormData.subTotal || noodles.price}</span>
+                            <span>${Tools.Frontend.getNoodlesOrderSubtotal(noodlesOrderFormData) || noodles.price}</span>
                         </button>
                     </article>
                 </section>
