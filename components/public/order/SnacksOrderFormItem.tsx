@@ -4,7 +4,7 @@ import { InitialStates } from "@/InitialStates/InitialStates";
 import { useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { SnackItem } from "@/types/Menu";
 import { SnacksOrderItem } from "@/types/Order";
-import { IconCaretLeftFilled, IconCaretRightFilled, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
+import { IconMinus, IconPlus, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 interface SnacksOrderFormItemProps {
@@ -53,23 +53,23 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                 </div>
             </p>
             {isModalOpen && (
-                <section className="fixed left-0 top-0 w-full h-full p-4 bg-slate-800 bg-opacity-30 backdrop-blur-sm flex flex-col justify-center items-center">
+                <section className="fixed left-0 top-0 w-full h-full p-4 bg-neutral-800 bg-opacity-30 backdrop-blur-sm flex flex-col justify-center items-center">
                     <article className="flex flex-col items-center gap-4 p-4 rounded bg-yellow-300">
-                        <IconX className="rounded-full p-1 bg-slate-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)} size={24} />
-                        <h1 className="text-xl border-b border-slate-800">
+                        <IconX className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)} size={24} />
+                        <h1 className="text-xl border-b border-neutral-800">
                             {snack.name} ${snack.price}
                         </h1>
                         <div className="flex gap-4 items-center">
-                            <button className={`rounded-full bg-yellow-400 p-6 hover:bg-yellow-500 transition-all ${snacksOrderFormData.quantity === 0 && "bg-slate-400"}`} onClick={() => handleQuantityChange(false)}>
+                            <button className={`rounded-full bg-yellow-400 p-6 hover:bg-yellow-500 transition-all ${snacksOrderFormData.quantity === 0 && "bg-neutral-400"}`} onClick={() => handleQuantityChange(false)}>
                                 <IconMinus className="text-yellow-800" size={24} />
                             </button>
                             <span className="text-xl">{snacksOrderFormData.quantity}</span>
-                            <button className={`rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all ${snacksOrderFormData.quantity === 0 && "bg-slate-400"}`} onClick={() => handleQuantityChange(true)}>
+                            <button className={`rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all ${snacksOrderFormData.quantity === 0 && "bg-neutral-400"}`} onClick={() => handleQuantityChange(true)}>
                                 <IconPlus className="text-yellow-800" size={24} />
                             </button>
                         </div>
 
-                        <button className="flex-1 bg-sky-700 text-slate-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
+                        <button className="flex-1 bg-sky-700 text-neutral-50 rounded p-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
                             加落購物車
                         </button>
                     </article>

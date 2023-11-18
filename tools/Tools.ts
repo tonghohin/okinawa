@@ -1,4 +1,5 @@
-import { Order, OrderItems } from "@/types/Order";
+import { MenuCategory } from "@/types/Menu";
+import { OrderItems } from "@/types/Order";
 
 export namespace Tools {
     export function getTotal(orderItems: OrderItems) {
@@ -13,5 +14,14 @@ export namespace Tools {
             total += item.subTotal;
         }
         return total;
+    }
+
+    export function getNumberOfItems(orderItems: OrderItems, category: MenuCategory, itemId: string) {
+        return orderItems[category].reduce((count, item) => {
+            if (item.id === itemId) {
+                count += item.quantity;
+            }
+            return count;
+        }, 0);
     }
 }

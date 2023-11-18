@@ -4,6 +4,8 @@ export enum MenuCategories {
     noodles = "自選日式車仔麵/關東煮"
 }
 
+export type MenuCategory = keyof typeof MenuCategories;
+
 export enum RiceCategories {
     beef = "牛肉丼",
     pork = "炙燒豚肉丼",
