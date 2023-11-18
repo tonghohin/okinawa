@@ -90,7 +90,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                             {Object.entries(Tools.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
                                 <section className="flex gap-4 items-center border-b border-b-yellow-400 flex-wrap py-4">
                                     {addOn.map((addOn) => (
-                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 hover:bg-yellow-500 transition-all ${noodlesOrderFormData.addOns.includes(addOn.id) && "bg-yellow-500 hover:bg-yellow-600"}`} onClick={handleAddOnsChange}>
+                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 transition-all ${noodlesOrderFormData.addOns.includes(addOn.id) ? "bg-yellow-500" : "hover:bg-yellow-500"}`} onClick={handleAddOnsChange}>
                                             <span>{addOn.name}</span>
                                             <span>＋${addOn.price}</span>
                                         </button>
