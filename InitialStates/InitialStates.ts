@@ -1,4 +1,4 @@
-import { Order, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
+import { NoodlesOrderItem, Order, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
 
 export namespace InitialStates {
     export const Order: Order = {
@@ -23,6 +23,13 @@ export namespace InitialStates {
         quantity: 0,
         toUdon: false,
         addOn: "",
+        subTotal: 0
+    });
+
+    export const NoodlesOrderItem = (noodleId: string): NoodlesOrderItem => ({
+        id: noodleId,
+        quantity: 0,
+        addOns: [],
         subTotal: 0
     });
 

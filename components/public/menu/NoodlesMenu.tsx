@@ -1,8 +1,8 @@
-import { NoodleItem } from "@/types/Menu";
+import { NoodlesItem } from "@/types/Menu";
 import NoodlesMenuSection from "./NoodlesMenuSection";
 
 interface NoodlesMenuProps {
-    noodlesMenu: NoodleItem[];
+    noodlesMenu: NoodlesItem[];
 }
 
 export default function NoodlesMenu({ noodlesMenu }: NoodlesMenuProps) {

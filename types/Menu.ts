@@ -25,22 +25,22 @@ export interface RiceItem {
     price: number;
 }
 
-export interface SnackItem {
+export interface SnacksItem {
     id: string;
     name: string;
     price: number;
 }
 
-export enum NoodleCategories {
+export enum NoodlesCategories {
     main = "主食",
     addOn = "追加"
 }
 
-export type NoodleCategory = keyof typeof NoodleCategories;
+export type NoodlesCategory = keyof typeof NoodlesCategories;
 
-export interface NoodleItem {
+export interface NoodlesItem {
     id: string;
-    category: NoodleCategory;
+    category: NoodlesCategory;
     name: string;
     price: number;
 }

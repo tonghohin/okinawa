@@ -9,7 +9,6 @@ export interface RiceOrderItem {
 export interface NoodlesOrderItem {
     id: string;
     quantity: number;
-    main: string;
     addOns: string[];
     subTotal: number;
 }

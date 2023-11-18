@@ -1,8 +1,8 @@
-import { SnackItem } from "@/types/Menu";
+import { SnacksItem } from "@/types/Menu";
 import SnacksOrderFormItem from "./SnacksOrderFormItem";
 
 interface SnacksOrderFormProps {
-    snacksMenu: SnackItem[];
+    snacksMenu: SnacksItem[];
 }
 
 export default function SnacksOrderForm({ snacksMenu }: SnacksOrderFormProps) {

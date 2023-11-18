@@ -1,4 +1,5 @@
 import Tab from "@/components/Tab";
+import NoodlesOrderForm from "@/components/public/order/NoodlesOrderForm";
 import RiceOrderForm from "@/components/public/order/RiceOrderForm";
 import SnacksOrderForm from "@/components/public/order/SnacksOrderForm";
 import Total from "@/components/public/order/Total";
@@ -19,10 +20,10 @@ export default async function Order() {
                         label: MenuCategories.rice,
                         component: <RiceOrderForm riceMenu={riceMenu} />
                     },
-                    // {
-                    //     label: MenuCategories.noodles,
-                    //     component: <NoodlesMenu noodlesMenu={noodlesMenu} />
-                    // },
+                    {
+                        label: MenuCategories.noodles,
+                        component: <NoodlesOrderForm noodlesMenu={noodlesMenu} />
+                    },
                     {
                         label: MenuCategories.snacks,
                         component: <SnacksOrderForm snacksMenu={snacksMenu} />

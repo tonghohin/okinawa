@@ -1,7 +1,7 @@
-import { SnackItem } from "@/types/Menu";
+import { SnacksItem } from "@/types/Menu";
 
 interface SnacksMenuProps {
-    snacksMenu: SnackItem[];
+    snacksMenu: SnacksItem[];
 }
 
 export default function SnacksMenu({ snacksMenu }: SnacksMenuProps) {

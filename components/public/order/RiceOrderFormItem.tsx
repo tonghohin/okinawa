@@ -6,7 +6,7 @@ import { Tools } from "@/tools/Tools";
 import { RiceItem } from "@/types/Menu";
 import { RiceOrderItem } from "@/types/Order";
 import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 interface RiceOrderFormItemProps {
     rice: RiceItem;
@@ -22,21 +22,25 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     const itemCount = useMemo(() => (orderFormData ? Tools.getNumberOfItems(orderFormData.items, "rice", rice.id) : 0), [orderFormData]);
 
+    useEffect(() => {
+        setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, subTotal: Tools.getRiceOrderSubtotal(prevRiceOrderFormData, rice, addOns) }));
+    }, [riceOrderFormData.addOn, riceOrderFormData.quantity]);
+
     function handleQuantityChange(increment: boolean) {
         if (increment) {
-            setRiceOrderFormData((prevRiceOrderFromData) => ({ ...prevRiceOrderFromData, quantity: prevRiceOrderFromData.quantity + 1 }));
+            setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, quantity: prevRiceOrderFormData.quantity + 1 }));
         } else {
-            setRiceOrderFormData((prevRiceOrderFromData) => {
-                return prevRiceOrderFromData.quantity > 0 ? { ...prevRiceOrderFromData, quantity: prevRiceOrderFromData.quantity - 1 } : prevRiceOrderFromData;
+            setRiceOrderFormData((prevRiceOrderFormData) => {
+                return prevRiceOrderFormData.quantity > 0 ? { ...prevRiceOrderFormData, quantity: prevRiceOrderFormData.quantity - 1 } : prevRiceOrderFormData;
             });
         }
     }
 
     function handleToUdonChange(toUdon: boolean) {
         if (toUdon) {
-            setRiceOrderFormData((prevOrderFromData) => ({ ...prevOrderFromData, toUdon: true }));
+            setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, toUdon: true }));
         } else {
-            setRiceOrderFormData((prevOrderFromData) => ({ ...prevOrderFromData, toUdon: false }));
+            setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, toUdon: false }));
         }
     }
 
@@ -46,17 +50,19 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
     }
 
     function handleAddToCart() {
-        const addOnPrice = addOns.find((addOn) => addOn.id === riceOrderFormData.addOn)?.price || 0;
-        const subTotal = (rice.price + addOnPrice) * riceOrderFormData.quantity;
+        if (riceOrderFormData.quantity > 0) {
+            const addOnPrice = addOns.find((addOn) => addOn.id === riceOrderFormData.addOn)?.price || 0;
+            const subTotal = (rice.price + addOnPrice) * riceOrderFormData.quantity;
 
-        if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => ({
-                ...prevOrderFormData,
-                items: {
-                    ...prevOrderFormData.items,
-                    rice: [...prevOrderFormData.items.rice, { ...riceOrderFormData, subTotal: subTotal }]
-                }
-            }));
+            if (setOrderFormData) {
+                setOrderFormData((prevOrderFormData) => ({
+                    ...prevOrderFormData,
+                    items: {
+                        ...prevOrderFormData.items,
+                        rice: [...prevOrderFormData.items.rice, { ...riceOrderFormData, subTotal: subTotal }]
+                    }
+                }));
+            }
         }
         setIsModalOpen(false);
         setRiceOrderFormData(InitialStates.RiceOrderItem(rice.id));
@@ -68,7 +74,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                 <span>{rice.name}</span>
                 <div className="flex items-center gap-4">
                     {itemCount > 0 && (
-                        <div className="flex items-center justify-center w-6 h-6 text-sm rounded-full bg-sky-600 text-neutral-50">
+                        <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-700/80 text-neutral-50">
                             <span>{itemCount}</span>
                         </div>
                     )}
@@ -79,7 +85,9 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
             {isModalOpen && (
                 <section className="fixed left-0 top-0 w-full h-full p-4 bg-neutral-800 bg-opacity-30 backdrop-blur-sm flex flex-col justify-center items-center">
                     <article className="flex flex-col items-center gap-4 p-4 rounded bg-yellow-300">
-                        <IconX className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)} size={24} />
+                        <button className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)}>
+                            <IconX size={24} />
+                        </button>
                         <h1 className="text-xl border-b border-neutral-800">{rice.name}</h1>
                         <div className="flex flex-col gap-4 items-center">
                             <label htmlFor="toUdon">轉烏冬</label>
@@ -116,7 +124,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                         </div>
                         <button className="flex items-center gap-4 bg-sky-700 text-neutral-50 rounded-full px-6 py-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
                             <span>加落購物車</span>
-                            <span>${rice.price}</span>
+                            <span>${riceOrderFormData.subTotal || rice.price}</span>
                         </button>
                     </article>
                 </section>
