@@ -22,6 +22,8 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     const itemCount = useMemo(() => (orderFormData ? Tools.getNumberOfItems(orderFormData.items, "rice", rice.id) : 0), [orderFormData]);
 
+    const isValidOrder = riceOrderFormData.quantity > 0;
+
     useEffect(() => {
         setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, subTotal: Tools.getRiceOrderSubtotal(prevRiceOrderFormData, rice, addOns) }));
     }, [riceOrderFormData.addOn, riceOrderFormData.quantity]);
@@ -122,7 +124,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                                 <IconPlus className="text-yellow-800" size={24} />
                             </button>
                         </div>
-                        <button className="flex items-center gap-4 bg-sky-700 text-neutral-50 rounded-full px-6 py-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
+                        <button className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
                             <span>${riceOrderFormData.subTotal || rice.price}</span>
                         </button>

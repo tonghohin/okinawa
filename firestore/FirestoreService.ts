@@ -44,7 +44,8 @@ export default class FirestoreService {
                 id: noodle.id,
                 category: noodle.data().category,
                 name: noodle.data().name,
-                price: noodle.data().price
+                price: noodle.data().price,
+                minimumAddOns: noodle.data().minimumAddOns
             };
         });
     }

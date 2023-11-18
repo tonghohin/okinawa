@@ -22,6 +22,8 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     const itemCount = useMemo(() => (orderFormData ? Tools.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
 
+    const isValidOrder = noodlesOrderFormData.quantity > 0 && noodlesOrderFormData.addOns.length >= (noodles.minimumAddOns || 0);
+
     useEffect(() => {
         setNoodlesOrderFormData((prevNoodlesOrderFormData) => ({ ...prevNoodlesOrderFormData, subTotal: Tools.getNoodlesOrderSubtotal(prevNoodlesOrderFormData, noodles, addOns) }));
     }, [noodlesOrderFormData.addOns, noodlesOrderFormData.quantity]);
@@ -81,12 +83,14 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                             <IconX size={24} />
                         </button>
                         <h1 className="text-xl border-b border-neutral-800">{noodles.name}</h1>
-                        <h1 className="text-lg text-center">{NoodlesCategories.addOn}配料</h1>
+                        <h1 className="text-lg text-center">
+                            <span>{NoodlesCategories.addOn}配料</span> <span>{noodles.minimumAddOns ? `（${noodles.minimumAddOns}款起）` : "（唔加都得）"}</span>
+                        </h1>
                         <div className="flex flex-col overflow-auto border border-yellow-600 rounded p-4">
                             {Object.entries(Tools.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
                                 <section className="flex gap-4 items-center border-b border-b-yellow-400 flex-wrap py-4">
                                     {addOn.map((addOn) => (
-                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 hover:bg-yellow-500 transition-all ${noodlesOrderFormData.addOns.includes(addOn.id) && "bg-yellow-500"}`} onClick={handleAddOnsChange}>
+                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 hover:bg-yellow-500 transition-all ${noodlesOrderFormData.addOns.includes(addOn.id) && "bg-yellow-500 hover:bg-yellow-600"}`} onClick={handleAddOnsChange}>
                                             <span>{addOn.name}</span>
                                             <span>＋${addOn.price}</span>
                                         </button>
@@ -103,7 +107,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                                 <IconPlus className="text-yellow-800" size={24} />
                             </button>
                         </div>
-                        <button className="flex items-center gap-4 bg-sky-700 text-neutral-50 rounded-full px-6 py-2 hover:bg-sky-600 hover:shadow-md transition-all" onClick={handleAddToCart}>
+                        <button className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
                             <span>${noodlesOrderFormData.subTotal || noodles.price}</span>
                         </button>

@@ -43,4 +43,5 @@ export interface NoodlesItem {
     category: NoodlesCategory;
     name: string;
     price: number;
+    minimumAddOns?: number;
 }
