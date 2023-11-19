@@ -79,17 +79,19 @@ export namespace Tools {
 
         export function checkOrderExists(existingOrder: Order.Frontend, order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend, category: MenuCategory) {
             try {
-                existingOrder.items[category].forEach((existingOrderItem, index) => {
-                    Object.keys(existingOrderItem).forEach((key) => {
-                        if (key !== "quantity") {
-                            notDeepStrictEqual(existingOrderItem[key as keyof typeof existingOrderItem], order[key as keyof typeof order], String(index));
-                        }
-                    });
-                });
+                const orderItems = existingOrder.items[category];
+                const { item: newOrderItem, quantity, ...newOrderItemFields } = order;
+                for (let i = 0; i < orderItems.length; i++) {
+                    const { item: existingOrderItem, quantity, ...existingOrderItemFields } = orderItems[i];
+                    console.log(newOrderItemFields, existingOrderItemFields);
+                    if (existingOrderItem.id === newOrderItem.id) {
+                        notDeepStrictEqual(existingOrderItemFields, newOrderItemFields, String(i));
+                    }
+                }
+                return false;
             } catch (error) {
                 return Number((error as Error).message);
             }
-            return false;
         }
     }
 }

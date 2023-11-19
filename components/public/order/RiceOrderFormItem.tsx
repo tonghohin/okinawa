@@ -56,7 +56,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        rice: isSameOrderExists === false ? [...prevOrderFormData.items.rice, riceOrderFormData] : prevOrderFormData.items.rice.map((riceOrderItem, index) => (index === isSameOrderExists ? { ...riceOrderFormData, quantity: riceOrderFormData.quantity + 1 } : riceOrderItem))
+                        rice: isSameOrderExists === false ? [...prevOrderFormData.items.rice, riceOrderFormData] : prevOrderFormData.items.rice.map((riceOrderItem, index) => (index === isSameOrderExists ? { ...riceOrderItem, quantity: riceOrderItem.quantity + riceOrderFormData.quantity } : riceOrderItem))
                     }
                 }));
             }

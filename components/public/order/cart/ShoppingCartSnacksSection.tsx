@@ -19,7 +19,7 @@ export default function ShoppingCartSnacksSection() {
                     <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, "snacks")} </span>
                 </h1>
                 {snacksOrderItems?.map((snacksOrderItem, index) => (
-                    <ShoppingCartSnacksItem snacksOrderItem={snacksOrderItem} index={index} />
+                    <ShoppingCartSnacksItem key={index} snacksOrderItem={snacksOrderItem} index={index} />
                 ))}
             </article>
         )

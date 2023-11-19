@@ -50,7 +50,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        noodles: isSameOrderExists === false ? [...prevOrderFormData.items.noodles, noodlesOrderFormData] : prevOrderFormData.items.noodles.map((noodlesOrderItem, index) => (index === isSameOrderExists ? { ...noodlesOrderFormData, quantity: noodlesOrderFormData.quantity + 1 } : noodlesOrderItem))
+                        noodles: isSameOrderExists === false ? [...prevOrderFormData.items.noodles, noodlesOrderFormData] : prevOrderFormData.items.noodles.map((noodlesOrderItem, index) => (index === isSameOrderExists ? { ...noodlesOrderItem, quantity: noodlesOrderItem.quantity + noodlesOrderFormData.quantity } : noodlesOrderItem))
                     }
                 }));
             }

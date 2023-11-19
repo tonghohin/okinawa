@@ -42,7 +42,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        snacks: isSameOrderExists === false ? [...prevOrderFormData.items.snacks, snacksOrderFormData] : prevOrderFormData.items.snacks.map((snacksOrderItem, index) => (index === isSameOrderExists ? { ...snacksOrderFormData, quantity: snacksOrderFormData.quantity + 1 } : snacksOrderItem))
+                        snacks: isSameOrderExists === false ? [...prevOrderFormData.items.snacks, snacksOrderFormData] : prevOrderFormData.items.snacks.map((snacksOrderItem, index) => (index === isSameOrderExists ? { ...snacksOrderItem, quantity: snacksOrderItem.quantity + snacksOrderFormData.quantity } : snacksOrderItem))
                     }
                 }));
             }
