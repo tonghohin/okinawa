@@ -92,5 +92,53 @@ export namespace Tools {
                 return Number((error as Error).message);
             }
         }
+
+        export function transformOrderFormData(orderFormData: Order.Frontend) {
+            const transformedFormData = {
+                ...orderFormData,
+                items: {
+                    rice: transformRiceOrderFormData(orderFormData.items.rice),
+                    noodles: transformNoodlesOrderFormData(orderFormData.items.noodles),
+                    snacks: transformSnacksOrderFormData(orderFormData.items.snacks)
+                }
+            };
+
+            if (!transformedFormData.delivery) {
+                delete transformedFormData.address;
+            }
+
+            return transformedFormData;
+        }
+
+        export function transformRiceOrderFormData(riceOrderFormData: RiceOrderItem.Frontend[]): RiceOrderItem.Backend[] {
+            return riceOrderFormData.map((riceOrderItem) => {
+                return {
+                    id: riceOrderItem.item.id,
+                    quantity: riceOrderItem.quantity,
+                    toUdon: riceOrderItem.toUdon,
+                    addOn: riceOrderItem.addOn?.id || null
+                };
+            });
+        }
+
+        export function transformNoodlesOrderFormData(noodlesOrderFormData: NoodlesOrderItem.Frontend[]): NoodlesOrderItem.Backend[] {
+            return noodlesOrderFormData.map((noodlesOrderItem) => {
+                return {
+                    id: noodlesOrderItem.item.id,
+                    quantity: noodlesOrderItem.quantity,
+                    addOns: noodlesOrderItem.addOns.map((addOn) => addOn.id)
+                };
+            });
+        }
+        export function transformSnacksOrderFormData(snacksOrderFormData: SnacksOrderItem.Frontend[]): SnacksOrderItem.Backend[] {
+            return snacksOrderFormData.map((snacksOrderItem) => {
+                return {
+                    id: snacksOrderItem.item.id,
+                    quantity: snacksOrderItem.quantity
+                };
+            });
+        }
     }
+
+    export namespace Backend {}
 }

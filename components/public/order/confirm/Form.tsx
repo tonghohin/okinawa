@@ -1,11 +1,20 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import FirestoreService from "@/firestore/FirestoreService";
+import { Tools } from "@/tools/Tools";
+import { useState } from "react";
 import AddressInput from "./AddressInput";
+import { useRouter } from "next/navigation";
 
 export default function Form() {
+    const router = useRouter();
+
     const orderFormData = useOrderFormData();
     const setOrderFormData = useSetOrderFormData();
+
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleFormDataChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         if (setOrderFormData) {
@@ -19,13 +28,23 @@ export default function Form() {
         }
     }
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        console.log(orderFormData);
+    async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+        try {
+            e.preventDefault();
+            setIsLoading(true);
+
+            if (orderFormData) {
+                const transformedData = Tools.Frontend.transformOrderFormData(orderFormData);
+                await FirestoreService.getInstance().createOrder(transformedData);
+                router.push("/order/confirm/success");
+            }
+        } catch (error) {
+            setIsLoading(false);
+        }
     }
 
     return (
-        <form className="bg-yellow-400 p-4 flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="bg-yellow-400 p-4 flex flex-col gap-4" onSubmit={handleFormSubmit}>
             <div className="flex flex-col gap-1">
                 <label htmlFor="name">名字</label>
                 <input type="text" id="name" name="name" required value={orderFormData?.name} onChange={handleFormDataChange} />
@@ -52,7 +71,7 @@ export default function Form() {
                 <textarea name="comments" id="comments" value={orderFormData?.comments} onChange={handleFormDataChange} />
             </div>
             <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">
-                確認落單 ${orderFormData?.total || 0}
+                {isLoading ? <Loading /> : <span>確認落單 ${orderFormData?.total || 0}</span>}
             </button>
         </form>
     );

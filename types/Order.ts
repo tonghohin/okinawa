@@ -13,7 +13,7 @@ export namespace RiceOrderItem {
         id: string;
         quantity: number;
         toUdon: boolean;
-        addOn: string;
+        addOn: string | null;
     }
 }
 
@@ -59,28 +59,41 @@ export namespace OrderItems {
 
 export namespace Order {
     export interface Frontend {
-        id: string;
         name: string;
         email: string;
         phone: string;
         items: OrderItems.Frontend;
         total: number;
         delivery: boolean;
-        address: General.Address;
+        address?: General.Address;
         date: Date;
         comments: string;
     }
 
-    export interface Backend {
-        id: string;
-        name: string;
-        email: string;
-        phone: string;
-        items: OrderItems.Backend;
-        total: number;
-        delivery: boolean;
-        address: General.Address;
-        date: Date;
-        comments: string;
+    export namespace Backend {
+        export interface Write {
+            name: string;
+            email: string;
+            phone: string;
+            items: OrderItems.Backend;
+            total: number;
+            delivery: boolean;
+            address?: General.Address;
+            date: Date;
+            comments: string;
+        }
+
+        export interface Read {
+            id: string;
+            name: string;
+            email: string;
+            phone: string;
+            items: OrderItems.Backend;
+            total: number;
+            delivery: boolean;
+            address?: General.Address;
+            date: Date;
+            comments: string;
+        }
     }
 }
