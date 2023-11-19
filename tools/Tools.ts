@@ -17,26 +17,30 @@ export namespace Tools {
             return total;
         }
 
-        export function getTotalByCategory(orderItems: Order.Frontend, category: MenuCategory) {
+        export function getTotalByCategory(order: Order.Frontend, category: MenuCategory) {
             let total = 0;
             switch (category) {
                 case "rice":
-                    for (const item of orderItems.items[category]) {
+                    for (const item of order.items[category]) {
                         total += getRiceOrderSubtotal(item);
                     }
                     break;
                 case "noodles":
-                    for (const item of orderItems.items[category]) {
+                    for (const item of order.items[category]) {
                         total += getNoodlesOrderSubtotal(item);
                     }
                     break;
                 case "snacks":
-                    for (const item of orderItems.items[category]) {
+                    for (const item of order.items[category]) {
                         total += getSnacksOrderSubtotal(item);
                     }
                     break;
             }
             return total;
+        }
+
+        export function getTotalNumberOfItems(order: Order.Frontend) {
+            return order.items.rice.reduce((count, orderItem) => count + orderItem.quantity, 0) + order.items.noodles.reduce((count, orderItem) => count + orderItem.quantity, 0) + order.items.snacks.reduce((count, orderItem) => count + orderItem.quantity, 0);
         }
 
         export function getNumberOfItems(orderItems: OrderItems.Frontend, category: MenuCategory, itemId: string) {

@@ -88,7 +88,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                             <span>{rice.name}</span> <span>${rice.price}</span>
                         </h1>
                         <div className="flex flex-col gap-4 items-center">
-                            <label htmlFor="toUdon">轉烏冬</label>
+                            <span>轉烏冬</span>
                             <div className="flex items-center gap-4">
                                 <button className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.toUdon ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleToUdonChange(true)}>
                                     <IconCheck className="text-yellow-800 cursor-pointer" size={24} />
@@ -99,7 +99,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                             </div>
                         </div>
                         <div className="flex flex-col gap-4 items-center">
-                            <label htmlFor="addOn">轉套餐</label>
+                            <span>轉套餐</span>
                             <div className="flex gap-4 flex-wrap justify-center">
                                 {addOns.map((addOn) => (
                                     <button key={addOn.id} name="addOn" value={addOn.id} className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn?.id === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
