@@ -51,7 +51,7 @@ export default function Form() {
                     送餐
                 </button>
             </div>
-            <button type="submit" className="bg-yellow-500 p-2 rounded hover:bg-yellow-600 transition-all">
+            <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">
                 確認落單 ${orderFormData?.total || 0}
             </button>
         </form>

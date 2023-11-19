@@ -123,7 +123,7 @@ export default function AddressInput() {
 
     return (
         <>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
                 <div className="flex flex-col gap-2 flex-1">
                     <label htmlFor="floor">樓層</label>
                     <input type="text" id="floor" name="floor" required value={orderFormData?.address.floor} onChange={handleAddressChange} />
