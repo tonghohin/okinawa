@@ -22,7 +22,8 @@ export namespace InitialStates {
             flat: ""
         },
         date: new Date(),
-        comments: ""
+        comments: "",
+        delivered: false
     };
 
     export const RiceOrderItem = (riceItem: RiceItem): RiceOrderItem.Frontend => ({

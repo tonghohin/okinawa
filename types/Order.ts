@@ -68,6 +68,7 @@ export namespace Order {
         address: General.Address;
         date: Date;
         comments: string;
+        delivered: boolean;
     }
 
     export namespace Backend {
@@ -81,6 +82,7 @@ export namespace Order {
             address?: General.Address;
             date: Date;
             comments: string;
+            delivered: boolean;
         }
 
         export interface Read {
@@ -94,6 +96,7 @@ export namespace Order {
             address?: General.Address;
             date: Date;
             comments: string;
+            delivered: boolean;
         }
     }
 }

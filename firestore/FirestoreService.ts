@@ -51,10 +51,19 @@ export default class FirestoreService {
         });
     }
 
-    // public async getOrder(orderId: string) {
-    //     const orderData = await getDoc(doc(db, "orders", orderId));
-    //     console.log("FirestoreService --- getOrder --- orderData", orderData);
-    // }
+    public async getOrders() {
+        const ordersData = await getDocs(query(collection(db, "orders"), orderBy("date")));
+        ordersData.docs.map((order) => {
+            console.log(order.data());
+            // return {
+            //     id: order.id,
+            //     category: order.data().category,
+            //     name: order.data().name,
+            //     price: order.data().price,
+            //     minimumAddOns: order.data().minimumAddOns
+            // };
+        });
+    }
 
     public async createOrder(orderFormData: Order.Backend.Write) {
         const collectionRef = collection(db, "orders");
