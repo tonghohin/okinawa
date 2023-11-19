@@ -83,7 +83,6 @@ export namespace Tools {
                 const { item: newOrderItem, quantity, ...newOrderItemFields } = order;
                 for (let i = 0; i < orderItems.length; i++) {
                     const { item: existingOrderItem, quantity, ...existingOrderItemFields } = orderItems[i];
-                    console.log(newOrderItemFields, existingOrderItemFields);
                     if (existingOrderItem.id === newOrderItem.id) {
                         notDeepStrictEqual(existingOrderItemFields, newOrderItemFields, String(i));
                     }
