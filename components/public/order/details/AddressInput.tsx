@@ -100,12 +100,10 @@ export default function AddressInput() {
                 const autocomplete = new googlePlaces.Autocomplete(inputRef.current, options);
                 autocomplete.addListener("place_changed", () => {
                     const place = autocomplete.getPlace();
-                    console.log("autocomplete.addListener --- place", place);
-
-                    const { address_components, name } = place;
-
-                    if (setOrderFormData && address_components && name) {
-                        setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: getAddress(address_components, name) }));
+                    const addressComponents = place.address_components || [];
+                    const addressName = place.name || "";
+                    if (setOrderFormData) {
+                        setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: getAddress(addressComponents, addressName) }));
                     }
                 });
             }

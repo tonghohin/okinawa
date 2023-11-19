@@ -38,18 +38,18 @@ export default function Form() {
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" required value={orderFormData?.email} onChange={handleFormDataChange} />
             </div>
-            <AddressInput />
+            <div className="flex gap-2">
+                <button type="button" value="true" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${!orderFormData?.delivery ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleDeliveryChange(false)}>
+                    自取
+                </button>
+                <button type="button" value="false" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.delivery ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleDeliveryChange(true)}>
+                    送餐
+                </button>
+            </div>
+            {orderFormData?.delivery ? <AddressInput /> : <p>地址：葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</p>}
             <div className="flex flex-col gap-2">
                 <label htmlFor="comments">備註</label>
                 <textarea name="comments" id="comments" value={orderFormData?.comments} onChange={handleFormDataChange} />
-            </div>
-            <div className="flex gap-2">
-                <button type="button" value="true" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.delivery ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleDeliveryChange(true)}>
-                    自取
-                </button>
-                <button type="button" value="false" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${!orderFormData?.delivery ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleDeliveryChange(false)}>
-                    送餐
-                </button>
             </div>
             <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">
                 確認落單 ${orderFormData?.total || 0}
