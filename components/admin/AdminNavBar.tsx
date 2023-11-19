@@ -21,7 +21,7 @@ export default function AdminNavBar() {
                     睇Order
                 </Link>
             </div>
-            <button className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all" onClick={logOut}>
+            <button type="button" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all" onClick={logOut}>
                 登出
             </button>
         </nav>

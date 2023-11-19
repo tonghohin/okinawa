@@ -39,7 +39,7 @@ export default function Login() {
                 <input type="password" name="password" className="bg-neutral-50 p-2 rounded" placeholder="••••••" value={formData.password} onChange={handleFormDataChange} />
             </section>
             {errorMessage && <p className="text-red-600 text-center">{errorMessage}</p>}
-            <button className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all">登入</button>
+            <button type="submit" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all">登入</button>
         </form>
     );
 }

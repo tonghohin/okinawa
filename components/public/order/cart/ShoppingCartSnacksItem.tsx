@@ -72,16 +72,16 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
                     <span>${Tools.Frontend.getSnacksOrderSubtotal(snacksOrderItem)}</span>
                     <span className="flex gap-2 rounded-full px-2 py-1 border border-yellow-500">
                         {snacksOrderItem.quantity === 1 ? (
-                            <button className="hover:bg-yellow-500 rounded-full" onClick={() => handleQuantityChange(false)}>
+                            <button type="button" className="hover:bg-yellow-500 rounded-full" onClick={() => handleQuantityChange(false)}>
                                 <IconTrash className="text-yellow-800" size={24} />
                             </button>
                         ) : (
-                            <button className="hover:bg-yellow-500 rounded-full">
+                            <button type="button" className="hover:bg-yellow-500 rounded-full">
                                 <IconMinus className="text-yellow-800" size={24} onClick={() => handleQuantityChange(false)} />
                             </button>
                         )}
                         <span>{snacksOrderItem.quantity}</span>
-                        <button className="hover:bg-yellow-500 rounded-full">
+                        <button type="button" className="hover:bg-yellow-500 rounded-full">
                             <IconPlus className="text-yellow-800" size={24} onClick={() => handleQuantityChange(true)} />
                         </button>
                     </span>

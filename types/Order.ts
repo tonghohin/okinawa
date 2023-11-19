@@ -1,3 +1,4 @@
+import { General } from "./General";
 import { NoodlesItem, RiceItem, SnacksItem } from "./Menu";
 
 export namespace RiceOrderItem {
@@ -65,7 +66,7 @@ export namespace Order {
         items: OrderItems.Frontend;
         total: number;
         delivery: boolean;
-        address: string;
+        address: General.Address;
         date: Date;
         comments: string;
     }
@@ -78,7 +79,7 @@ export namespace Order {
         items: OrderItems.Backend;
         total: number;
         delivery: boolean;
-        address: string;
+        address: General.Address;
         date: Date;
         comments: string;
     }

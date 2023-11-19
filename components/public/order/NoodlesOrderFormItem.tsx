@@ -75,7 +75,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
             {isModalOpen && (
                 <section className="fixed left-0 top-0 w-full h-full p-4 bg-neutral-800 bg-opacity-30 backdrop-blur-sm flex flex-col justify-center items-center">
                     <article className="flex flex-col items-center gap-4 p-4 rounded bg-yellow-300 overflow-auto">
-                        <button className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)}>
+                        <button type="button" className="rounded-full p-1 bg-neutral-400 bg-opacity-30 cursor-pointer self-end hover:bg-opacity-100 transition-all" onClick={() => setIsModalOpen(false)}>
                             <IconX size={24} />
                         </button>
                         <h1 className="text-xl border-b border-neutral-800">
@@ -88,7 +88,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                             {Object.entries(Tools.Frontend.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
                                 <section className="flex gap-4 items-center border-b border-b-yellow-500 flex-wrap py-4">
                                     {addOn.map((addOn) => (
-                                        <button key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 transition-all ${noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id) ? "bg-yellow-500" : "hover:bg-yellow-500"}`} onClick={handleAddOnsChange}>
+                                        <button type="button" key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 transition-all ${noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id) ? "bg-yellow-500" : "hover:bg-yellow-500"}`} onClick={handleAddOnsChange}>
                                             <span>{addOn.name}</span>
                                             <span>＋${addOn.price}</span>
                                         </button>
@@ -97,15 +97,15 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                             ))}
                         </div>
                         <div className="flex gap-4 items-center">
-                            <button className={`rounded-full p-6 transition-all ${noodlesOrderFormData.quantity === 0 ? "bg-neutral-300 cursor-default" : "bg-yellow-400 hover:bg-yellow-500"}`} onClick={() => handleQuantityChange(false)}>
+                            <button type="button" className={`rounded-full p-6 transition-all ${noodlesOrderFormData.quantity === 0 ? "bg-neutral-300 cursor-default" : "bg-yellow-400 hover:bg-yellow-500"}`} onClick={() => handleQuantityChange(false)}>
                                 <IconMinus className="text-yellow-800" size={24} />
                             </button>
                             <span className="text-xl">{noodlesOrderFormData.quantity}</span>
-                            <button className="rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all" onClick={() => handleQuantityChange(true)}>
+                            <button type="button" className="rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all" onClick={() => handleQuantityChange(true)}>
                                 <IconPlus className="text-yellow-800" size={24} />
                             </button>
                         </div>
-                        <button className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
+                        <button type="button" className={`flex items-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
                             <span>${Tools.Frontend.getNoodlesOrderSubtotal(noodlesOrderFormData) || noodles.price}</span>
                         </button>

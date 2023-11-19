@@ -1,6 +1,7 @@
 "use client";
 
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import AddressInput from "./AddressInput";
 
 export default function Form() {
     const orderFormData = useOrderFormData();
@@ -37,10 +38,7 @@ export default function Form() {
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" required value={orderFormData?.email} onChange={handleFormDataChange} />
             </div>
-            <div className="flex flex-col gap-2">
-                <label htmlFor="address">地址</label>
-                <input type="email" id="address" name="address" required value={orderFormData?.address} onChange={handleFormDataChange} />
-            </div>
+            <AddressInput />
             <div className="flex flex-col gap-2">
                 <label htmlFor="comments">備註</label>
                 <textarea name="comments" id="comments" value={orderFormData?.comments} onChange={handleFormDataChange} />
@@ -53,7 +51,10 @@ export default function Form() {
                     送餐
                 </button>
             </div>
-            <button type="submit">確認落單</button>
+            <button type="submit" className="bg-yellow-500 p-2 rounded hover:bg-yellow-600 transition-all">
+                確認落單 ${orderFormData?.total || 0}
+            </button>
         </form>
     );
 }
+5;

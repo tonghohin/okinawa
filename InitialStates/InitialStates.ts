@@ -38,7 +38,14 @@ export namespace InitialStates {
         },
         total: 176,
         delivery: false,
-        address: "",
+        address: {
+            region: "hongKongIsland",
+            district: "",
+            street: "",
+            building: "",
+            floor: "",
+            flat: ""
+        },
         date: new Date(),
         comments: ""
     };
