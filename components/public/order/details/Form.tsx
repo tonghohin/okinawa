@@ -26,19 +26,19 @@ export default function Form() {
 
     return (
         <form className="bg-yellow-400 p-4 flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="name">名字</label>
                 <input type="text" id="name" name="name" required value={orderFormData?.name} onChange={handleFormDataChange} />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="phone">電話</label>
                 <input type="tel" id="phone" name="phone" required value={orderFormData?.phone} onChange={handleFormDataChange} />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" required value={orderFormData?.email} onChange={handleFormDataChange} />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1">
                 <button type="button" value="true" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${!orderFormData?.delivery ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleDeliveryChange(false)}>
                     自取
                 </button>
@@ -47,7 +47,7 @@ export default function Form() {
                 </button>
             </div>
             {orderFormData?.delivery ? <AddressInput /> : <p>地址：葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</p>}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="comments">備註</label>
                 <textarea name="comments" id="comments" value={orderFormData?.comments} onChange={handleFormDataChange} />
             </div>

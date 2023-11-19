@@ -35,12 +35,14 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
 
     function handleAddToCart() {
         if (snacksOrderFormData.quantity > 0) {
-            if (setOrderFormData) {
+            if (orderFormData && setOrderFormData) {
+                const isSameOrderExists = Tools.Frontend.checkOrderExists(orderFormData, snacksOrderFormData, "snacks");
+
                 setOrderFormData((prevOrderFormData) => ({
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        snacks: [...prevOrderFormData.items.snacks, snacksOrderFormData]
+                        snacks: isSameOrderExists === false ? [...prevOrderFormData.items.snacks, snacksOrderFormData] : prevOrderFormData.items.snacks.map((snacksOrderItem, index) => (index === isSameOrderExists ? { ...snacksOrderFormData, quantity: snacksOrderFormData.quantity + 1 } : snacksOrderItem))
                     }
                 }));
             }

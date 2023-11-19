@@ -44,12 +44,13 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     function handleAddToCart() {
         if (noodlesOrderFormData.quantity > 0) {
-            if (setOrderFormData) {
+            if (orderFormData && setOrderFormData) {
+                const isSameOrderExists = Tools.Frontend.checkOrderExists(orderFormData, noodlesOrderFormData, "noodles");
                 setOrderFormData((prevOrderFormData) => ({
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        noodles: [...prevOrderFormData.items.noodles, noodlesOrderFormData]
+                        noodles: isSameOrderExists === false ? [...prevOrderFormData.items.noodles, noodlesOrderFormData] : prevOrderFormData.items.noodles.map((noodlesOrderItem, index) => (index === isSameOrderExists ? { ...noodlesOrderFormData, quantity: noodlesOrderFormData.quantity + 1 } : noodlesOrderItem))
                     }
                 }));
             }

@@ -34,5 +34,9 @@ button {
     @apply bg-yellow-300 border border-yellow-500 rounded p-2;
   }
 
+  label {
+    @apply text-sm
+  }
+
 
 }

@@ -63,7 +63,7 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
 
     return (
         <div className="cursor-pointer">
-            <p className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <p className="flex gap-1 items-center">
                     <span>{index + 1}.</span>
                     <span>{snacksOrderItem.item.name}</span>
@@ -86,7 +86,7 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
                         </button>
                     </span>
                 </p>
-            </p>
+            </div>
         </div>
     );
 }

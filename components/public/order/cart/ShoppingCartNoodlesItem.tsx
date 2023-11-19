@@ -64,7 +64,7 @@ export default function ShoppingCartNoodlesItem({ noodlesOrderItem, index }: Sho
 
     return (
         <div className="cursor-pointer">
-            <p className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <p className="flex gap-1 items-center">
                     <span>{index + 1}.</span>
                     <span>{noodlesOrderItem.item.name}</span>
@@ -87,7 +87,7 @@ export default function ShoppingCartNoodlesItem({ noodlesOrderItem, index }: Sho
                         </button>
                     </span>
                 </p>
-            </p>
+            </div>
             {noodlesOrderItem.addOns.length > 0 && (
                 <p className="text-sm">
                     <span>（{NoodlesCategories.addOn}：</span>

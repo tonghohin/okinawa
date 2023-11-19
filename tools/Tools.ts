@@ -1,5 +1,6 @@
 import { MenuCategory, NoodlesItem } from "@/types/Menu";
 import { NoodlesOrderItem, Order, OrderItems, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
+import { notDeepStrictEqual } from "assert";
 
 export namespace Tools {
     export namespace Frontend {
@@ -74,6 +75,17 @@ export namespace Tools {
 
         export function getSnacksOrderSubtotal(snackOrder: SnacksOrderItem.Frontend) {
             return snackOrder.item.price * snackOrder.quantity;
+        }
+
+        export function checkOrderExists(existingOrder: Order.Frontend, order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend, category: MenuCategory) {
+            try {
+                existingOrder.items[category].forEach((existingRiceOrder, index) => {
+                    notDeepStrictEqual(existingRiceOrder, order, String(index));
+                });
+            } catch (error) {
+                return Number((error as Error).message);
+            }
+            return false;
         }
     }
 }

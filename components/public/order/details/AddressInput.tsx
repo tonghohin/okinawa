@@ -131,29 +131,29 @@ export default function AddressInput() {
 
     return (
         <>
-            <div className="flex gap-2 flex-wrap">
-                <div className="flex flex-col gap-2 flex-1">
+            <div className="flex gap-1 flex-wrap">
+                <div className="flex flex-col gap-1 flex-1">
                     <label htmlFor="floor">樓層</label>
                     <input type="text" id="floor" name="floor" required value={orderFormData?.address.floor} onChange={handleAddressChange} />
                 </div>
-                <div className="flex flex-col gap-2 flex-1">
+                <div className="flex flex-col gap-1 flex-1">
                     <label htmlFor="flat">單位</label>
                     <input type="text" id="flat" name="flat" required value={orderFormData?.address.flat} onChange={handleAddressChange} />
                 </div>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="building">大廈</label>
                 <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData?.address.building} onChange={handleAddressChange} />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="street">街道</label>
                 <input type="text" id="street" name="street" required value={orderFormData?.address.street} onChange={handleAddressChange} />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label htmlFor="district">地區</label>
                 <input type="text" id="district" name="district" required value={orderFormData?.address.district} onChange={handleAddressChange} />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1">
                 <button type="button" name="region" value="香港島" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "香港島" && "bg-yellow-500"}`} onClick={handleRegionChange}>
                     香港島
                 </button>

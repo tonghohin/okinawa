@@ -63,7 +63,7 @@ export default function ShoppingCartRiceItem({ riceOrderItem, index }: ShoppingC
 
     return (
         <div className="cursor-pointer">
-            <p className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <p className="flex gap-1 items-center">
                     <span>{index + 1}.</span>
                     <span>{riceOrderItem.item.name}</span>
@@ -86,7 +86,7 @@ export default function ShoppingCartRiceItem({ riceOrderItem, index }: ShoppingC
                         </button>
                     </span>
                 </p>
-            </p>
+            </div>
             {riceOrderItem.toUdon && <p className="text-sm">（轉烏冬）</p>}
             {riceOrderItem.addOn && (
                 <p className="text-sm">

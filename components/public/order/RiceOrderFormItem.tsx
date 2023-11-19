@@ -50,12 +50,13 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     function handleAddToCart() {
         if (riceOrderFormData.quantity > 0) {
-            if (setOrderFormData) {
+            if (orderFormData && setOrderFormData) {
+                const isSameOrderExists = Tools.Frontend.checkOrderExists(orderFormData, riceOrderFormData, "rice");
                 setOrderFormData((prevOrderFormData) => ({
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        rice: [...prevOrderFormData.items.rice, riceOrderFormData]
+                        rice: isSameOrderExists === false ? [...prevOrderFormData.items.rice, riceOrderFormData] : prevOrderFormData.items.rice.map((riceOrderItem, index) => (index === isSameOrderExists ? { ...riceOrderFormData, quantity: riceOrderFormData.quantity + 1 } : riceOrderItem))
                     }
                 }));
             }
