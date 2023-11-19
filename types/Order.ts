@@ -65,7 +65,7 @@ export namespace Order {
         items: OrderItems.Frontend;
         total: number;
         delivery: boolean;
-        address?: General.Address;
+        address: General.Address;
         date: Date;
         comments: string;
     }

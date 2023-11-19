@@ -94,7 +94,7 @@ export namespace Tools {
         }
 
         export function transformOrderFormData(orderFormData: Order.Frontend) {
-            const transformedFormData = {
+            const transformedFormData: Order.Backend.Write = {
                 ...orderFormData,
                 items: {
                     rice: transformRiceOrderFormData(orderFormData.items.rice),
