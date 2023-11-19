@@ -1,14 +1,8 @@
 export namespace General {
-    export enum Regions {
-        hongKongIsland = "香港島",
-        kowloon = "九龍",
-        newTerritories = "新界"
-    }
-
-    export type Region = keyof typeof Regions;
+    export type Regions = "香港島" | "九龍" | "新界";
 
     export interface Address {
-        region: Region;
+        region: Regions;
         district: string;
         street: string;
         building: string;

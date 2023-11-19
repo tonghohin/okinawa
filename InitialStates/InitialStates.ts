@@ -39,7 +39,7 @@ export namespace InitialStates {
         total: 176,
         delivery: false,
         address: {
-            region: "hongKongIsland",
+            region: "香港島",
             district: "",
             street: "",
             building: "",

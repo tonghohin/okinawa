@@ -24,13 +24,13 @@ export default function AddressInput() {
             east: 114.516667
         },
         componentRestrictions: { country: "HK" },
-        fields: ["address_components"],
+        fields: ["address_components", "name"],
         strictBounds: false
     };
 
-    function getAddress(addressComponents: google.maps.GeocoderAddressComponent[]) {
+    function getAddress(addressComponents: google.maps.GeocoderAddressComponent[], addressName: string) {
         const address: General.Address = {
-            region: "hongKongIsland",
+            region: "香港島",
             district: "",
             street: "",
             building: "",
@@ -42,13 +42,18 @@ export default function AddressInput() {
             const componentType = component.types[0];
 
             switch (componentType) {
-                case "street_number": {
-                    address.street = address.street + ` ${component.long_name}`;
+                case "subpremise": {
+                    address.floor = component.long_name;
                     break;
                 }
 
                 case "premise": {
                     address.building = component.long_name;
+                    break;
+                }
+
+                case "street_number": {
+                    address.street = component.long_name;
                     break;
                 }
 
@@ -63,16 +68,20 @@ export default function AddressInput() {
                 }
 
                 case "administrative_area_level_1": {
-                    if (component.long_name === "Hong Kong Island") {
-                        address.region = "hongKongIsland";
-                    } else if (component.long_name === "Kowloon") {
-                        address.region = "kowloon";
-                    } else if (component.long_name === "New Territories") {
-                        address.region = "newTerritories";
+                    if (component.long_name === "香港島") {
+                        address.region = component.long_name;
+                    } else if (component.long_name === "九龍") {
+                        address.region = component.long_name;
+                    } else if (component.long_name === "新界") {
+                        address.region = component.long_name;
                     }
                     break;
                 }
             }
+        }
+
+        if (addressName && !address.building.includes(addressName) && !address.street.includes(addressName)) {
+            address.building = `${addressName} ${address.building}`;
         }
 
         return address;
@@ -91,11 +100,12 @@ export default function AddressInput() {
                 const autocomplete = new googlePlaces.Autocomplete(inputRef.current, options);
                 autocomplete.addListener("place_changed", () => {
                     const place = autocomplete.getPlace();
-                    const addressComponents = place.address_components;
-                    console.log("autocomplete.addListener --- addressComponents", addressComponents);
+                    console.log("autocomplete.addListener --- place", place);
 
-                    if (setOrderFormData && addressComponents) {
-                        setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: getAddress(addressComponents) }));
+                    const { address_components, name } = place;
+
+                    if (setOrderFormData && address_components && name) {
+                        setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: getAddress(address_components, name) }));
                     }
                 });
             }
@@ -117,7 +127,7 @@ export default function AddressInput() {
     function handleRegionChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         const { name, value } = e.currentTarget;
         if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: { ...prevOrderFormData.address, [name]: value as General.Region } }));
+            setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: { ...prevOrderFormData.address, [name]: value } }));
         }
     }
 
@@ -129,8 +139,8 @@ export default function AddressInput() {
                     <input type="text" id="floor" name="floor" required value={orderFormData?.address.floor} onChange={handleAddressChange} />
                 </div>
                 <div className="flex flex-col gap-2 flex-1">
-                    <label htmlFor="unit">單位</label>
-                    <input type="text" id="unit" name="unit" required value={orderFormData?.address.flat} onChange={handleAddressChange} />
+                    <label htmlFor="flat">單位</label>
+                    <input type="text" id="flat" name="flat" required value={orderFormData?.address.flat} onChange={handleAddressChange} />
                 </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -146,14 +156,14 @@ export default function AddressInput() {
                 <input type="text" id="district" name="district" required value={orderFormData?.address.district} onChange={handleAddressChange} />
             </div>
             <div className="flex gap-2">
-                <button type="button" name="region" value="hongKongIsland" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "hongKongIsland" && "bg-yellow-500"}`} onClick={handleRegionChange}>
-                    {General.Regions.hongKongIsland}
+                <button type="button" name="region" value="香港島" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "香港島" && "bg-yellow-500"}`} onClick={handleRegionChange}>
+                    香港島
                 </button>
-                <button type="button" name="region" value="kowloon" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "kowloon" && "bg-yellow-500"}`} onClick={handleRegionChange}>
-                    {General.Regions.kowloon}
+                <button type="button" name="region" value="九龍" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "九龍" && "bg-yellow-500"}`} onClick={handleRegionChange}>
+                    九龍
                 </button>
-                <button type="button" name="region" value="newTerritories" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "newTerritories" && "bg-yellow-500"}`} onClick={handleRegionChange}>
-                    {General.Regions.newTerritories}
+                <button type="button" name="region" value="新界" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "新界" && "bg-yellow-500"}`} onClick={handleRegionChange}>
+                    新界
                 </button>
             </div>
         </>
