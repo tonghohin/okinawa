@@ -79,8 +79,12 @@ export namespace Tools {
 
         export function checkOrderExists(existingOrder: Order.Frontend, order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend, category: MenuCategory) {
             try {
-                existingOrder.items[category].forEach((existingRiceOrder, index) => {
-                    notDeepStrictEqual(existingRiceOrder, order, String(index));
+                existingOrder.items[category].forEach((existingOrderItem, index) => {
+                    Object.keys(existingOrderItem).forEach((key) => {
+                        if (key !== "quantity") {
+                            notDeepStrictEqual(existingOrderItem[key as keyof typeof existingOrderItem], order[key as keyof typeof order], String(index));
+                        }
+                    });
                 });
             } catch (error) {
                 return Number((error as Error).message);
