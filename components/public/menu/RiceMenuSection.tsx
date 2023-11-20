@@ -1,3 +1,4 @@
+import Section from "@/components/Section";
 import { RiceCategories, RiceCategory, RiceItem } from "@/types/Menu";
 
 interface RiceMenuSectionProps {
@@ -7,8 +8,7 @@ interface RiceMenuSectionProps {
 
 export default function RiceMenuSection({ menu, category }: RiceMenuSectionProps) {
     return (
-        <article className="flex flex-col gap-4">
-            <h1 className="text-lg text-center border-b border-yellow-600">{RiceCategories[category]}</h1>
+        <Section title={RiceCategories[category]}>
             {menu
                 .filter((rice) => rice.category === category)
                 .map((rice) => (
@@ -17,6 +17,6 @@ export default function RiceMenuSection({ menu, category }: RiceMenuSectionProps
                         <span>${rice.price}</span>
                     </p>
                 ))}
-        </article>
+        </Section>
     );
 }

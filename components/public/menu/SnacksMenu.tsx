@@ -1,3 +1,4 @@
+import Section from "@/components/Section";
 import { SnacksItem } from "@/types/Menu";
 
 interface SnacksMenuProps {
@@ -6,13 +7,13 @@ interface SnacksMenuProps {
 
 export default function SnacksMenu({ snacksMenu }: SnacksMenuProps) {
     return (
-        <section className="flex flex-col gap-4">
+        <Section>
             {snacksMenu.map((snack) => (
                 <p key={snack.id} className="flex justify-between gap-4">
                     <span>{snack.name}</span>
                     <span>${snack.price}</span>
                 </p>
             ))}
-        </section>
+        </Section>
     );
 }

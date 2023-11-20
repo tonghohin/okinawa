@@ -44,7 +44,7 @@ export default function Form() {
     }
 
     return (
-        <form className="bg-yellow-400 p-4 flex flex-col gap-4" onSubmit={handleFormSubmit}>
+        <form className="bg-yellow-400 p-4 flex flex-col gap-4 flex-1" onSubmit={handleFormSubmit}>
             <div className="flex flex-col gap-1">
                 <label htmlFor="name">名字</label>
                 <input type="text" id="name" name="name" required value={orderFormData?.name} onChange={handleFormDataChange} />

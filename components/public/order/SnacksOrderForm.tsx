@@ -1,5 +1,6 @@
 import { SnacksItem } from "@/types/Menu";
 import SnacksOrderFormItem from "./SnacksOrderFormItem";
+import Section from "@/components/Section";
 
 interface SnacksOrderFormProps {
     snacksMenu: SnacksItem[];
@@ -7,10 +8,10 @@ interface SnacksOrderFormProps {
 
 export default function SnacksOrderForm({ snacksMenu }: SnacksOrderFormProps) {
     return (
-        <section className="flex flex-col gap-4">
+        <Section>
             {snacksMenu.map((snack) => (
                 <SnacksOrderFormItem key={snack.id} snack={snack} />
             ))}
-        </section>
+        </Section>
     );
 }

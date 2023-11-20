@@ -2,7 +2,7 @@ import { IconBrandWhatsapp, IconClock, IconHome, IconPhone } from "@tabler/icons
 
 export default function Contact() {
     return (
-        <section className="bg-yellow-400 p-4 flex flex-col gap-4 items-center">
+        <section className="bg-yellow-400 p-4 flex flex-col gap-4 items-center flex-1">
             <p className="flex items-center gap-2">
                 <span>
                     <IconHome size={24} />

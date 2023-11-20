@@ -10,7 +10,7 @@ export default function Tab({ tabs }: TabProps) {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <section className="w-full">
+        <section className="w-full flex-1 flex flex-col">
             <nav className="flex">
                 {tabs.map((tab, index) => (
                     <button type="button" key={index} onClick={() => setActiveTab(index)} className={`${index === 0 && "rounded-ss bg-yellow-400"} ${index === tabs.length - 1 && "rounded-se"} ${index !== tabs.length - 1 && "border-r"} ${index == activeTab ? "bg-yellow-400" : "bg-yellow-600"} p-2 w-full hover:bg-yellow-400 transition-all`}>
@@ -19,8 +19,8 @@ export default function Tab({ tabs }: TabProps) {
                 ))}
             </nav>
             {/* todo */}
-            <div className="overflow-auto">
-                <article className="rounded-es rounded-e p-4 bg-yellow-400">{tabs[activeTab].component}</article>
+            <div className="overflow-auto flex-1 flex flex-col">
+                <article className="flex-1 rounded-es rounded-e p-4 bg-yellow-400">{tabs[activeTab].component}</article>
             </div>
         </section>
     );

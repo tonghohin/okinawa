@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4 flex-1">
             <div className="flex justify-between px-4">
                 <Link href="/order" className="flex items-center gap-4 bg-yellow-600 rounded-full px-6 py-2 cursor-pointer transition-all hover:bg-yellow-400 hover:shadow-md">
                     <IconArrowNarrowLeft size={24} />
@@ -14,7 +14,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <IconCurrencyDollar size={24} />
                 </Link>
             </div>
-
             {children}
         </section>
     );

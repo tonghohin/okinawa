@@ -1,3 +1,4 @@
+import Section from "@/components/Section";
 import { NoodlesCategories, NoodlesCategory, NoodlesItem } from "@/types/Menu";
 
 interface NoodlesMenuSectionProps {
@@ -7,8 +8,7 @@ interface NoodlesMenuSectionProps {
 
 export default function NoodlesMenuSection({ menu, category }: NoodlesMenuSectionProps) {
     return (
-        <article className="flex flex-col gap-4">
-            <h1 className="text-lg text-center border-b border-yellow-600">{NoodlesCategories[category]}</h1>
+        <Section title={NoodlesCategories[category]}>
             {menu
                 .filter((noodle) => noodle.category === category)
                 .map((noodle) => (
@@ -17,6 +17,6 @@ export default function NoodlesMenuSection({ menu, category }: NoodlesMenuSectio
                         <span>${noodle.price}</span>
                     </p>
                 ))}
-        </article>
+        </Section>
     );
 }
