@@ -1,7 +1,7 @@
 import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
-import { addDoc, collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 
 export default class FirestoreService {
     private static instance: FirestoreService;
@@ -17,38 +17,23 @@ export default class FirestoreService {
 
     public async getRiceMenu(): Promise<Menu.Rice.Item.Type[]> {
         const riceData = await getDocs(query(collection(db, "rice"), orderBy("price")));
-        return riceData.docs.map((rice) => {
-            return {
-                id: rice.id,
-                category: rice.data().category,
-                name: rice.data().name,
-                price: rice.data().price
-            };
-        });
+        const riceMenu = riceData.docs.map((rice) => ({ id: rice.id, ...rice.data() }));
+        const validatedRiceMenu = Menu.Rice.Item.Schema.array().parse(riceMenu);
+        return validatedRiceMenu;
     }
 
     public async getSnacksMenu(): Promise<Menu.Snacks.Item.Type[]> {
         const snacksData = await getDocs(query(collection(db, "snacks"), orderBy("price")));
-        return snacksData.docs.map((snack) => {
-            return {
-                id: snack.id,
-                name: snack.data().name,
-                price: snack.data().price
-            };
-        });
+        const snacksMenu = snacksData.docs.map((snack) => ({ id: snack.id, ...snack.data() }));
+        const validatedSnacksMenu = Menu.Snacks.Item.Schema.array().parse(snacksMenu);
+        return validatedSnacksMenu;
     }
 
     public async getNoodlesMenu(): Promise<Menu.Noodles.Item.Type[]> {
         const noodlesData = await getDocs(query(collection(db, "noodles"), orderBy("price")));
-        return noodlesData.docs.map((noodle) => {
-            return {
-                id: noodle.id,
-                category: noodle.data().category,
-                name: noodle.data().name,
-                price: noodle.data().price,
-                minimumAddOns: noodle.data().minimumAddOns
-            };
-        });
+        const noodlesMenu = noodlesData.docs.map((noodles) => ({ id: noodles.id, ...noodles.data() }));
+        const validatedNoodlesMenu = Menu.Noodles.Item.Schema.array().parse(noodlesMenu);
+        return validatedNoodlesMenu;
     }
 
     public async getOrders() {

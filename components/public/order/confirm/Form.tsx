@@ -77,9 +77,7 @@ export default function Form() {
                     <label htmlFor="comments">備註</label>
                     <textarea name="comments" id="comments" value={orderFormData?.comments} onChange={handleFormDataChange} />
                 </div>
-                <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">
-                    {isLoading ? <Loading /> : <span>確認落單 ${orderFormData?.total || 0}</span>}
-                </button>
+                <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">{isLoading ? <Loading /> : <span>確認落單 ${orderFormData?.total || 0}</span>}</button>
             </Section>
         </form>
     );
