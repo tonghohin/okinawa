@@ -1,3 +1,4 @@
+import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { General } from "@/types/General";
 import { Loader } from "@googlemaps/js-api-loader";
@@ -122,10 +123,9 @@ export default function AddressInput() {
         }
     }
 
-    function handleRegionChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        const { name, value } = e.currentTarget;
+    function handleRegionChange(regionName: General.Regions) {
         if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: { ...prevOrderFormData.address, [name]: value } }));
+            setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: { ...prevOrderFormData.address, region: regionName } }));
         }
     }
 
@@ -154,15 +154,15 @@ export default function AddressInput() {
                 <input type="text" id="district" name="district" required value={orderFormData?.address.district} onChange={handleAddressChange} />
             </div>
             <div className="flex gap-1">
-                <button type="button" name="region" value="香港島" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "香港島" && "bg-yellow-500"}`} onClick={handleRegionChange}>
+                <ToggleButton on={orderFormData?.address.region === "香港島"} onClick={() => handleRegionChange("香港島")}>
                     香港島
-                </button>
-                <button type="button" name="region" value="九龍" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "九龍" && "bg-yellow-500"}`} onClick={handleRegionChange}>
+                </ToggleButton>
+                <ToggleButton on={orderFormData?.address.region === "九龍"} onClick={() => handleRegionChange("九龍")}>
                     九龍
-                </button>
-                <button type="button" name="region" value="新界" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${orderFormData?.address.region === "新界" && "bg-yellow-500"}`} onClick={handleRegionChange}>
+                </ToggleButton>
+                <ToggleButton on={orderFormData?.address.region === "新界"} onClick={() => handleRegionChange("新界")}>
                     新界
-                </button>
+                </ToggleButton>
             </div>
         </>
     );

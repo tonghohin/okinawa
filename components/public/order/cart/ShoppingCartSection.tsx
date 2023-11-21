@@ -19,7 +19,7 @@ export default function ShoppingCartSection({ category }: ShoppingCartSectionPro
             <section className="bg-yellow-400 p-4 flex flex-col gap-4">
                 <h1 className="text-lg border-b border-yellow-600 flex justify-between">
                     <span>{MenuCategories[category]}</span>
-                    <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, "noodles")} </span>
+                    <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, category)} </span>
                 </h1>
                 {orderItems?.map((orderItem, index) => (
                     <ShoppingCartItem key={index} index={index} category={category} orderItem={orderItem}>

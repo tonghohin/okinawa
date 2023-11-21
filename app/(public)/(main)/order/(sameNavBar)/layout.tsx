@@ -1,11 +1,11 @@
 import ChipLink from "@/components/ChipLink";
+import Section from "@/components/Section";
 import Total from "@/components/public/order/Total";
 import { IconArrowNarrowLeft, IconCurrencyDollar } from "@tabler/icons-react";
-import Link from "next/link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <section className="flex flex-col gap-4 flex-1">
+        <Section>
             <div className="flex justify-between px-4">
                 <ChipLink href="/order" className="bg-yellow-600">
                     <IconArrowNarrowLeft size={24} />
@@ -16,6 +16,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </ChipLink>
             </div>
             {children}
-        </section>
+        </Section>
     );
 }

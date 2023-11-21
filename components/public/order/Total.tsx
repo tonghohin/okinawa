@@ -10,14 +10,14 @@ export default function Total() {
     const totalNumberOfItems = orderFormData ? Tools.Frontend.getTotalNumberOfItems(orderFormData) : 0;
 
     return (
-        <ChipLink href="/order/cart" className="bg-sky-700 text-neutral-50">
-            <IconShoppingCart size={24} />
-            <span>${orderFormData?.total || 0}</span>
-            {totalNumberOfItems > 0 && (
+        totalNumberOfItems > 0 && (
+            <ChipLink href="/order/cart" className="bg-sky-700 text-neutral-50">
+                <IconShoppingCart size={24} />
+                <span>${orderFormData?.total || 0}</span>
                 <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-900 text-neutral-50">
                     <span>{totalNumberOfItems}</span>
                 </div>
-            )}
-        </ChipLink>
+            </ChipLink>
+        )
     );
 }
