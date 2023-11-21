@@ -64,7 +64,7 @@ export namespace Tools {
             return groups;
         }
 
-        export function getOrderSubtotal(order: Order.Menu.Rice.Item.Type.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type) {
+        export function getOrderSubtotal(order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type) {
             if ("addOn" in order) {
                 // rice
                 return (order.item.price + (order.addOn?.price || 0)) * order.quantity;
@@ -78,7 +78,7 @@ export namespace Tools {
             }
         }
 
-        export function checkOrderExists(existingOrder: Order.Frontend.Type, order: Order.Menu.Rice.Item.Type.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) {
+        export function checkOrderExists(existingOrder: Order.Frontend.Type, order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) {
             try {
                 const orderItems = existingOrder.items[category];
                 const { item: newOrderItem, quantity, ...newOrderItemFields } = order;
@@ -111,7 +111,7 @@ export namespace Tools {
             return transformedFormData;
         }
 
-        export function transformRiceOrderFormData(riceOrderFormData: Order.Menu.Rice.Item.Type.Frontend.Type[]): Order.Menu.Rice.Item.Type.Backend.Type[] {
+        export function transformRiceOrderFormData(riceOrderFormData: Order.RiceItem.Frontend.Type[]): Order.RiceItem.Backend.Type[] {
             return riceOrderFormData.map((riceOrderItem) => {
                 return riceOrderItem.addOn?.id
                     ? {
