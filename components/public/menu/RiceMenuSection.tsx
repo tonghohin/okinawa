@@ -1,14 +1,14 @@
 import Section from "@/components/Section";
-import { RiceCategories, RiceCategory, RiceItem } from "@/types/Menu";
+import { Menu } from "@/schemas/Menu";
 
 interface RiceMenuSectionProps {
-    menu: RiceItem[];
-    category: RiceCategory;
+    menu: Menu.Rice.Item.Type[];
+    category: Menu.Rice.Categories.Type;
 }
 
 export default function RiceMenuSection({ menu, category }: RiceMenuSectionProps) {
     return (
-        <Section title={RiceCategories[category]}>
+        <Section title={Menu.Rice.Categories.Mapping[category]}>
             {menu
                 .filter((rice) => rice.category === category)
                 .map((rice) => (

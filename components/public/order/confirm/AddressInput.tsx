@@ -1,6 +1,6 @@
 import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
-import { General } from "@/types/General";
+import { General } from "@/schemas/General";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useRef } from "react";
 
@@ -30,7 +30,7 @@ export default function AddressInput() {
     };
 
     function getAddress(addressComponents: google.maps.GeocoderAddressComponent[], addressName: string) {
-        const address: General.Address = {
+        const address: General.Address.Type = {
             region: "香港島",
             district: "",
             street: "",
@@ -123,7 +123,7 @@ export default function AddressInput() {
         }
     }
 
-    function handleRegionChange(regionName: General.Regions) {
+    function handleRegionChange(regionName: General.Regions.Type) {
         if (setOrderFormData) {
             setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: { ...prevOrderFormData.address, region: regionName } }));
         }

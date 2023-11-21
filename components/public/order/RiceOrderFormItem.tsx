@@ -8,15 +8,15 @@ import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
-import { RiceItem } from "@/types/Menu";
-import { RiceOrderItem } from "@/types/Order";
 import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 
 interface RiceOrderFormItemProps {
-    rice: RiceItem;
-    addOns: RiceItem[];
+    rice: Menu.Rice.Item.Type;
+    addOns: Menu.Rice.Item.Type[];
 }
 
 export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemProps) {
@@ -24,7 +24,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [riceOrderFormData, setRiceOrderFormData] = useState<RiceOrderItem.Frontend>(InitialStates.RiceOrderItem(rice));
+    const [riceOrderFormData, setRiceOrderFormData] = useState<Order.RiceItem.Frontend.Type>(InitialStates.RiceOrderItem(rice));
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "rice", rice.id) : 0), [orderFormData]);
 
@@ -49,8 +49,11 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
     }
 
     function handleAddOnChange(addOnId: String) {
-        const addOn = addOns.find((addOn) => addOn.id === addOnId);
-        setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, addOn: addOn || null }));
+        const selectedAddOn = addOns.find((addOn) => addOn.id === addOnId);
+        setRiceOrderFormData((prevRiceOrderFormData) => {
+            const { addOn, ...restPrevRiceOrderFormData } = prevRiceOrderFormData;
+            return selectedAddOn ? { ...prevRiceOrderFormData, addOn: selectedAddOn } : { ...restPrevRiceOrderFormData };
+        });
     }
 
     function handleAddToCart() {

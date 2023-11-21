@@ -1,9 +1,9 @@
 import Section from "@/components/Section";
-import { NoodlesItem } from "@/types/Menu";
 import NoodlesMenuSection from "./NoodlesMenuSection";
+import { Menu } from "@/schemas/Menu";
 
 interface NoodlesMenuProps {
-    noodlesMenu: NoodlesItem[];
+    noodlesMenu: Menu.Noodles.Item.Type[];
 }
 
 export default function NoodlesMenu({ noodlesMenu }: NoodlesMenuProps) {

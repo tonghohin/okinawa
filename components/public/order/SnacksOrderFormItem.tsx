@@ -7,14 +7,14 @@ import CircleButton from "@/components/CircleButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
-import { SnacksItem } from "@/types/Menu";
-import { SnacksOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 
 interface SnacksOrderFormItemProps {
-    snack: SnacksItem;
+    snack: Menu.Snacks.Item.Type;
 }
 
 export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps) {
@@ -22,7 +22,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [snacksOrderFormData, setSnacksOrderFormData] = useState<SnacksOrderItem.Frontend>(InitialStates.SnacksOrderItem(snack));
+    const [snacksOrderFormData, setSnacksOrderFormData] = useState<Order.SnacksItem.Frontend.Type>(InitialStates.SnacksOrderItem(snack));
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "snacks", snack.id) : 0), [orderFormData]);
 

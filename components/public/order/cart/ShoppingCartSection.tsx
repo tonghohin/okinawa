@@ -2,11 +2,11 @@
 
 import { useOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { Tools } from "@/tools/Tools";
-import { MenuCategories, MenuCategory, NoodlesCategories } from "@/types/Menu";
 import ShoppingCartItem from "./ShoppingCartItem";
+import { Menu } from "@/schemas/Menu";
 
 interface ShoppingCartSectionProps {
-    category: MenuCategory;
+    category: Menu.Categories.Type;
 }
 
 export default function ShoppingCartSection({ category }: ShoppingCartSectionProps) {
@@ -18,7 +18,7 @@ export default function ShoppingCartSection({ category }: ShoppingCartSectionPro
         !!orderItems?.length && (
             <section className="bg-yellow-400 p-4 flex flex-col gap-4">
                 <h1 className="text-lg border-b border-yellow-600 flex justify-between">
-                    <span>{MenuCategories[category]}</span>
+                    <span>{Menu.Categories.Mapping[category]}</span>
                     <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, category)} </span>
                 </h1>
                 {orderItems?.map((orderItem, index) => (
@@ -37,7 +37,7 @@ export default function ShoppingCartSection({ category }: ShoppingCartSectionPro
                         {/* noodles */}
                         {"addOns" in orderItem && orderItem.addOns.length > 0 && (
                             <p className="text-sm">
-                                <span>（{NoodlesCategories.addOn}：</span>
+                                <span>（{Menu.Noodles.Categories.Mapping.addOn}：</span>
                                 {orderItem.addOns.map((addOn, index) => (
                                     <span key={addOn.id}>
                                         {addOn.name}

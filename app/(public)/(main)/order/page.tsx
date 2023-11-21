@@ -4,7 +4,7 @@ import RiceOrderForm from "@/components/public/order/RiceOrderForm";
 import SnacksOrderForm from "@/components/public/order/SnacksOrderForm";
 import Total from "@/components/public/order/Total";
 import FirestoreService from "@/firestore/FirestoreService";
-import { MenuCategories } from "@/types/Menu";
+import { Menu } from "@/schemas/Menu";
 
 export default async function Order() {
     const riceMenu = await FirestoreService.getInstance().getRiceMenu();
@@ -17,15 +17,15 @@ export default async function Order() {
             <Tab
                 tabs={[
                     {
-                        label: MenuCategories.rice,
+                        label: Menu.Categories.Mapping.rice,
                         component: <RiceOrderForm riceMenu={riceMenu} />
                     },
                     {
-                        label: MenuCategories.noodles,
+                        label: Menu.Categories.Mapping.noodles,
                         component: <NoodlesOrderForm noodlesMenu={noodlesMenu} />
                     },
                     {
-                        label: MenuCategories.snacks,
+                        label: Menu.Categories.Mapping.snacks,
                         component: <SnacksOrderForm snacksMenu={snacksMenu} />
                     }
                 ]}

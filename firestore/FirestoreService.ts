@@ -1,7 +1,7 @@
 import { db } from "@/firebase/configuration";
-import { Order } from "@/types/Order";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { addDoc, collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
-import { NoodlesItem, RiceItem, SnacksItem } from "../types/Menu";
 
 export default class FirestoreService {
     private static instance: FirestoreService;
@@ -15,7 +15,7 @@ export default class FirestoreService {
         return FirestoreService.instance;
     }
 
-    public async getRiceMenu(): Promise<RiceItem[]> {
+    public async getRiceMenu(): Promise<Menu.Rice.Item.Type[]> {
         const riceData = await getDocs(query(collection(db, "rice"), orderBy("price")));
         return riceData.docs.map((rice) => {
             return {
@@ -27,7 +27,7 @@ export default class FirestoreService {
         });
     }
 
-    public async getSnacksMenu(): Promise<SnacksItem[]> {
+    public async getSnacksMenu(): Promise<Menu.Snacks.Item.Type[]> {
         const snacksData = await getDocs(query(collection(db, "snacks"), orderBy("price")));
         return snacksData.docs.map((snack) => {
             return {
@@ -38,7 +38,7 @@ export default class FirestoreService {
         });
     }
 
-    public async getNoodlesMenu(): Promise<NoodlesItem[]> {
+    public async getNoodlesMenu(): Promise<Menu.Noodles.Item.Type[]> {
         const noodlesData = await getDocs(query(collection(db, "noodles"), orderBy("price")));
         return noodlesData.docs.map((noodle) => {
             return {
@@ -65,7 +65,7 @@ export default class FirestoreService {
         });
     }
 
-    public async createOrder(orderFormData: Order.Backend.Write) {
+    public async createOrder(orderFormData: Order.Backend.Write.Type) {
         const collectionRef = collection(db, "orders");
         const createdOrder = await addDoc(collectionRef, orderFormData);
         const createdOrderId = createdOrder.id;

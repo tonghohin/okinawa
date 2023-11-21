@@ -1,8 +1,8 @@
-import { NoodlesItem, RiceItem, SnacksItem } from "@/types/Menu";
-import { NoodlesOrderItem, Order, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 
 export namespace InitialStates {
-    export const Order: Order.Frontend = {
+    export const Order: Order.Frontend.Type = {
         name: "",
         email: "",
         phone: "",
@@ -26,20 +26,19 @@ export namespace InitialStates {
         delivered: false
     };
 
-    export const RiceOrderItem = (riceItem: RiceItem): RiceOrderItem.Frontend => ({
+    export const RiceOrderItem = (riceItem: Menu.Rice.Item.Type): Order.Menu.Rice.Item.Type.Frontend.Type => ({
         item: riceItem,
         quantity: 0,
-        toUdon: false,
-        addOn: null
+        toUdon: false
     });
 
-    export const NoodlesOrderItem = (noodlesItem: NoodlesItem): NoodlesOrderItem.Frontend => ({
+    export const NoodlesOrderItem = (noodlesItem: Menu.Noodles.Item.Type): Order.NoodlesItem.Frontend.Type => ({
         item: noodlesItem,
         quantity: 0,
         addOns: []
     });
 
-    export const SnacksOrderItem = (snackItem: SnacksItem): SnacksOrderItem.Frontend => ({
+    export const SnacksOrderItem = (snackItem: Menu.Snacks.Item.Type): Order.SnacksItem.Frontend.Type => ({
         item: snackItem,
         quantity: 0
     });

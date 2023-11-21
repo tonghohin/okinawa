@@ -1,10 +1,10 @@
-import { MenuCategory, NoodlesItem } from "@/types/Menu";
-import { NoodlesOrderItem, Order, OrderItems, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { notDeepStrictEqual } from "assert";
 
 export namespace Tools {
     export namespace Frontend {
-        export function getTotal(orderItems: OrderItems.Frontend) {
+        export function getTotal(orderItems: Order.Items.Frontend.Type) {
             let total = 0;
             for (const item of orderItems.rice) {
                 total += getOrderSubtotal(item);
@@ -18,7 +18,7 @@ export namespace Tools {
             return total;
         }
 
-        export function getTotalByCategory(order: Order.Frontend, category: MenuCategory) {
+        export function getTotalByCategory(order: Order.Frontend.Type, category: Menu.Categories.Type) {
             let total = 0;
             switch (category) {
                 case "rice":
@@ -40,11 +40,11 @@ export namespace Tools {
             return total;
         }
 
-        export function getTotalNumberOfItems(order: Order.Frontend) {
+        export function getTotalNumberOfItems(order: Order.Frontend.Type) {
             return order.items.rice.reduce((count, orderItem) => count + orderItem.quantity, 0) + order.items.noodles.reduce((count, orderItem) => count + orderItem.quantity, 0) + order.items.snacks.reduce((count, orderItem) => count + orderItem.quantity, 0);
         }
 
-        export function getNumberOfItems(orderItems: OrderItems.Frontend, category: MenuCategory, itemId: string) {
+        export function getNumberOfItems(orderItems: Order.Items.Frontend.Type, category: Menu.Categories.Type, itemId: string) {
             return orderItems[category].reduce((count, orderItem) => {
                 if (orderItem.item.id === itemId) {
                     count += orderItem.quantity;
@@ -53,8 +53,8 @@ export namespace Tools {
             }, 0);
         }
 
-        export function groupNoodlesAddOnsByPrice(addOns: NoodlesItem[]) {
-            const groups: { [key: number]: NoodlesItem[] } = {};
+        export function groupNoodlesAddOnsByPrice(addOns: Menu.Noodles.Item.Type[]) {
+            const groups: { [key: number]: Menu.Noodles.Item.Type[] } = {};
             for (const addOn of addOns) {
                 if (groups[addOn.price] === undefined) {
                     groups[addOn.price] = [];
@@ -64,7 +64,7 @@ export namespace Tools {
             return groups;
         }
 
-        export function getOrderSubtotal(order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend) {
+        export function getOrderSubtotal(order: Order.Menu.Rice.Item.Type.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type) {
             if ("addOn" in order) {
                 // rice
                 return (order.item.price + (order.addOn?.price || 0)) * order.quantity;
@@ -78,7 +78,7 @@ export namespace Tools {
             }
         }
 
-        export function checkOrderExists(existingOrder: Order.Frontend, order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend, category: MenuCategory) {
+        export function checkOrderExists(existingOrder: Order.Frontend.Type, order: Order.Menu.Rice.Item.Type.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) {
             try {
                 const orderItems = existingOrder.items[category];
                 const { item: newOrderItem, quantity, ...newOrderItemFields } = order;
@@ -94,8 +94,8 @@ export namespace Tools {
             }
         }
 
-        export function transformOrderFormData(orderFormData: Order.Frontend) {
-            const transformedFormData: Order.Backend.Write = {
+        export function transformOrderFormData(orderFormData: Order.Frontend.Type) {
+            const transformedFormData: Order.Backend.Write.Type = {
                 ...orderFormData,
                 items: {
                     rice: transformRiceOrderFormData(orderFormData.items.rice),
@@ -111,18 +111,24 @@ export namespace Tools {
             return transformedFormData;
         }
 
-        export function transformRiceOrderFormData(riceOrderFormData: RiceOrderItem.Frontend[]): RiceOrderItem.Backend[] {
+        export function transformRiceOrderFormData(riceOrderFormData: Order.Menu.Rice.Item.Type.Frontend.Type[]): Order.Menu.Rice.Item.Type.Backend.Type[] {
             return riceOrderFormData.map((riceOrderItem) => {
-                return {
-                    id: riceOrderItem.item.id,
-                    quantity: riceOrderItem.quantity,
-                    toUdon: riceOrderItem.toUdon,
-                    addOn: riceOrderItem.addOn?.id || null
-                };
+                return riceOrderItem.addOn?.id
+                    ? {
+                          id: riceOrderItem.item.id,
+                          quantity: riceOrderItem.quantity,
+                          toUdon: riceOrderItem.toUdon,
+                          addOn: riceOrderItem.addOn.id
+                      }
+                    : {
+                          id: riceOrderItem.item.id,
+                          quantity: riceOrderItem.quantity,
+                          toUdon: riceOrderItem.toUdon
+                      };
             });
         }
 
-        export function transformNoodlesOrderFormData(noodlesOrderFormData: NoodlesOrderItem.Frontend[]): NoodlesOrderItem.Backend[] {
+        export function transformNoodlesOrderFormData(noodlesOrderFormData: Order.NoodlesItem.Frontend.Type[]): Order.NoodlesItem.Backend.Type[] {
             return noodlesOrderFormData.map((noodlesOrderItem) => {
                 return {
                     id: noodlesOrderItem.item.id,
@@ -131,7 +137,7 @@ export namespace Tools {
                 };
             });
         }
-        export function transformSnacksOrderFormData(snacksOrderFormData: SnacksOrderItem.Frontend[]): SnacksOrderItem.Backend[] {
+        export function transformSnacksOrderFormData(snacksOrderFormData: Order.SnacksItem.Frontend.Type[]): Order.SnacksItem.Backend.Type[] {
             return snacksOrderFormData.map((snacksOrderItem) => {
                 return {
                     id: snacksOrderItem.item.id,

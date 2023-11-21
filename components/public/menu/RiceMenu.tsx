@@ -1,9 +1,9 @@
 import Section from "@/components/Section";
-import { RiceItem } from "@/types/Menu";
 import RiceMenuSection from "./RiceMenuSection";
+import { Menu } from "@/schemas/Menu";
 
 interface RiceMenuProps {
-    riceMenu: RiceItem[];
+    riceMenu: Menu.Rice.Item.Type[];
 }
 
 export default function RiceMenu({ riceMenu }: RiceMenuProps) {

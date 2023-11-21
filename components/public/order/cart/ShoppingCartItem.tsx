@@ -1,13 +1,13 @@
 import { useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
-import { MenuCategory } from "@/types/Menu";
-import { NoodlesOrderItem, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 
 interface ShoppingCartNoodlesItemProps {
     index: number;
-    category: MenuCategory;
-    orderItem: NoodlesOrderItem.Frontend | RiceOrderItem.Frontend | SnacksOrderItem.Frontend;
+    category: Menu.Categories.Type;
+    orderItem: Order.NoodlesItem.Frontend.Type | Order.RiceItem.Frontend.Type | Order.SnacksItem.Frontend.Type;
     children?: React.ReactNode;
 }
 

@@ -1,17 +1,17 @@
-import { RiceCategories, RiceCategory, RiceItem } from "@/types/Menu";
+import { Menu } from "@/schemas/Menu";
 import RiceOrderFormItem from "./RiceOrderFormItem";
 import Section from "@/components/Section";
 
 interface RiceMenuSectionProps {
-    menu: RiceItem[];
-    category: RiceCategory;
+    menu: Menu.Rice.Item.Type[];
+    category: Menu.Rice.Categories.Type;
 }
 
 export default function RiceOrderFormSection({ menu, category }: RiceMenuSectionProps) {
     const addOns = menu.filter((rice) => rice.category === "addOn");
 
     return (
-        <Section title={RiceCategories[category]}>
+        <Section title={Menu.Rice.Categories.Mapping[category]}>
             {menu
                 .filter((rice) => rice.category === category)
                 .map((rice) => (

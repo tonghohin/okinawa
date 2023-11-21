@@ -1,19 +1,19 @@
 "use client";
 
 import { InitialStates } from "@/InitialStates/InitialStates";
+import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
-import { Order } from "@/types/Order";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface OrderFormContext {
-    orderFormData: Order.Frontend;
-    setOrderFormData: React.Dispatch<React.SetStateAction<Order.Frontend>>;
+    orderFormData: Order.Frontend.Type;
+    setOrderFormData: React.Dispatch<React.SetStateAction<Order.Frontend.Type>>;
 }
 
 const OrderFormContext = createContext<OrderFormContext | null>(null);
 
 export default function OrderFormContextProvider({ children }: { children: React.ReactNode }) {
-    const [formDataContext, setFormDataContext] = useState<Order.Frontend>(InitialStates.Order);
+    const [formDataContext, setFormDataContext] = useState<Order.Frontend.Type>(InitialStates.Order);
 
     useEffect(() => {
         setFormDataContext((prevOrderFormData) => ({ ...prevOrderFormData, total: Tools.Frontend.getTotal(prevOrderFormData.items) }));

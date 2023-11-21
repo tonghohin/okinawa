@@ -1,14 +1,14 @@
 import Section from "@/components/Section";
-import { NoodlesCategories, NoodlesCategory, NoodlesItem } from "@/types/Menu";
+import { Menu } from "@/schemas/Menu";
 
 interface NoodlesMenuSectionProps {
-    menu: NoodlesItem[];
-    category: NoodlesCategory;
+    menu: Menu.Noodles.Item.Type[];
+    category: Menu.Noodles.Categories.Type;
 }
 
 export default function NoodlesMenuSection({ menu, category }: NoodlesMenuSectionProps) {
     return (
-        <Section title={NoodlesCategories[category]}>
+        <Section title={Menu.Noodles.Categories.Mapping[category]}>
             {menu
                 .filter((noodle) => noodle.category === category)
                 .map((noodle) => (

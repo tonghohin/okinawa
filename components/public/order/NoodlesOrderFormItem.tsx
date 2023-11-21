@@ -8,15 +8,15 @@ import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
-import { NoodlesCategories, NoodlesItem } from "@/types/Menu";
-import { NoodlesOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 
 interface NoodlesOrderFormItemProps {
-    noodles: NoodlesItem;
-    addOns: NoodlesItem[];
+    noodles: Menu.Noodles.Item.Type;
+    addOns: Menu.Noodles.Item.Type[];
 }
 
 export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFormItemProps) {
@@ -24,7 +24,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<NoodlesOrderItem.Frontend>(InitialStates.NoodlesOrderItem(noodles));
+    const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<Order.NoodlesItem.Frontend.Type>(InitialStates.NoodlesOrderItem(noodles));
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
 
@@ -84,7 +84,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                 <Modal setIsModalOpen={setIsModalOpen}>
                     <Section title={`${noodles.name} $${noodles.price}`}>
                         <h1 className="text-lg text-center">
-                            <span>{NoodlesCategories.addOn}配料</span> <span>{noodles.minimumAddOns ? `（${noodles.minimumAddOns}款起）` : "（唔加都得）"}</span>
+                            <span>{Menu.Noodles.Categories.Mapping.addOn}配料</span> <span>{noodles.minimumAddOns ? `（${noodles.minimumAddOns}款起）` : "（唔加都得）"}</span>
                         </h1>
                         <div className="flex flex-col overflow-auto">
                             {Object.entries(Tools.Frontend.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (

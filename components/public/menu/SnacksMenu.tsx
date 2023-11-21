@@ -1,8 +1,8 @@
 import Section from "@/components/Section";
-import { SnacksItem } from "@/types/Menu";
+import { Menu } from "@/schemas/Menu";
 
 interface SnacksMenuProps {
-    snacksMenu: SnacksItem[];
+    snacksMenu: Menu.Snacks.Item.Type[];
 }
 
 export default function SnacksMenu({ snacksMenu }: SnacksMenuProps) {

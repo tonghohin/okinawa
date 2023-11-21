@@ -3,9 +3,9 @@ import SnacksMenu from "@/components/public/menu/SnacksMenu";
 import NoodlesMenu from "@/components/public/menu/NoodlesMenu";
 import RiceMenu from "@/components/public/menu/RiceMenu";
 import FirestoreService from "@/firestore/FirestoreService";
-import { MenuCategories } from "@/types/Menu";
+import { Menu } from "@/schemas/Menu";
 
-export default async function Menu() {
+export default async function MainMenu() {
     const riceMenu = await FirestoreService.getInstance().getRiceMenu();
     const snacksMenu = await FirestoreService.getInstance().getSnacksMenu();
     const noodlesMenu = await FirestoreService.getInstance().getNoodlesMenu();
@@ -14,15 +14,15 @@ export default async function Menu() {
         <Tab
             tabs={[
                 {
-                    label: MenuCategories.rice,
+                    label: Menu.Categories.Mapping.rice,
                     component: <RiceMenu riceMenu={riceMenu} />
                 },
                 {
-                    label: MenuCategories.noodles,
+                    label: Menu.Categories.Mapping.noodles,
                     component: <NoodlesMenu noodlesMenu={noodlesMenu} />
                 },
                 {
-                    label: MenuCategories.snacks,
+                    label: Menu.Categories.Mapping.snacks,
                     component: <SnacksMenu snacksMenu={snacksMenu} />
                 }
             ]}
