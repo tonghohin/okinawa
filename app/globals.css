@@ -26,6 +26,10 @@ button {
 }
 
 @layer base {
+  body {
+    @apply text-neutral-800;
+  }
+
   input {
     @apply bg-yellow-300 border border-yellow-500 rounded p-2;
   }

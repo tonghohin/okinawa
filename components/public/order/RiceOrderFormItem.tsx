@@ -1,15 +1,18 @@
 "use client";
 
 import { InitialStates } from "@/InitialStates/InitialStates";
+import BigCircleButton from "@/components/BigCircleButton";
+import ChipButton from "@/components/ChipButton";
 import CircleButton from "@/components/CircleButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
+import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { Tools } from "@/tools/Tools";
 import { RiceItem } from "@/types/Menu";
 import { RiceOrderItem } from "@/types/Order";
 import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface RiceOrderFormItemProps {
     rice: RiceItem;
@@ -45,9 +48,8 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
         }
     }
 
-    function handleAddOnChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        const { name, value } = e.currentTarget;
-        const addOn = addOns.find((addOn) => addOn.id === value);
+    function handleAddOnChange(addOnId: String) {
+        const addOn = addOns.find((addOn) => addOn.id === addOnId);
         setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, addOn: addOn || null }));
     }
 
@@ -90,40 +92,40 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                         <div className="flex flex-col gap-4 items-center">
                             <span>轉烏冬</span>
                             <div className="flex items-center gap-4">
-                                <button type="button" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.toUdon ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleToUdonChange(true)}>
-                                    <IconCheck className="text-yellow-800 cursor-pointer" size={24} />
-                                </button>
-                                <button type="button" className={`rounded-full px-6 py-2 hover:bg-yellow-500 transition-all ${!riceOrderFormData.toUdon ? "bg-yellow-500" : "border border-yellow-500"}`} onClick={() => handleToUdonChange(false)}>
+                                <ToggleButton on={riceOrderFormData.toUdon} onClick={() => handleToUdonChange(true)}>
+                                    <IconCheck className="text-yellow-800" size={24} />
+                                </ToggleButton>
+                                <ToggleButton on={!riceOrderFormData.toUdon} onClick={() => handleToUdonChange(false)}>
                                     <IconX className="text-yellow-800" size={24} />
-                                </button>
+                                </ToggleButton>
                             </div>
                         </div>
                         <div className="flex flex-col gap-4 items-center">
                             <span>轉套餐</span>
                             <div className="flex gap-4 flex-wrap justify-center">
                                 {addOns.map((addOn) => (
-                                    <button type="button" key={addOn.id} name="addOn" value={addOn.id} className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${riceOrderFormData.addOn?.id === addOn.id && "bg-yellow-500"}`} onClick={handleAddOnChange}>
+                                    <ToggleButton on={riceOrderFormData.addOn?.id === addOn.id} onClick={() => handleAddOnChange(addOn.id)}>
                                         {addOn.name} ＋${addOn.price}
-                                    </button>
+                                    </ToggleButton>
                                 ))}
-                                <button type="button" name="addOn" className={`rounded-full border border-yellow-500 px-6 py-2 hover:bg-yellow-500 transition-all ${!riceOrderFormData.addOn && "bg-yellow-500"}`} onClick={handleAddOnChange}>
+                                <ToggleButton on={!riceOrderFormData.addOn} onClick={() => handleAddOnChange("")}>
                                     唔使了
-                                </button>
+                                </ToggleButton>
                             </div>
                         </div>
                         <div className="flex gap-4 items-center self-center">
-                            <button type="button" className={`rounded-full p-6 transition-all ${riceOrderFormData.quantity === 0 ? "bg-neutral-300 cursor-default" : "bg-yellow-400 hover:bg-yellow-500"}`} onClick={() => handleQuantityChange(false)}>
-                                <IconMinus className="text-yellow-800" size={24} />
-                            </button>
+                            <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(false)} disabled={riceOrderFormData.quantity === 0}>
+                                <IconMinus size={24} />
+                            </BigCircleButton>
                             <span className="text-xl">{riceOrderFormData.quantity}</span>
-                            <button type="button" className="rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all" onClick={() => handleQuantityChange(true)}>
-                                <IconPlus className="text-yellow-800" size={24} />
-                            </button>
+                            <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(true)}>
+                                <IconPlus size={24} />
+                            </BigCircleButton>
                         </div>
-                        <button type="button" className={`flex items-center self-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
+                        <ChipButton className="self-center bg-sky-700" onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
-                            <span>${Tools.Frontend.getRiceOrderSubtotal(riceOrderFormData) || rice.price}</span>
-                        </button>
+                            <span>${Tools.Frontend.getOrderSubtotal(riceOrderFormData) || rice.price}</span>
+                        </ChipButton>
                     </Section>
                 </Modal>
             )}

@@ -1,14 +1,17 @@
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { Tools } from "@/tools/Tools";
-import { SnacksOrderItem } from "@/types/Order";
+import { MenuCategory } from "@/types/Menu";
+import { NoodlesOrderItem, RiceOrderItem, SnacksOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 
-interface ShoppingCartSnacksItemProps {
-    snacksOrderItem: SnacksOrderItem.Frontend;
+interface ShoppingCartNoodlesItemProps {
     index: number;
+    category: MenuCategory;
+    orderItem: NoodlesOrderItem.Frontend | RiceOrderItem.Frontend | SnacksOrderItem.Frontend;
+    children?: React.ReactNode;
 }
 
-export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: ShoppingCartSnacksItemProps) {
+export default function ShoppingCartItem({ index, category, orderItem, children }: ShoppingCartNoodlesItemProps) {
     const setOrderFormData = useSetOrderFormData();
 
     function handleQuantityChange(increment: boolean) {
@@ -18,25 +21,25 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
                     ...prevOrderFormData,
                     items: {
                         ...prevOrderFormData.items,
-                        snacks: prevOrderFormData.items.snacks.map((snacksOrderItem, i) => {
+                        [category]: prevOrderFormData.items[category].map((orderItem, i) => {
                             if (i === index) {
                                 return {
-                                    ...snacksOrderItem,
-                                    quantity: snacksOrderItem.quantity + 1
+                                    ...orderItem,
+                                    quantity: orderItem.quantity + 1
                                 };
                             } else {
-                                return snacksOrderItem;
+                                return orderItem;
                             }
                         })
                     }
                 }));
             } else {
-                if (snacksOrderItem.quantity === 1) {
+                if (orderItem.quantity === 1) {
                     setOrderFormData((prevOrderFormData) => ({
                         ...prevOrderFormData,
                         items: {
                             ...prevOrderFormData.items,
-                            snacks: prevOrderFormData.items.snacks.filter((snacksOrderItem, i) => i !== index)
+                            [category]: prevOrderFormData.items[category].filter((orderItem, i) => i !== index)
                         }
                     }));
                 } else {
@@ -44,14 +47,14 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
                         ...prevOrderFormData,
                         items: {
                             ...prevOrderFormData.items,
-                            snacks: prevOrderFormData.items.snacks.map((snacksOrderItem, i) => {
+                            [category]: prevOrderFormData.items[category].map((orderItem, i) => {
                                 if (i === index) {
                                     return {
-                                        ...snacksOrderItem,
-                                        quantity: snacksOrderItem.quantity - 1
+                                        ...orderItem,
+                                        quantity: orderItem.quantity - 1
                                     };
                                 } else {
-                                    return snacksOrderItem;
+                                    return orderItem;
                                 }
                             })
                         }
@@ -66,12 +69,12 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
             <div className="flex justify-between items-center">
                 <p className="flex gap-1 items-center">
                     <span>{index + 1}.</span>
-                    <span>{snacksOrderItem.item.name}</span>
+                    <span>{orderItem.item.name}</span>
                 </p>
                 <p className="flex gap-2 items-center">
-                    <span>${Tools.Frontend.getSnacksOrderSubtotal(snacksOrderItem)}</span>
+                    <span>${Tools.Frontend.getOrderSubtotal(orderItem)}</span>
                     <span className="flex gap-2 rounded-full px-2 py-1 border border-yellow-500">
-                        {snacksOrderItem.quantity === 1 ? (
+                        {orderItem.quantity === 1 ? (
                             <button type="button" className="hover:bg-yellow-500 rounded-full" onClick={() => handleQuantityChange(false)}>
                                 <IconTrash className="text-yellow-800" size={24} />
                             </button>
@@ -80,13 +83,14 @@ export default function ShoppingCartSnacksItem({ snacksOrderItem, index }: Shopp
                                 <IconMinus className="text-yellow-800" size={24} onClick={() => handleQuantityChange(false)} />
                             </button>
                         )}
-                        <span>{snacksOrderItem.quantity}</span>
+                        <span>{orderItem.quantity}</span>
                         <button type="button" className="hover:bg-yellow-500 rounded-full">
                             <IconPlus className="text-yellow-800" size={24} onClick={() => handleQuantityChange(true)} />
                         </button>
                     </span>
                 </p>
             </div>
+            {children}
         </div>
     );
 }

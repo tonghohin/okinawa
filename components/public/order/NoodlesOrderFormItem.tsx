@@ -1,15 +1,18 @@
 "use client";
 
 import { InitialStates } from "@/InitialStates/InitialStates";
+import BigCircleButton from "@/components/BigCircleButton";
+import ChipButton from "@/components/ChipButton";
 import CircleButton from "@/components/CircleButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
+import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { Tools } from "@/tools/Tools";
 import { NoodlesCategories, NoodlesItem } from "@/types/Menu";
 import { NoodlesOrderItem } from "@/types/Order";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface NoodlesOrderFormItemProps {
     noodles: NoodlesItem;
@@ -37,11 +40,10 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
         }
     }
 
-    function handleAddOnsChange(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        const { name, value } = e.currentTarget;
-        const addOn = addOns.find((addOn) => addOn.id === value);
+    function handleAddOnsChange(addOnId: string) {
+        const addOn = addOns.find((addOn) => addOn.id === addOnId);
         if (addOn) {
-            setNoodlesOrderFormData((prevNoodlesOrderFormData) => (prevNoodlesOrderFormData.addOns.find((addOn) => addOn.id === value) ? { ...prevNoodlesOrderFormData, addOns: prevNoodlesOrderFormData.addOns.filter((addOn) => addOn.id !== value) } : { ...prevNoodlesOrderFormData, addOns: [...prevNoodlesOrderFormData.addOns, addOn] }));
+            setNoodlesOrderFormData((prevNoodlesOrderFormData) => (prevNoodlesOrderFormData.addOns.find((addOn) => addOn.id === addOnId) ? { ...prevNoodlesOrderFormData, addOns: prevNoodlesOrderFormData.addOns.filter((addOn) => addOn.id !== addOnId) } : { ...prevNoodlesOrderFormData, addOns: [...prevNoodlesOrderFormData.addOns, addOn] }));
         }
     }
 
@@ -88,27 +90,27 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                             {Object.entries(Tools.Frontend.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
                                 <section className="flex gap-4 items-center border-b border-b-yellow-500 flex-wrap py-4">
                                     {addOn.map((addOn) => (
-                                        <button type="button" key={addOn.id} value={addOn.id} className={`rounded-full border border-yellow-500 text-sm px-4 py-2 transition-all ${noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id) ? "bg-yellow-500" : "hover:bg-yellow-500"}`} onClick={handleAddOnsChange}>
+                                        <ToggleButton on={!!noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id)} onClick={() => handleAddOnsChange(addOn.id)}>
                                             <span>{addOn.name}</span>
                                             <span>＋${addOn.price}</span>
-                                        </button>
+                                        </ToggleButton>
                                     ))}
                                 </section>
                             ))}
                         </div>
                         <div className="flex gap-4 items-center self-center">
-                            <button type="button" className={`rounded-full p-6 transition-all ${noodlesOrderFormData.quantity === 0 ? "bg-neutral-300 cursor-default" : "bg-yellow-400 hover:bg-yellow-500"}`} onClick={() => handleQuantityChange(false)}>
-                                <IconMinus className="text-yellow-800" size={24} />
-                            </button>
+                            <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(false)} disabled={noodlesOrderFormData.quantity === 0}>
+                                <IconMinus size={24} />
+                            </BigCircleButton>
                             <span className="text-xl">{noodlesOrderFormData.quantity}</span>
-                            <button type="button" className="rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all" onClick={() => handleQuantityChange(true)}>
-                                <IconPlus className="text-yellow-800" size={24} />
-                            </button>
+                            <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(true)}>
+                                <IconPlus size={24} />
+                            </BigCircleButton>
                         </div>
-                        <button type="button" className={`flex items-center self-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
+                        <ChipButton className="self-center bg-sky-700" onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
-                            <span>${Tools.Frontend.getNoodlesOrderSubtotal(noodlesOrderFormData) || noodles.price}</span>
-                        </button>
+                            <span>${Tools.Frontend.getOrderSubtotal(noodlesOrderFormData) || noodles.price}</span>
+                        </ChipButton>
                     </Section>
                 </Modal>
             )}

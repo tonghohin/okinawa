@@ -7,13 +7,13 @@ export namespace Tools {
         export function getTotal(orderItems: OrderItems.Frontend) {
             let total = 0;
             for (const item of orderItems.rice) {
-                total += getRiceOrderSubtotal(item);
+                total += getOrderSubtotal(item);
             }
             for (const item of orderItems.noodles) {
-                total += getNoodlesOrderSubtotal(item);
+                total += getOrderSubtotal(item);
             }
             for (const item of orderItems.snacks) {
-                total += getSnacksOrderSubtotal(item);
+                total += getOrderSubtotal(item);
             }
             return total;
         }
@@ -23,17 +23,17 @@ export namespace Tools {
             switch (category) {
                 case "rice":
                     for (const item of order.items[category]) {
-                        total += getRiceOrderSubtotal(item);
+                        total += getOrderSubtotal(item);
                     }
                     break;
                 case "noodles":
                     for (const item of order.items[category]) {
-                        total += getNoodlesOrderSubtotal(item);
+                        total += getOrderSubtotal(item);
                     }
                     break;
                 case "snacks":
                     for (const item of order.items[category]) {
-                        total += getSnacksOrderSubtotal(item);
+                        total += getOrderSubtotal(item);
                     }
                     break;
             }
@@ -64,17 +64,18 @@ export namespace Tools {
             return groups;
         }
 
-        export function getRiceOrderSubtotal(riceOrder: RiceOrderItem.Frontend) {
-            return (riceOrder.item.price + (riceOrder.addOn?.price || 0)) * riceOrder.quantity;
-        }
-
-        export function getNoodlesOrderSubtotal(noodlesOrder: NoodlesOrderItem.Frontend) {
-            const addOnsPrice = noodlesOrder.addOns.reduce((total, addOn) => total + addOn.price, 0);
-            return (noodlesOrder.item.price + addOnsPrice) * noodlesOrder.quantity;
-        }
-
-        export function getSnacksOrderSubtotal(snackOrder: SnacksOrderItem.Frontend) {
-            return snackOrder.item.price * snackOrder.quantity;
+        export function getOrderSubtotal(order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend) {
+            if ("addOn" in order) {
+                // rice
+                return (order.item.price + (order.addOn?.price || 0)) * order.quantity;
+            } else if ("addOns" in order) {
+                // noodles
+                const addOnsPrice = order.addOns.reduce((total, addOn) => total + addOn.price, 0);
+                return (order.item.price + addOnsPrice) * order.quantity;
+            } else {
+                // snacks
+                return order.item.price * order.quantity;
+            }
         }
 
         export function checkOrderExists(existingOrder: Order.Frontend, order: RiceOrderItem.Frontend | NoodlesOrderItem.Frontend | SnacksOrderItem.Frontend, category: MenuCategory) {

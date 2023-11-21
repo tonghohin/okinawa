@@ -1,13 +1,11 @@
-import ShoppingCartNoodlesSection from "@/components/public/order/cart/ShoppingCartNoodlesSection";
-import ShoppingCartRiceSection from "@/components/public/order/cart/ShoppingCartRiceSection";
-import ShoppingCartSnacksSection from "@/components/public/order/cart/ShoppingCartSnacksSection";
+import ShoppingCartSection from "@/components/public/order/cart/ShoppingCartSection";
 
 export default function Cart() {
     return (
         <section className="flex flex-col gap-2">
-            <ShoppingCartRiceSection />
-            <ShoppingCartNoodlesSection />
-            <ShoppingCartSnacksSection />
+            <ShoppingCartSection category="rice" />
+            <ShoppingCartSection category="noodles" />
+            <ShoppingCartSection category="snacks" />
         </section>
     );
 }

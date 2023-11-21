@@ -1,6 +1,8 @@
 "use client";
 
 import { InitialStates } from "@/InitialStates/InitialStates";
+import BigCircleButton from "@/components/BigCircleButton";
+import ChipButton from "@/components/ChipButton";
 import CircleButton from "@/components/CircleButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
@@ -74,18 +76,18 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                 <Modal setIsModalOpen={setIsModalOpen}>
                     <Section title={`${snack.name} $${snack.price}`}>
                         <div className="flex gap-4 items-center self-center">
-                            <button type="button" className={`rounded-full p-6 transition-all ${snacksOrderFormData.quantity === 0 ? "bg-neutral-300 cursor-default" : "bg-yellow-400 hover:bg-yellow-500"}`} onClick={() => handleQuantityChange(false)}>
-                                <IconMinus className="text-yellow-800" size={24} />
-                            </button>
+                            <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(false)} disabled={snacksOrderFormData.quantity === 0}>
+                                <IconMinus size={24} />
+                            </BigCircleButton>
                             <span className="text-xl">{snacksOrderFormData.quantity}</span>
-                            <button type="button" className="rounded-full bg-yellow-500 p-6 hover:bg-yellow-600 transition-all" onClick={() => handleQuantityChange(true)}>
-                                <IconPlus className="text-yellow-800" size={24} />
-                            </button>
+                            <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(true)}>
+                                <IconPlus size={24} />
+                            </BigCircleButton>
                         </div>
-                        <button type="button" className={`flex items-center self-center gap-4 rounded-full px-6 py-2 transition-all ${isValidOrder ? "bg-sky-700 text-neutral-50 hover:bg-sky-600 hover:shadow-md" : "bg-neutral-300 cursor-default"}`} onClick={handleAddToCart} disabled={!isValidOrder}>
+                        <ChipButton className="self-center bg-sky-700" onClick={handleAddToCart} disabled={!isValidOrder}>
                             <span>加落購物車</span>
-                            <span>${Tools.Frontend.getSnacksOrderSubtotal(snacksOrderFormData) || snack.price}</span>
-                        </button>
+                            <span>${Tools.Frontend.getOrderSubtotal(snacksOrderFormData) || snack.price}</span>
+                        </ChipButton>
                     </Section>
                 </Modal>
             )}

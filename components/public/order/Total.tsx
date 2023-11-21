@@ -1,16 +1,16 @@
 "use client";
 
+import ChipLink from "@/components/ChipLink";
 import { useOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { Tools } from "@/tools/Tools";
 import { IconShoppingCart } from "@tabler/icons-react";
-import Link from "next/link";
 
 export default function Total() {
     const orderFormData = useOrderFormData();
     const totalNumberOfItems = orderFormData ? Tools.Frontend.getTotalNumberOfItems(orderFormData) : 0;
 
     return (
-        <Link href="/order/cart" className="flex items-center gap-4 bg-sky-700 text-neutral-50 rounded-full px-6 py-2 cursor-pointer transition-all hover:bg-sky-800 hover:shadow-md">
+        <ChipLink href="/order/cart" className="bg-sky-700 text-neutral-50">
             <IconShoppingCart size={24} />
             <span>${orderFormData?.total || 0}</span>
             {totalNumberOfItems > 0 && (
@@ -18,6 +18,6 @@ export default function Total() {
                     <span>{totalNumberOfItems}</span>
                 </div>
             )}
-        </Link>
+        </ChipLink>
     );
 }
