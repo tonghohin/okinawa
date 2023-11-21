@@ -26,7 +26,7 @@ export namespace InitialStates {
         delivered: false
     };
 
-    export const RiceOrderItem = (riceItem: Menu.Rice.Item.Type): Order.Menu.Rice.Item.Type.Frontend.Type => ({
+    export const RiceOrderItem = (riceItem: Menu.Rice.Item.Type): Order.RiceItem.Frontend.Type => ({
         item: riceItem,
         quantity: 0,
         toUdon: false

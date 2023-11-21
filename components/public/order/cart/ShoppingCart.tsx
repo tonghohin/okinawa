@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export default function ShoppingCart() {
     const orderFormData = useOrderFormData();
-    const [_, setIsModalOpen] = useState(orderFormData?.total === 0);
+    const [isModalOpen, setIsModalOpen] = useState(orderFormData?.total === 0);
 
     return orderFormData?.total === 0 ? (
         <Modal setIsModalOpen={setIsModalOpen}>
