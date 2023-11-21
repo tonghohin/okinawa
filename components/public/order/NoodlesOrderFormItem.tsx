@@ -81,7 +81,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                 </div>
             </section>
             {isModalOpen && (
-                <Modal setIsModalOpen={setIsModalOpen}>
+                <Modal setIsModalOpen={setIsModalOpen} closeButton>
                     <Section title={`${noodles.name} $${noodles.price}`}>
                         <h1 className="text-lg text-center">
                             <span>{Menu.Noodles.Categories.Mapping.addOn}配料</span> <span>{noodles.minimumAddOns ? `（${noodles.minimumAddOns}款起）` : "（唔加都得）"}</span>

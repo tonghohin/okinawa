@@ -8,6 +8,7 @@ import FirestoreService from "@/firestore/FirestoreService";
 import { Tools } from "@/tools/Tools";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import EmptyCartModal from "../EmptyCartModal";
 import AddressInput from "./AddressInput";
 
 export default function Form() {
@@ -17,6 +18,7 @@ export default function Form() {
     const setOrderFormData = useSetOrderFormData();
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(orderFormData?.total === 0);
 
     function handleFormDataChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         if (setOrderFormData) {
@@ -45,7 +47,9 @@ export default function Form() {
         }
     }
 
-    return (
+    return orderFormData?.total === 0 ? (
+        <EmptyCartModal setIsModalOpen={setIsModalOpen} />
+    ) : (
         <form className="bg-yellow-400 p-4" onSubmit={handleFormSubmit}>
             <Section>
                 <div className="flex flex-col gap-1">

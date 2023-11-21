@@ -90,7 +90,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                 </div>
             </section>
             {isModalOpen && (
-                <Modal setIsModalOpen={setIsModalOpen}>
+                <Modal setIsModalOpen={setIsModalOpen} closeButton>
                     <Section title={`${rice.name} $${rice.price}`}>
                         <div className="flex flex-col gap-4 items-center">
                             <span>轉烏冬</span>

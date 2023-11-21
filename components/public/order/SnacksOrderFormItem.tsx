@@ -73,7 +73,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
                 </div>
             </section>
             {isModalOpen && (
-                <Modal setIsModalOpen={setIsModalOpen}>
+                <Modal setIsModalOpen={setIsModalOpen} closeButton>
                     <Section title={`${snack.name} $${snack.price}`}>
                         <div className="flex gap-4 items-center self-center">
                             <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(false)} disabled={snacksOrderFormData.quantity === 0}>
