@@ -10,7 +10,7 @@ export default function AdminNavBar() {
     return (
         <nav className="bg-yellow-500 rounded flex items-center gap-6 p-4">
             <h1 className="text-2xl">沖繩味之賞 Admin</h1>
-            <div className="flex-1 flex items-center gap-4">
+            <div className="flex items-center gap-4">
                 <Link href="/admin" className={`${pathname === "/admin" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
                     Home
                 </Link>

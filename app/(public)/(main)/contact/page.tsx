@@ -1,8 +1,11 @@
+import Section from "@/components/Section";
+import contactUs from "@/public/contactUs.svg";
 import { IconBrandWhatsapp, IconClock, IconHome, IconPhone } from "@tabler/icons-react";
+import Image from "next/image";
 
 export default function Contact() {
     return (
-        <section className="bg-yellow-400 p-4 flex flex-col gap-4 items-center flex-1">
+        <Section backgroundColor="bg-yellow-400" center padding>
             <p className="flex items-center gap-2">
                 <span>
                     <IconHome size={24} />
@@ -27,6 +30,10 @@ export default function Contact() {
                 </span>
                 <span>11:00 a.m. - 9:00 p.m.</span>
             </p>
-        </section>
+            <Image src={contactUs} width={300} height={200} alt="Contact Us" priority />
+            <div className="self-stretch flex-1 relative">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14758.37925858653!2d114.136225!3d22.3689232!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3403f9d962052829%3A0x8a2a513f257bfa21!2z5rKW57mp5ZGz5LmL6LOe!5e0!3m2!1sen!2sca!4v1700658389316!5m2!1sen!2sca" style={{ position: "absolute", height: "100%", width: "100%" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </Section>
     );
 }

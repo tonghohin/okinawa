@@ -30,14 +30,7 @@ export default function AddressInput() {
     };
 
     function getAddress(addressComponents: google.maps.GeocoderAddressComponent[], addressName: string) {
-        const address: General.Address.Type = {
-            region: "香港島",
-            district: "",
-            street: "",
-            building: "",
-            floor: "",
-            flat: ""
-        };
+        const address = General.Address.State;
 
         for (const component of addressComponents) {
             const componentType = component.types[0];

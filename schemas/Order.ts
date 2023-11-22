@@ -88,15 +88,15 @@ export namespace Order {
     export const Schema = z.object({
         id: z.string().readonly(),
         name: z.string().trim().min(1, { message: "未寫名" }).default(""),
-        email: z.string().trim().email().toLowerCase().default(""),
+        email: z.string().trim().email({ message: "Email format唔啱" }).toLowerCase().default(""),
         phone: z
             .string()
             .trim()
-            .regex(/^\d{8}$/, { message: "電話號碼要係8個字" })
-            .length(8, { message: "電話號碼要係8個字" })
+            .regex(/^\d{8}$/, { message: "電話號碼要8個字" })
+            .length(8, { message: "電話號碼要8個字" })
             .default(""),
         items: Items.Schema,
-        total: z.number().finite().safe().min(0).default(0),
+        total: z.number().finite().safe().min(1).default(0),
         delivery: z.boolean().default(false),
         address: General.Address.Schema.nullable().default(null),
         date: z.date().min(new Date(), { message: "回到未來" }).default(new Date()),
@@ -111,15 +111,14 @@ export namespace Order {
             export const Schema = Order.Schema.omit({ id: true }).extend({
                 name: z.string().trim().default(""),
                 email: z.string().trim().toLowerCase().default(""),
-                items: Items.Frontend.Schema,
-                phone: z.string().trim().default("")
+                items: Items.Frontend.Schema.default(Items.Frontend.State),
+                phone: z.string().trim().default(""),
+                total: z.number().finite().safe().min(0).default(0)
             });
 
             export type Type = z.infer<typeof Schema>;
 
-            export const State = Schema.parse({
-                items: Items.Frontend.State
-            });
+            export const State = Schema.parse({});
         }
 
         export namespace Write {

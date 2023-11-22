@@ -1,3 +1,4 @@
+import Section from "@/components/Section";
 import Tab from "@/components/Tab";
 import NoodlesOrderForm from "@/components/public/order/NoodlesOrderForm";
 import RiceOrderForm from "@/components/public/order/RiceOrderForm";
@@ -12,7 +13,7 @@ export default async function Order() {
     const noodlesMenu = await FirestoreService.getInstance().getNoodlesMenu();
 
     return (
-        <section className="flex flex-col items-center gap-4">
+        <Section>
             <Total />
             <Tab
                 tabs={[
@@ -30,6 +31,6 @@ export default async function Order() {
                     }
                 ]}
             />
-        </section>
+        </Section>
     );
 }

@@ -9,6 +9,7 @@ export namespace Menu {
         };
 
         export const Enum = z.enum(["rice", "snacks", "noodles"]);
+
         export type Type = z.infer<typeof Enum>;
     }
 
@@ -25,6 +26,7 @@ export namespace Menu {
             };
 
             export const Enum = z.enum(["beef", "pork", "combo", "eel", "chicken", "curry", "addOn"]);
+
             export type Type = z.infer<typeof Enum>;
         }
 
@@ -48,6 +50,7 @@ export namespace Menu {
             };
 
             export const Enum = z.enum(["main", "addOn"]);
+
             export type Type = z.infer<typeof Enum>;
         }
 
