@@ -1,7 +1,7 @@
 import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
-import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 
 export default class FirestoreService {
     private static instance: FirestoreService;
@@ -50,7 +50,16 @@ export default class FirestoreService {
         });
     }
 
-    public async createOrder(orderFormData: Order.Backend.Write.Type) {
+    // public async test() {
+    //     const collectionRef = collection(db, "noodles");
+    //     const noodlesData = await getDocs(query(collection(db, "noodles"), where("category", "==", "addOn")));
+    //     for (const noodles of noodlesData.docs) {
+    //         console.log("hihi", noodles.id);
+    //         await updateDoc(doc(collectionRef, noodles.id), { minimumAddOns: 0 });
+    //     }
+    // }
+
+    public async createOrder(orderFormData: Order.Frontend.Write.Type) {
         const collectionRef = collection(db, "orders");
         const createdOrder = await addDoc(collectionRef, orderFormData);
         const createdOrderId = createdOrder.id;

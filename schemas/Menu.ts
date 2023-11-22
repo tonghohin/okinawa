@@ -30,10 +30,10 @@ export namespace Menu {
 
         export namespace Item {
             export const Schema = z.object({
-                id: z.string(),
+                id: z.string().readonly(),
                 category: Categories.Enum,
-                name: z.string(),
-                price: z.number()
+                name: z.string().trim(),
+                price: z.number().finite().safe().min(0)
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -53,11 +53,11 @@ export namespace Menu {
 
         export namespace Item {
             export const Schema = z.object({
-                id: z.string(),
+                id: z.string().readonly(),
                 category: Categories.Enum,
-                name: z.string(),
-                price: z.number(),
-                minimumAddOns: z.optional(z.number())
+                name: z.string().trim(),
+                price: z.number().finite().safe().min(0),
+                minimumAddOns: z.number().finite().safe().int().min(0)
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -67,9 +67,9 @@ export namespace Menu {
     export namespace Snacks {
         export namespace Item {
             export const Schema = z.object({
-                id: z.string(),
-                name: z.string(),
-                price: z.number()
+                id: z.string().readonly(),
+                name: z.string().trim(),
+                price: z.number().finite().safe().min(0)
             });
 
             export type Type = z.infer<typeof Schema>;

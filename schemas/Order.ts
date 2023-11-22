@@ -4,23 +4,18 @@ import { Menu } from "./Menu";
 
 export namespace Order {
     export namespace RiceItem {
+        export const Schema = z.object({
+            id: z.string().readonly(),
+            quantity: z.number().finite().safe().int().min(0).default(0),
+            toUdon: z.boolean().default(false),
+            addOn: z.string().nullable().default(null)
+        });
+
+        export type Type = z.infer<typeof Schema>;
         export namespace Frontend {
-            export const Schema = z.object({
+            export const Schema = RiceItem.Schema.omit({ id: true }).extend({
                 item: Menu.Rice.Item.Schema,
-                quantity: z.number(),
-                toUdon: z.boolean(),
-                addOn: z.optional(Menu.Rice.Item.Schema)
-            });
-
-            export type Type = z.infer<typeof Schema>;
-        }
-
-        export namespace Backend {
-            export const Schema = z.object({
-                id: z.string(),
-                quantity: z.number(),
-                toUdon: z.boolean(),
-                addOn: z.optional(z.string())
+                addOn: Menu.Rice.Item.Schema.nullable().default(null)
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -28,21 +23,18 @@ export namespace Order {
     }
 
     export namespace NoodlesItem {
+        export const Schema = z.object({
+            id: z.string().readonly(),
+            quantity: z.number().finite().safe().int().min(0).default(0),
+            addOns: z.array(z.string()).default([])
+        });
+
+        export type Type = z.infer<typeof Schema>;
+
         export namespace Frontend {
-            export const Schema = z.object({
+            export const Schema = NoodlesItem.Schema.omit({ id: true }).extend({
                 item: Menu.Noodles.Item.Schema,
-                quantity: z.number(),
-                addOns: z.array(Menu.Noodles.Item.Schema)
-            });
-
-            export type Type = z.infer<typeof Schema>;
-        }
-
-        export namespace Backend {
-            export const Schema = z.object({
-                id: z.string(),
-                quantity: z.number(),
-                addOns: z.array(z.string())
+                addOns: z.array(Menu.Noodles.Item.Schema).default([])
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -50,19 +42,15 @@ export namespace Order {
     }
 
     export namespace SnacksItem {
+        export const Schema = z.object({
+            id: z.string().readonly(),
+            quantity: z.number().finite().safe().int().min(0).default(0)
+        });
+
+        export type Type = z.infer<typeof Schema>;
         export namespace Frontend {
-            export const Schema = z.object({
-                item: Menu.Snacks.Item.Schema,
-                quantity: z.number()
-            });
-
-            export type Type = z.infer<typeof Schema>;
-        }
-
-        export namespace Backend {
-            export const Schema = z.object({
-                id: z.string(),
-                quantity: z.number()
+            export const Schema = SnacksItem.Schema.omit({ id: true }).extend({
+                item: Menu.Snacks.Item.Schema
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -70,75 +58,53 @@ export namespace Order {
     }
 
     export namespace Items {
-        export namespace Frontend {
-            export const Schema = z.object({
-                rice: z.array(RiceItem.Frontend.Schema),
-                noodles: z.array(NoodlesItem.Frontend.Schema),
-                snacks: z.array(SnacksItem.Frontend.Schema)
-            });
-
-            export type Type = z.infer<typeof Schema>;
-        }
-
-        export namespace Backend {
-            export const Schema = z.object({
-                rice: z.array(RiceItem.Backend.Schema),
-                noodles: z.array(NoodlesItem.Backend.Schema),
-                snacks: z.array(SnacksItem.Backend.Schema)
-            });
-
-            export type Type = z.infer<typeof Schema>;
-        }
-    }
-
-    export namespace Frontend {
         export const Schema = z.object({
-            name: z.string(),
-            email: z.string().email(),
-            phone: z.string(),
-            items: Items.Frontend.Schema,
-            total: z.number(),
-            delivery: z.boolean(),
-            address: General.Address.Schema,
-            date: z.date(),
-            comments: z.string(),
-            delivered: z.boolean()
+            rice: z.array(RiceItem.Schema).default([]),
+            noodles: z.array(NoodlesItem.Schema).default([]),
+            snacks: z.array(SnacksItem.Schema).default([])
         });
 
         export type Type = z.infer<typeof Schema>;
+
+        export namespace Frontend {
+            export const Schema = z.object({
+                rice: z.array(RiceItem.Frontend.Schema).default([]),
+                noodles: z.array(NoodlesItem.Frontend.Schema).default([]),
+                snacks: z.array(SnacksItem.Frontend.Schema).default([])
+            });
+
+            export type Type = z.infer<typeof Schema>;
+        }
     }
 
-    export namespace Backend {
-        export namespace Write {
-            export const Schema = z.object({
-                name: z.string(),
-                email: z.string().email(),
-                phone: z.string(),
-                items: Items.Backend.Schema,
-                total: z.number(),
-                delivery: z.boolean(),
-                address: z.optional(General.Address.Schema),
-                date: z.date(),
-                comments: z.string(),
-                delivered: z.boolean()
+    export const Schema = z.object({
+        id: z.string().readonly(),
+        name: z.string().trim().length(1, { message: "未寫名" }).default(""),
+        email: z.string().trim().email().toLowerCase().default(""),
+        phone: z.string().trim().length(8, { message: "電話號碼要係8個字" }).default(""),
+        items: Items.Schema,
+        total: z.number().finite().safe().min(0).default(0),
+        delivery: z.boolean().default(false),
+        address: General.Address.Schema.nullable().default(null),
+        date: z.date().min(new Date(), { message: "回到未來" }).default(new Date()),
+        comments: z.string().trim().nullable().default(null),
+        delivered: z.boolean().default(false)
+    });
+
+    export type Type = z.infer<typeof Schema>;
+
+    export namespace Frontend {
+        export namespace Form {
+            export const Schema = Order.Schema.omit({ id: true }).extend({
+                items: Items.Frontend.Schema
             });
 
             export type Type = z.infer<typeof Schema>;
         }
 
-        export namespace Read {
-            export const Schema = z.object({
-                id: z.string(),
-                name: z.string(),
-                email: z.string().email(),
-                phone: z.string(),
-                items: Items.Backend.Schema,
-                total: z.number(),
-                delivery: z.boolean(),
-                address: z.optional(General.Address.Schema),
-                date: z.date(),
-                comments: z.string(),
-                delivered: z.boolean()
+        export namespace Write {
+            export const Schema = Order.Schema.omit({ id: true }).extend({
+                items: Items.Schema
             });
 
             export type Type = z.infer<typeof Schema>;

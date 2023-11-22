@@ -18,7 +18,7 @@ export namespace Tools {
             return total;
         }
 
-        export function getTotalByCategory(order: Order.Frontend.Type, category: Menu.Categories.Type) {
+        export function getTotalByCategory(order: Order.Frontend.Form.Type, category: Menu.Categories.Type) {
             let total = 0;
             switch (category) {
                 case "rice":
@@ -40,7 +40,7 @@ export namespace Tools {
             return total;
         }
 
-        export function getTotalNumberOfItems(order: Order.Frontend.Type) {
+        export function getTotalNumberOfItems(order: Order.Frontend.Form.Type) {
             return order.items.rice.reduce((count, orderItem) => count + orderItem.quantity, 0) + order.items.noodles.reduce((count, orderItem) => count + orderItem.quantity, 0) + order.items.snacks.reduce((count, orderItem) => count + orderItem.quantity, 0);
         }
 
@@ -78,7 +78,7 @@ export namespace Tools {
             }
         }
 
-        export function checkOrderExists(existingOrder: Order.Frontend.Type, order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) {
+        export function checkOrderExists(existingOrder: Order.Frontend.Form.Type, order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) {
             try {
                 const orderItems = existingOrder.items[category];
                 const { item: newOrderItem, quantity, ...newOrderItemFields } = order;
@@ -94,8 +94,8 @@ export namespace Tools {
             }
         }
 
-        export function transformOrderFormData(orderFormData: Order.Frontend.Type) {
-            const transformedFormData: Order.Backend.Write.Type = {
+        export function transformOrderFormData(orderFormData: Order.Frontend.Form.Type) {
+            const transformedFormData: Order.Frontend.Write.Type = {
                 ...orderFormData,
                 items: {
                     rice: transformRiceOrderFormData(orderFormData.items.rice),
@@ -104,31 +104,21 @@ export namespace Tools {
                 }
             };
 
-            if (!transformedFormData.delivery) {
-                delete transformedFormData.address;
-            }
-
             return transformedFormData;
         }
 
-        export function transformRiceOrderFormData(riceOrderFormData: Order.RiceItem.Frontend.Type[]): Order.RiceItem.Backend.Type[] {
+        export function transformRiceOrderFormData(riceOrderFormData: Order.RiceItem.Frontend.Type[]): Order.RiceItem.Type[] {
             return riceOrderFormData.map((riceOrderItem) => {
-                return riceOrderItem.addOn?.id
-                    ? {
-                          id: riceOrderItem.item.id,
-                          quantity: riceOrderItem.quantity,
-                          toUdon: riceOrderItem.toUdon,
-                          addOn: riceOrderItem.addOn.id
-                      }
-                    : {
-                          id: riceOrderItem.item.id,
-                          quantity: riceOrderItem.quantity,
-                          toUdon: riceOrderItem.toUdon
-                      };
+                return {
+                    id: riceOrderItem.item.id,
+                    quantity: riceOrderItem.quantity,
+                    toUdon: riceOrderItem.toUdon,
+                    addOn: riceOrderItem.addOn?.id || null
+                };
             });
         }
 
-        export function transformNoodlesOrderFormData(noodlesOrderFormData: Order.NoodlesItem.Frontend.Type[]): Order.NoodlesItem.Backend.Type[] {
+        export function transformNoodlesOrderFormData(noodlesOrderFormData: Order.NoodlesItem.Frontend.Type[]): Order.NoodlesItem.Type[] {
             return noodlesOrderFormData.map((noodlesOrderItem) => {
                 return {
                     id: noodlesOrderItem.item.id,
@@ -137,7 +127,7 @@ export namespace Tools {
                 };
             });
         }
-        export function transformSnacksOrderFormData(snacksOrderFormData: Order.SnacksItem.Frontend.Type[]): Order.SnacksItem.Backend.Type[] {
+        export function transformSnacksOrderFormData(snacksOrderFormData: Order.SnacksItem.Frontend.Type[]): Order.SnacksItem.Type[] {
             return snacksOrderFormData.map((snacksOrderItem) => {
                 return {
                     id: snacksOrderItem.item.id,

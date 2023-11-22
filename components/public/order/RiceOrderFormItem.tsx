@@ -48,12 +48,9 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
         }
     }
 
-    function handleAddOnChange(addOnId: String) {
+    function handleAddOnChange(addOnId: String | null) {
         const selectedAddOn = addOns.find((addOn) => addOn.id === addOnId);
-        setRiceOrderFormData((prevRiceOrderFormData) => {
-            const { addOn, ...restPrevRiceOrderFormData } = prevRiceOrderFormData;
-            return selectedAddOn ? { ...prevRiceOrderFormData, addOn: selectedAddOn } : { ...restPrevRiceOrderFormData };
-        });
+        setRiceOrderFormData((prevRiceOrderFormData) => ({ ...prevRiceOrderFormData, addOn: selectedAddOn || null }));
     }
 
     function handleAddToCart() {
@@ -111,7 +108,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                                         {addOn.name} ＋${addOn.price}
                                     </ToggleButton>
                                 ))}
-                                <ToggleButton on={!riceOrderFormData.addOn} onClick={() => handleAddOnChange("")}>
+                                <ToggleButton on={!riceOrderFormData.addOn} onClick={() => handleAddOnChange(null)}>
                                     唔使了
                                 </ToggleButton>
                             </div>

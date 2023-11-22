@@ -8,14 +8,16 @@ export namespace General {
 
     export namespace Address {
         export const Schema = z.object({
-            region: Regions.Enum,
-            district: z.string(),
-            street: z.string(),
-            building: z.string(),
-            floor: z.string(),
-            flat: z.string()
+            region: Regions.Enum.default("香港島"),
+            district: z.string().trim().toUpperCase().default(""),
+            street: z.string().trim().toUpperCase().nullable().default(""),
+            building: z.string().trim().toUpperCase().nullable().default(""),
+            floor: z.string().trim().toUpperCase().nullable().default(""),
+            flat: z.string().trim().toUpperCase().nullable().default("")
         });
 
         export type Type = z.infer<typeof Schema>;
+
+        export const State = Schema.parse({});
     }
 }

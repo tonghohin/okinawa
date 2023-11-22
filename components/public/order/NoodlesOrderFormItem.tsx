@@ -28,7 +28,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
 
-    const isValidOrder = noodlesOrderFormData.quantity > 0 && noodlesOrderFormData.addOns.length >= (noodles.minimumAddOns || 0);
+    const isValidOrder = noodlesOrderFormData.quantity > 0 && noodlesOrderFormData.addOns.length >= noodles.minimumAddOns;
 
     function handleQuantityChange(increment: boolean) {
         if (increment) {

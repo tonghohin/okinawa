@@ -2,7 +2,7 @@ import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
 
 export namespace InitialStates {
-    export const Order: Order.Frontend.Type = {
+    export const Order: Order.Frontend.Form.Type = {
         name: "",
         email: "",
         phone: "",
@@ -29,7 +29,8 @@ export namespace InitialStates {
     export const RiceOrderItem = (riceItem: Menu.Rice.Item.Type): Order.RiceItem.Frontend.Type => ({
         item: riceItem,
         quantity: 0,
-        toUdon: false
+        toUdon: false,
+        addOn: null
     });
 
     export const NoodlesOrderItem = (noodlesItem: Menu.Noodles.Item.Type): Order.NoodlesItem.Frontend.Type => ({

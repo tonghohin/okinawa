@@ -6,14 +6,14 @@ import { Tools } from "@/tools/Tools";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface OrderFormContext {
-    orderFormData: Order.Frontend.Type;
-    setOrderFormData: React.Dispatch<React.SetStateAction<Order.Frontend.Type>>;
+    orderFormData: Order.Frontend.Form.Type;
+    setOrderFormData: React.Dispatch<React.SetStateAction<Order.Frontend.Form.Type>>;
 }
 
 const OrderFormContext = createContext<OrderFormContext | null>(null);
 
 export default function OrderFormContextProvider({ children }: { children: React.ReactNode }) {
-    const [formDataContext, setFormDataContext] = useState<Order.Frontend.Type>(InitialStates.Order);
+    const [formDataContext, setFormDataContext] = useState<Order.Frontend.Form.Type>(InitialStates.Order);
 
     useEffect(() => {
         setFormDataContext((prevOrderFormData) => ({ ...prevOrderFormData, total: Tools.Frontend.getTotal(prevOrderFormData.items) }));

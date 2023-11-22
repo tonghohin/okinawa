@@ -81,7 +81,7 @@ export default function AddressInput() {
             }
         }
 
-        if (addressName && !address.building.includes(addressName) && !address.street.includes(addressName)) {
+        if (addressName && !address.building?.includes(addressName) && !address.street?.includes(addressName)) {
             address.building = `${addressName} ${address.building}`;
         }
 
@@ -112,20 +112,28 @@ export default function AddressInput() {
     }, []);
 
     function handleAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
+        let { name, value } = event.target;
+
         if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => ({
-                ...prevOrderFormData,
-                address: {
-                    ...prevOrderFormData.address,
-                    [event.target.name]: event.target.value
-                }
-            }));
+            setOrderFormData((prevOrderFormData) => {
+                return prevOrderFormData.address
+                    ? {
+                          ...prevOrderFormData,
+                          address: {
+                              ...prevOrderFormData.address,
+                              [name]: value
+                          }
+                      }
+                    : prevOrderFormData;
+            });
         }
     }
 
     function handleRegionChange(regionName: General.Regions.Type) {
         if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: { ...prevOrderFormData.address, region: regionName } }));
+            setOrderFormData((prevOrderFormData) => {
+                return prevOrderFormData.address ? { ...prevOrderFormData, address: { ...prevOrderFormData.address, region: regionName } } : prevOrderFormData;
+            });
         }
     }
 
@@ -134,33 +142,33 @@ export default function AddressInput() {
             <div className="flex gap-1 flex-wrap">
                 <div className="flex flex-col gap-1 flex-1">
                     <label htmlFor="floor">樓層</label>
-                    <input type="text" id="floor" name="floor" required value={orderFormData?.address.floor} onChange={handleAddressChange} />
+                    <input type="text" id="floor" name="floor" required value={orderFormData?.address?.floor || ""} onChange={handleAddressChange} />
                 </div>
                 <div className="flex flex-col gap-1 flex-1">
                     <label htmlFor="flat">單位</label>
-                    <input type="text" id="flat" name="flat" required value={orderFormData?.address.flat} onChange={handleAddressChange} />
+                    <input type="text" id="flat" name="flat" required value={orderFormData?.address?.flat || ""} onChange={handleAddressChange} />
                 </div>
             </div>
             <div className="flex flex-col gap-1">
                 <label htmlFor="building">大廈</label>
-                <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData?.address.building} onChange={handleAddressChange} />
+                <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData?.address?.building || ""} onChange={handleAddressChange} />
             </div>
             <div className="flex flex-col gap-1">
                 <label htmlFor="street">街道</label>
-                <input type="text" id="street" name="street" required value={orderFormData?.address.street} onChange={handleAddressChange} />
+                <input type="text" id="street" name="street" required value={orderFormData?.address?.street || ""} onChange={handleAddressChange} />
             </div>
             <div className="flex flex-col gap-1">
                 <label htmlFor="district">地區</label>
-                <input type="text" id="district" name="district" required value={orderFormData?.address.district} onChange={handleAddressChange} />
+                <input type="text" id="district" name="district" required value={orderFormData?.address?.district} onChange={handleAddressChange} />
             </div>
             <div className="flex gap-1">
-                <ToggleButton on={orderFormData?.address.region === "香港島"} onClick={() => handleRegionChange("香港島")}>
+                <ToggleButton on={orderFormData?.address?.region === "香港島"} onClick={() => handleRegionChange("香港島")}>
                     香港島
                 </ToggleButton>
-                <ToggleButton on={orderFormData?.address.region === "九龍"} onClick={() => handleRegionChange("九龍")}>
+                <ToggleButton on={orderFormData?.address?.region === "九龍"} onClick={() => handleRegionChange("九龍")}>
                     九龍
                 </ToggleButton>
-                <ToggleButton on={orderFormData?.address.region === "新界"} onClick={() => handleRegionChange("新界")}>
+                <ToggleButton on={orderFormData?.address?.region === "新界"} onClick={() => handleRegionChange("新界")}>
                     新界
                 </ToggleButton>
             </div>
