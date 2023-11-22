@@ -1,13 +1,14 @@
+import Section from "@/components/Section";
 import PublicNavBar from "@/components/public/PublicNavBar";
 import Provider from "@/contexts/Provider";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <Provider>
-            <main className="flex flex-col">
+            <Section noGap>
                 <PublicNavBar />
                 {children}
-            </main>
+            </Section>
         </Provider>
     );
 }
