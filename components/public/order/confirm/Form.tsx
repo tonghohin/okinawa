@@ -5,14 +5,14 @@ import Loading from "@/components/Loading";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
-import FirestoreService from "@/firestore/FirestoreService";
 import { General } from "@/schemas/General";
-import { Tools } from "@/tools/Tools";
 import { IconAlertTriangleFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EmptyCartModal from "../EmptyCartModal";
 import AddressInput from "./AddressInput";
+import { Tools } from "@/tools/Tools";
+import FirestoreService from "@/firestore/FirestoreService";
 
 export default function Form() {
     const router = useRouter();
@@ -22,7 +22,6 @@ export default function Form() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(orderFormData?.total === 0);
 
     function handleFormDataChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         if (setOrderFormData) {
@@ -44,7 +43,7 @@ export default function Form() {
             if (orderFormData) {
                 const transformedData = Tools.Frontend.transformOrderFormData(orderFormData);
                 await FirestoreService.getInstance().createOrder(transformedData);
-                router.push("/order/confirm/success");
+                router.push("/order/success");
             }
         } catch (error) {
             setIsLoading(false);
@@ -57,7 +56,7 @@ export default function Form() {
     }
 
     return orderFormData?.total === 0 ? (
-        <EmptyCartModal setIsModalOpen={setIsModalOpen} />
+        <EmptyCartModal />
     ) : (
         <form className="bg-yellow-400 p-4" onSubmit={handleFormSubmit}>
             <Section>

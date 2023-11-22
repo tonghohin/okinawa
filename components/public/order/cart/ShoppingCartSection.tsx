@@ -1,16 +1,19 @@
 "use client";
 
 import { useOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { Menu } from "@/schemas/Menu";
+import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import ShoppingCartItem from "./ShoppingCartItem";
-import { Menu } from "@/schemas/Menu";
 
 interface ShoppingCartSectionProps {
     category: Menu.Categories.Type;
+    editable?: boolean;
+    preservedOrderFormData?: Order.Frontend.Form.Type;
 }
 
-export default function ShoppingCartSection({ category }: ShoppingCartSectionProps) {
-    const orderFormData = useOrderFormData();
+export default function ShoppingCartSection({ category, editable, preservedOrderFormData }: ShoppingCartSectionProps) {
+    const orderFormData = preservedOrderFormData || useOrderFormData();
     const orderItems = orderFormData?.items[category];
 
     return (
@@ -22,7 +25,7 @@ export default function ShoppingCartSection({ category }: ShoppingCartSectionPro
                     <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, category)} </span>
                 </h1>
                 {orderItems?.map((orderItem, index) => (
-                    <ShoppingCartItem key={index} index={index} category={category} orderItem={orderItem}>
+                    <ShoppingCartItem key={index} index={index} category={category} orderItem={orderItem} editable={editable}>
                         {/* rice */}
                         {"addOn" in orderItem && (
                             <>

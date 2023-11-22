@@ -3,13 +3,10 @@ import Modal from "@/components/Modal";
 import emptyCart from "@/public/emptyCart.svg";
 import Image from "next/image";
 
-interface EmptyCartModalProps {
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-export default function EmptyCartModal({ setIsModalOpen }: EmptyCartModalProps) {
+export default function EmptyCartModal() {
     return (
-        <Modal setIsModalOpen={setIsModalOpen}>
+        <Modal >
             <span>你個購物車空嘅！</span>
             <span>快d去落order！</span>
             <Image src={emptyCart} width={300} height={200} alt="Empty Cart" priority />
