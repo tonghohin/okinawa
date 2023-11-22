@@ -31,8 +31,8 @@ export default function Contact() {
                 <span>11:00 a.m. - 9:00 p.m.</span>
             </p>
             <Image src={contactUs} width={300} height={200} alt="Contact Us" priority />
-            <div className="self-stretch flex-1 relative">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14758.37925858653!2d114.136225!3d22.3689232!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3403f9d962052829%3A0x8a2a513f257bfa21!2z5rKW57mp5ZGz5LmL6LOe!5e0!3m2!1sen!2sca!4v1700658389316!5m2!1sen!2sca" style={{ position: "absolute", height: "100%", width: "100%" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+            <div className="self-stretch flex-1 relative bg-yellow-500 rounded">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14758.37925858653!2d114.136225!3d22.3689232!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3403f9d962052829%3A0x8a2a513f257bfa21!2z5rKW57mp5ZGz5LmL6LOe!5e0!3m2!1sen!2sca!4v1700658389316!5m2!1sen!2sca" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
         </Section>
     );

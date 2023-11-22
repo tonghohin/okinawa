@@ -1,5 +1,6 @@
 "use client";
 
+import InputContainer from "@/components/InputContainer";
 import Loading from "@/components/Loading";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
@@ -7,12 +8,11 @@ import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormConte
 import FirestoreService from "@/firestore/FirestoreService";
 import { General } from "@/schemas/General";
 import { Tools } from "@/tools/Tools";
+import { IconAlertTriangleFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ZodError } from "zod";
 import EmptyCartModal from "../EmptyCartModal";
 import AddressInput from "./AddressInput";
-import { IconAlertTriangleFilled } from "@tabler/icons-react";
 
 export default function Form() {
     const router = useRouter();
@@ -67,19 +67,19 @@ export default function Form() {
                         <span>{errorMessage}</span>
                     </div>
                 )}
-                <div className="flex flex-col gap-1">
+                <InputContainer>
                     <label htmlFor="name">名字</label>
                     <input type="text" id="name" name="name" required value={orderFormData?.name} onChange={handleFormDataChange} />
-                </div>
-                <div className="flex flex-col gap-1">
+                </InputContainer>
+                <InputContainer>
                     <label htmlFor="phone">電話</label>
                     <input type="tel" id="phone" name="phone" required value={orderFormData?.phone} onChange={handleFormDataChange} />
-                </div>
-                <div className="flex flex-col gap-1">
+                </InputContainer>
+                <InputContainer>
                     <label htmlFor="email">Email</label>
                     <input type="email" id="email" name="email" required value={orderFormData?.email} onChange={handleFormDataChange} />
-                </div>
-                <div className="flex gap-1">
+                </InputContainer>
+                <div className="flex gap-4">
                     <ToggleButton on={!orderFormData?.delivery} onClick={() => handleDeliveryChange(false)}>
                         自取
                     </ToggleButton>
@@ -88,10 +88,10 @@ export default function Form() {
                     </ToggleButton>
                 </div>
                 {orderFormData?.delivery ? <AddressInput /> : <p>地址：葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</p>}
-                <div className="flex flex-col gap-1">
+                <InputContainer>
                     <label htmlFor="comments">備註</label>
                     <textarea name="comments" id="comments" value={orderFormData?.comments || ""} onChange={handleFormDataChange} />
-                </div>
+                </InputContainer>
                 <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">
                     {isLoading ? <Loading /> : <span>確認落單 ${orderFormData?.total || 0}</span>}
                 </button>

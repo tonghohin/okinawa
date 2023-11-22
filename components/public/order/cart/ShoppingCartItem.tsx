@@ -67,10 +67,9 @@ export default function ShoppingCartItem({ index, category, orderItem, children 
     return (
         <div className="cursor-pointer">
             <div className="flex justify-between items-center">
-                <p className="flex gap-1 items-center">
-                    <span>{index + 1}.</span>
-                    <span>{orderItem.item.name}</span>
-                </p>
+                <span>
+                    {index + 1}. {orderItem.item.name}
+                </span>
                 <p className="flex gap-2 items-center">
                     <span>${Tools.Frontend.getOrderSubtotal(orderItem)}</span>
                     <span className="flex gap-2 rounded-full px-2 py-1 border border-yellow-500">

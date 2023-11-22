@@ -1,3 +1,4 @@
+import InputContainer from "@/components/InputContainer";
 import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { General } from "@/schemas/General";
@@ -132,29 +133,29 @@ export default function AddressInput() {
 
     return (
         <>
-            <div className="flex gap-1 flex-wrap">
-                <div className="flex flex-col gap-1 flex-1">
+            <div className="flex gap-4 flex-wrap">
+                <InputContainer>
                     <label htmlFor="floor">樓層</label>
                     <input type="text" id="floor" name="floor" required value={orderFormData?.address?.floor || ""} onChange={handleAddressChange} />
-                </div>
-                <div className="flex flex-col gap-1 flex-1">
+                </InputContainer>
+                <InputContainer>
                     <label htmlFor="flat">單位</label>
                     <input type="text" id="flat" name="flat" required value={orderFormData?.address?.flat || ""} onChange={handleAddressChange} />
-                </div>
+                </InputContainer>
             </div>
-            <div className="flex flex-col gap-1">
+            <InputContainer>
                 <label htmlFor="building">大廈</label>
                 <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData?.address?.building || ""} onChange={handleAddressChange} />
-            </div>
-            <div className="flex flex-col gap-1">
+            </InputContainer>
+            <InputContainer>
                 <label htmlFor="street">街道</label>
                 <input type="text" id="street" name="street" required value={orderFormData?.address?.street || ""} onChange={handleAddressChange} />
-            </div>
-            <div className="flex flex-col gap-1">
+            </InputContainer>
+            <InputContainer>
                 <label htmlFor="district">地區</label>
                 <input type="text" id="district" name="district" required value={orderFormData?.address?.district} onChange={handleAddressChange} />
-            </div>
-            <div className="flex gap-1">
+            </InputContainer>
+            <div className="flex gap-4">
                 <ToggleButton on={orderFormData?.address?.region === "香港島"} onClick={() => handleRegionChange("香港島")}>
                     香港島
                 </ToggleButton>

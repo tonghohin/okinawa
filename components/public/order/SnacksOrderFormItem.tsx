@@ -2,7 +2,6 @@
 
 import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
-import CircleButton from "@/components/CircleButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
@@ -11,6 +10,7 @@ import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
+import OrderFormItem from "./OrderFormItem";
 
 interface SnacksOrderFormItemProps {
     snack: Menu.Snacks.Item.Type;
@@ -57,20 +57,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
 
     return (
         <>
-            <section className="flex gap-4 items-center justify-between border border-yellow-500 rounded p-2 cursor-pointer hover:bg-yellow-500 transition-all" onClick={() => setIsModalOpen(true)}>
-                <span>{snack.name}</span>
-                <div className="flex items-center gap-4">
-                    {itemCount > 0 && (
-                        <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-700/80 text-neutral-50">
-                            <span>{itemCount}</span>
-                        </div>
-                    )}
-                    <span>${snack.price}</span>
-                    <CircleButton className="bg-yellow-500">
-                        <IconPlus size={18} />
-                    </CircleButton>
-                </div>
-            </section>
+            <OrderFormItem orderItem={snack} orderItemCategory="snacks" setIsModalOpen={setIsModalOpen} />
             {isModalOpen && (
                 <Modal setIsModalOpen={setIsModalOpen} closeButton>
                     <Section title={`${snack.name} $${snack.price}`}>

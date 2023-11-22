@@ -2,7 +2,6 @@
 
 import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
-import CircleButton from "@/components/CircleButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
@@ -12,6 +11,7 @@ import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
+import OrderFormItem from "./OrderFormItem";
 
 interface RiceOrderFormItemProps {
     rice: Menu.Rice.Item.Type;
@@ -71,24 +71,11 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     return (
         <>
-            <section className="flex gap-4 items-center justify-between border border-yellow-500 rounded p-2 cursor-pointer hover:bg-yellow-500 transition-all" onClick={() => setIsModalOpen(true)}>
-                <span>{rice.name}</span>
-                <div className="flex items-center gap-4">
-                    {itemCount > 0 && (
-                        <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-700/80 text-neutral-50">
-                            <span>{itemCount}</span>
-                        </div>
-                    )}
-                    <span>${rice.price}</span>
-                    <CircleButton className="bg-yellow-500">
-                        <IconPlus size={18} />
-                    </CircleButton>
-                </div>
-            </section>
+            <OrderFormItem orderItem={rice} orderItemCategory="rice" setIsModalOpen={setIsModalOpen} />
             {isModalOpen && (
                 <Modal setIsModalOpen={setIsModalOpen} closeButton>
                     <Section title={`${rice.name} $${rice.price}`}>
-                        <div className="flex flex-col gap-4 items-center">
+                        <Section center>
                             <span>轉烏冬</span>
                             <div className="flex items-center gap-4">
                                 <ToggleButton on={riceOrderFormData.toUdon} onClick={() => handleToUdonChange(true)}>
@@ -98,8 +85,8 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                                     <IconX className="text-yellow-800" size={24} />
                                 </ToggleButton>
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-4 items-center">
+                        </Section>
+                        <Section center>
                             <span>轉套餐</span>
                             <div className="flex gap-4 flex-wrap justify-center">
                                 {addOns.map((addOn) => (
@@ -111,7 +98,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                                     唔使了
                                 </ToggleButton>
                             </div>
-                        </div>
+                        </Section>
                         <div className="flex gap-4 items-center self-center">
                             <BigCircleButton className="text-yellow-800 bg-yellow-400" onClick={() => handleQuantityChange(false)} disabled={riceOrderFormData.quantity === 0}>
                                 <IconMinus size={24} />
