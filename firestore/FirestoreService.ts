@@ -1,7 +1,8 @@
 import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
-import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { ZodError } from "zod";
 
 export default class FirestoreService {
     private static instance: FirestoreService;
@@ -60,11 +61,19 @@ export default class FirestoreService {
     // }
 
     public async createOrder(orderFormData: Order.Frontend.Write.Type) {
-        const collectionRef = collection(db, "orders");
-        const createdOrder = await addDoc(collectionRef, orderFormData);
-        const createdOrderId = createdOrder.id;
-        console.log(createdOrder);
-        return createdOrder.id;
+        try {
+            const validatedOrderFormData = Order.Frontend.Write.Schema.parse(orderFormData);
+            const collectionRef = collection(db, "orders");
+            const createdOrder = await addDoc(collectionRef, validatedOrderFormData);
+            return createdOrder.id;
+        } catch (error) {
+            if (error instanceof ZodError) {
+                const [firstError] = error.issues;
+                throw new Error(firstError.message);
+            } else {
+                throw new Error("落單唔成功，請試多次！");
+            }
+        }
 
         // const data = [
         //     { category: "main", name: "稻庭真打鳥冬", price: 15 },

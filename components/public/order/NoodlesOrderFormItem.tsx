@@ -1,6 +1,5 @@
 "use client";
 
-import { InitialStates } from "@/InitialStates/InitialStates";
 import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
 import CircleButton from "@/components/CircleButton";
@@ -24,7 +23,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<Order.NoodlesItem.Frontend.Type>(InitialStates.NoodlesOrderItem(noodles));
+    const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<Order.NoodlesItem.Frontend.Type>(Order.NoodlesItem.Frontend.State(noodles));
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
 
@@ -61,7 +60,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
             }
         }
         setIsModalOpen(false);
-        setNoodlesOrderFormData(InitialStates.NoodlesOrderItem(noodles));
+        setNoodlesOrderFormData(Order.NoodlesItem.Frontend.State(noodles));
     }
 
     return (
@@ -87,10 +86,10 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
                             <span>{Menu.Noodles.Categories.Mapping.addOn}配料</span> <span>{noodles.minimumAddOns ? `（${noodles.minimumAddOns}款起）` : "（唔加都得）"}</span>
                         </h1>
                         <div className="flex flex-col overflow-auto">
-                            {Object.entries(Tools.Frontend.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn]) => (
-                                <section className="flex gap-4 items-center border-b border-b-yellow-500 flex-wrap py-4">
+                            {Object.entries(Tools.Frontend.groupNoodlesAddOnsByPrice(addOns)).map(([price, addOn], index) => (
+                                <section key={index} className="flex gap-4 items-center border-b border-b-yellow-500 flex-wrap py-4">
                                     {addOn.map((addOn) => (
-                                        <ToggleButton on={!!noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id)} onClick={() => handleAddOnsChange(addOn.id)}>
+                                        <ToggleButton key={addOn.id} on={!!noodlesOrderFormData.addOns.find((formAddOn) => formAddOn.id === addOn.id)} onClick={() => handleAddOnsChange(addOn.id)}>
                                             <span>{addOn.name}</span>
                                             <span>＋${addOn.price}</span>
                                         </ToggleButton>

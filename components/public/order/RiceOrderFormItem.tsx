@@ -1,6 +1,5 @@
 "use client";
 
-import { InitialStates } from "@/InitialStates/InitialStates";
 import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
 import CircleButton from "@/components/CircleButton";
@@ -24,7 +23,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [riceOrderFormData, setRiceOrderFormData] = useState<Order.RiceItem.Frontend.Type>(InitialStates.RiceOrderItem(rice));
+    const [riceOrderFormData, setRiceOrderFormData] = useState(Order.RiceItem.Frontend.State(rice));
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "rice", rice.id) : 0), [orderFormData]);
 
@@ -67,7 +66,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
             }
         }
         setIsModalOpen(false);
-        setRiceOrderFormData(InitialStates.RiceOrderItem(rice));
+        setRiceOrderFormData(Order.RiceItem.Frontend.State(rice));
     }
 
     return (
@@ -104,7 +103,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                             <span>轉套餐</span>
                             <div className="flex gap-4 flex-wrap justify-center">
                                 {addOns.map((addOn) => (
-                                    <ToggleButton on={riceOrderFormData.addOn?.id === addOn.id} onClick={() => handleAddOnChange(addOn.id)}>
+                                    <ToggleButton key={addOn.id} on={riceOrderFormData.addOn?.id === addOn.id} onClick={() => handleAddOnChange(addOn.id)}>
                                         {addOn.name} ＋${addOn.price}
                                     </ToggleButton>
                                 ))}

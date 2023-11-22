@@ -1,6 +1,5 @@
 "use client";
 
-import { InitialStates } from "@/InitialStates/InitialStates";
 import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
 import CircleButton from "@/components/CircleButton";
@@ -22,7 +21,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
     const setOrderFormData = useSetOrderFormData();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [snacksOrderFormData, setSnacksOrderFormData] = useState<Order.SnacksItem.Frontend.Type>(InitialStates.SnacksOrderItem(snack));
+    const [snacksOrderFormData, setSnacksOrderFormData] = useState<Order.SnacksItem.Frontend.Type>(Order.SnacksItem.Frontend.State(snack));
 
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "snacks", snack.id) : 0), [orderFormData]);
 
@@ -53,7 +52,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
             }
         }
         setIsModalOpen(false);
-        setSnacksOrderFormData(InitialStates.SnacksOrderItem(snack));
+        setSnacksOrderFormData(Order.SnacksItem.Frontend.State(snack));
     }
 
     return (

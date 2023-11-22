@@ -9,8 +9,10 @@ import { General } from "@/schemas/General";
 import { Tools } from "@/tools/Tools";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ZodError } from "zod";
 import EmptyCartModal from "../EmptyCartModal";
 import AddressInput from "./AddressInput";
+import { IconAlertTriangleFilled } from "@tabler/icons-react";
 
 export default function Form() {
     const router = useRouter();
@@ -19,6 +21,7 @@ export default function Form() {
     const setOrderFormData = useSetOrderFormData();
 
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(orderFormData?.total === 0);
 
     function handleFormDataChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -45,6 +48,11 @@ export default function Form() {
             }
         } catch (error) {
             setIsLoading(false);
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage("落單唔成功，請試多次！");
+            }
         }
     }
 
@@ -53,6 +61,12 @@ export default function Form() {
     ) : (
         <form className="bg-yellow-400 p-4" onSubmit={handleFormSubmit}>
             <Section>
+                {errorMessage && (
+                    <div className="flex justify-center items-center gap-4 text-red-600">
+                        <IconAlertTriangleFilled size={24} />
+                        <span>{errorMessage}</span>
+                    </div>
+                )}
                 <div className="flex flex-col gap-1">
                     <label htmlFor="name">名字</label>
                     <input type="text" id="name" name="name" required value={orderFormData?.name} onChange={handleFormDataChange} />
