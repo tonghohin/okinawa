@@ -1,19 +1,19 @@
-import Link from "next/link";
+import ChipLink from "@/components/ChipLink";
 
 export default function Home() {
     return (
         <section className="flex flex-col gap-4 items-center justify-center">
             <h1>No Logo</h1>
             <nav className="flex gap-4">
-                <Link href="/menu" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all">
+                <ChipLink href="/menu" className="bg-yellow-400">
                     睇Menu
-                </Link>
-                <Link href="/order" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all">
+                </ChipLink>
+                <ChipLink href="/order" className="bg-yellow-400">
                     落Order
-                </Link>
-                <Link href="/contact" className="bg-yellow-400 p-2 rounded hover:bg-yellow-600 hover:text-neutral-50 transition-all">
+                </ChipLink>
+                <ChipLink href="/contact" className="bg-yellow-400">
                     搵我地
-                </Link>
+                </ChipLink>
             </nav>
         </section>
     );
