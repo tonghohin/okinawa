@@ -1,9 +1,9 @@
 import Tab from "@/components/Tab";
-import SnacksMenu from "@/components/public/menu/SnacksMenu";
 import NoodlesMenu from "@/components/public/menu/NoodlesMenu";
 import RiceMenu from "@/components/public/menu/RiceMenu";
-import FirestoreService from "@/firestore/FirestoreService";
+import SnacksMenu from "@/components/public/menu/SnacksMenu";
 import { Menu } from "@/schemas/Menu";
+import FirestoreService from "@/services/FirestoreService";
 
 export default async function MainMenu() {
     const riceMenu = await FirestoreService.getInstance().getRiceMenu();

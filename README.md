@@ -7,4 +7,6 @@
 -   Zod
 -   Firebase
 -   Firestore
+-   Resend
+-   React Email
 -   Vercel

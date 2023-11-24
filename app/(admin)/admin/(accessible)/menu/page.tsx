@@ -1,4 +1,4 @@
-import FirestoreService from "@/firestore/FirestoreService";
+import FirestoreService from "@/services/FirestoreService";
 
 export default async function AdminMenu() {
     const riceMenu = await FirestoreService.getInstance().getRiceMenu();

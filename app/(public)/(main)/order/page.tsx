@@ -4,8 +4,8 @@ import NoodlesOrderForm from "@/components/public/order/NoodlesOrderForm";
 import RiceOrderForm from "@/components/public/order/RiceOrderForm";
 import SnacksOrderForm from "@/components/public/order/SnacksOrderForm";
 import Total from "@/components/public/order/Total";
-import FirestoreService from "@/firestore/FirestoreService";
 import { Menu } from "@/schemas/Menu";
+import FirestoreService from "@/services/FirestoreService";
 
 export default async function Order() {
     const riceMenu = await FirestoreService.getInstance().getRiceMenu();

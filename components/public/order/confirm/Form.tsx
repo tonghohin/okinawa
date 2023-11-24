@@ -12,7 +12,7 @@ import { useState } from "react";
 import EmptyCartModal from "../EmptyCartModal";
 import AddressInput from "./AddressInput";
 import { Tools } from "@/tools/Tools";
-import FirestoreService from "@/firestore/FirestoreService";
+import FirestoreService from "@/services/FirestoreService";
 
 export default function Form() {
     const router = useRouter();
@@ -42,7 +42,16 @@ export default function Form() {
 
             if (orderFormData) {
                 const transformedData = Tools.Frontend.transformOrderFormData(orderFormData);
-                await FirestoreService.getInstance().createOrder(transformedData);
+                const createdOrderOd = await FirestoreService.getInstance().createOrder(transformedData);
+                if (createdOrderOd) {
+                    fetch("/order/api", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ orderId: createdOrderOd, orderFormData })
+                    });
+                }
                 router.push("/order/success");
             }
         } catch (error) {

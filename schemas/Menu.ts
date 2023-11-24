@@ -35,7 +35,7 @@ export namespace Menu {
                 id: z.string().readonly(),
                 category: Categories.Enum,
                 name: z.string().trim(),
-                price: z.number().finite().safe().min(0)
+                price: z.coerce.number().finite().safe().min(0)
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -59,8 +59,8 @@ export namespace Menu {
                 id: z.string().readonly(),
                 category: Categories.Enum,
                 name: z.string().trim(),
-                price: z.number().finite().safe().min(0),
-                minimumAddOns: z.number().finite().safe().int().min(0)
+                price: z.coerce.number().finite().safe().min(0),
+                minimumAddOns: z.coerce.number().finite().safe().int().min(0)
             });
 
             export type Type = z.infer<typeof Schema>;
@@ -72,7 +72,7 @@ export namespace Menu {
             export const Schema = z.object({
                 id: z.string().readonly(),
                 name: z.string().trim(),
-                price: z.number().finite().safe().min(0)
+                price: z.coerce.number().finite().safe().min(0)
             });
 
             export type Type = z.infer<typeof Schema>;
