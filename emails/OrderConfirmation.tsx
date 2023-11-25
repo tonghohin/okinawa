@@ -119,6 +119,7 @@ export default function OrderConfirmation({ orderId, order }: OrderConfirmationP
                                     +852 6343 9624
                                 </Link>
                             </p>
+                            <p className="text-xs">請勿回覆此電郵，如有任何查詢，請致電或WhatsApp我們，謝謝！</p>
                         </section>
                     </Container>
                 </Body>
