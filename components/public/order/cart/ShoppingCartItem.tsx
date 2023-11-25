@@ -72,7 +72,7 @@ export default function ShoppingCartItem({ index, category, orderItem, editable,
                     {index + 1}. {orderItem.item.name}
                 </span>
                 <p className="flex gap-2 items-center">
-                    <span>${Tools.Frontend.getOrderSubtotal(orderItem)}</span>
+                    <span>${Tools.Frontend.getEachItemPrice(orderItem)}</span>
                     {editable ? (
                         <span className="flex gap-2 rounded-full px-2 py-1 border border-yellow-500">
                             {orderItem.quantity === 1 ? (

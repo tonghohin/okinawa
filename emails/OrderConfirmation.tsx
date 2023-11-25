@@ -1,5 +1,6 @@
 import { Order } from "@/schemas/Order";
-import { Body, Column, Container, Font, Head, Hr, Html, Preview, Row, Section, Tailwind } from "@react-email/components";
+import { Tools } from "@/tools/Tools";
+import { Body, Column, Container, Font, Head, Hr, Html, Link, Preview, Row, Tailwind } from "@react-email/components";
 
 interface OrderConfirmationProps {
     orderId: string;
@@ -25,75 +26,100 @@ export default function OrderConfirmation({ orderId, order }: OrderConfirmationP
                 <Body>
                     <Container>
                         <section className="bg-yellow-400 p-4">
-                            <h2>訂單確認 - 沖繩味之賞 [{orderId}]</h2>
-                            <p>Hello {order.name}!</p>
-                            <p>好消息！我們已經收到您嘅訂單！</p>
+                            <h2>訂單確認 - 沖繩味之賞 [#{orderId}]</h2>
+                            <p className="text-lg">Hello {order.name}!</p>
+                            <p className="text-lg">好消息！我們已經收到您嘅訂單！</p>
                         </section>
-                        <Section className="p-4">
+                        <section className="p-4 border-2">
                             <p className="text-xl">訂單詳情</p>
                             <Hr className="border-yellow-500" />
-                            <p>訂單編號：{orderId}</p>
+                            <p>訂單編號：#{orderId}</p>
                             <p>訂單日期：{order.date.toLocaleDateString()}</p>
                             {order.delivery && order.address ? <p>送餐地址：{Object.values(order.address).join(" ")}</p> : <p>自取地址：葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</p>}
-                        </Section>
-                        <Section className="p-4">
+                            {order.comments && <p>備註：{order.comments}</p>}
+                        </section>
+                        <section className="p-4">
                             <p className="text-xl">美食</p>
                             <Hr className="border-yellow-500" />
-                            {order.items.rice.map((rice) => (
-                                <Row>
+                            {order.items.rice.map((rice, index) => (
+                                <Row key={index}>
                                     <Column>
                                         <p>
-                                            <span>
-                                                {rice.quantity} x {rice.item.name}{" "}
-                                            </span>
-                                            {rice.addOn && <span>（配{rice.addOn.name} </span>}
+                                            <span>{rice.item.name}</span>
+                                            {rice.addOn && <span>（配{rice.addOn.name}）</span>}
                                         </p>
                                     </Column>
                                     <Column>
-                                        <p className="text-end">${(rice.item.price + (rice.addOn?.price || 0)) * rice.quantity}</p>
+                                        <p className="text-end">
+                                            <span>${Tools.Frontend.getEachItemPrice(rice)}</span>
+                                            <span> x {rice.quantity}</span>
+                                        </p>
                                     </Column>
                                 </Row>
                             ))}
-                            {order.items.noodles.map((noodle) => (
-                                <Row>
+                            {order.items.noodles.map((noodle, index) => (
+                                <Row key={index}>
                                     <Column>
                                         <p>
-                                            <span>
-                                                {noodle.quantity} x {noodle.item.name}{" "}
-                                            </span>
+                                            <span>{noodle.item.name}</span>
                                             {!!noodle.addOns.length && <span>（配{noodle.addOns.map((addOn) => addOn.name).join("，")}）</span>}
                                         </p>
                                     </Column>
                                     <Column>
-                                        <p className="text-end">${(noodle.addOns.reduce((total, addOn) => (total += addOn.price), 0) + noodle.item.price) * noodle.quantity}</p>
+                                        <p className="text-end">
+                                            <span>${Tools.Frontend.getEachItemPrice(noodle)}</span>
+                                            <span> x {noodle.quantity}</span>
+                                        </p>
                                     </Column>
                                 </Row>
                             ))}
-                            {order.items.snacks.map((snack) => (
-                                <Row>
+                            {order.items.snacks.map((snack, index) => (
+                                <Row key={index}>
                                     <Column>
                                         <p>
-                                            <span>
-                                                {snack.quantity} x {snack.item.name}{" "}
-                                            </span>
+                                            <span>{snack.item.name}</span>
                                         </p>
                                     </Column>
                                     <Column>
-                                        <p className="text-end">${snack.item.price * snack.quantity}</p>
+                                        <p className="text-end">
+                                            <span>${Tools.Frontend.getEachItemPrice(snack)}</span>
+                                            <span> x {snack.quantity}</span>
+                                        </p>
                                     </Column>
                                 </Row>
                             ))}
-                        </Section>
-                        <Section className="bg-yellow-400 p-4">
+                            <Hr className="border-yellow-500" />
                             <Row>
                                 <Column>
                                     <h3>總計</h3>
                                 </Column>
                                 <Column>
-                                    <p className="text-end">${order.total}</p>
+                                    <h3 className="text-end">${order.total}</h3>
                                 </Column>
                             </Row>
-                        </Section>
+                        </section>
+                        <section className="bg-yellow-400 p-4 text-center">
+                            <h3>有咩問題歡迎搵我地！</h3>
+                            <p>
+                                地址：
+                                <Link href="https://maps.app.goo.gl/SntJopHUUbAEf1zo6" className="text-neutral-800 underline">
+                                    葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City
+                                </Link>
+                            </p>
+
+                            <p>
+                                電話：
+                                <Link href="tel:95582500" className="text-neutral-800 underline">
+                                    +852 9558 2500
+                                </Link>
+                            </p>
+                            <p>
+                                WhatsApp:{" "}
+                                <Link href="https://api.whatsapp.com/send?phone=85263439624" className="text-neutral-800 underline">
+                                    +852 6343 9624
+                                </Link>
+                            </p>
+                        </section>
                     </Container>
                 </Body>
             </Html>

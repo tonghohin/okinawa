@@ -64,6 +64,20 @@ export namespace Tools {
             return groups;
         }
 
+        export function getEachItemPrice(order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type) {
+            if ("addOn" in order) {
+                // rice
+                return order.item.price + (order.addOn?.price || 0);
+            } else if ("addOns" in order) {
+                // noodles
+                const addOnsPrice = order.addOns.reduce((total, addOn) => total + addOn.price, 0);
+                return order.item.price + addOnsPrice;
+            } else {
+                // snacks
+                return order.item.price;
+            }
+        }
+
         export function getOrderSubtotal(order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type) {
             if ("addOn" in order) {
                 // rice
