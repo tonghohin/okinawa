@@ -4,8 +4,9 @@ import { OrderApi } from "@/api/Order";
 import InputContainer from "@/components/InputContainer";
 import Loading from "@/components/Loading";
 import Section from "@/components/Section";
+import SquareButton from "@/components/SquareButton";
 import ToggleButton from "@/components/ToggleButton";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { General } from "@/schemas/General";
 import FirestoreService from "@/services/FirestoreService";
 import { Tools } from "@/tools/Tools";
@@ -58,8 +59,8 @@ export default function Form() {
     return orderFormData?.total === 0 ? (
         <EmptyCartModal />
     ) : (
-        <form className="bg-yellow-400 p-4" onSubmit={handleFormSubmit}>
-            <Section>
+        <form onSubmit={handleFormSubmit}>
+            <Section backgroundColor="bg-yellow-400" padding>
                 {errorMessage && (
                     <div className="flex justify-center items-center gap-4 text-red-600">
                         <IconAlertTriangleFilled size={24} />
@@ -91,9 +92,7 @@ export default function Form() {
                     <label htmlFor="comments">備註</label>
                     <textarea name="comments" id="comments" value={orderFormData?.comments || ""} onChange={handleFormDataChange} />
                 </InputContainer>
-                <button type="submit" className="bg-yellow-500 p-4 rounded hover:bg-yellow-600 transition-all">
-                    {isLoading ? <Loading /> : <span>確認落單 ${orderFormData?.total || 0}</span>}
-                </button>
+                <SquareButton>{isLoading ? <Loading /> : <span>確認落單 ${orderFormData?.total || 0}</span>}</SquareButton>
             </Section>
         </form>
     );

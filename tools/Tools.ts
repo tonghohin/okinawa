@@ -141,6 +141,7 @@ export namespace Tools {
                 };
             });
         }
+
         export function transformSnacksOrderFormData(snacksOrderFormData: Order.SnacksItem.Frontend.Type[]): Order.SnacksItem.Type[] {
             return snacksOrderFormData.map((snacksOrderItem) => {
                 return {

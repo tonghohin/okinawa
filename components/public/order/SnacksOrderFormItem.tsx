@@ -4,12 +4,12 @@ import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import OrderFormItem from "./OrderFormItem";
 
 interface SnacksOrderFormItemProps {
@@ -22,8 +22,6 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [snacksOrderFormData, setSnacksOrderFormData] = useState<Order.SnacksItem.Frontend.Type>(Order.SnacksItem.Frontend.State(snack));
-
-    const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "snacks", snack.id) : 0), [orderFormData]);
 
     const isValidOrder = snacksOrderFormData.quantity > 0;
 

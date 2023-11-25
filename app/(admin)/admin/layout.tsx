@@ -1,11 +1,9 @@
-import AuthContextProvider from "@/contexts/AuthContextProvider";
+import Provider from "@/contexts/admin/Provider";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <AuthContextProvider>
-            <main className="bg-neutral-800">
-                <main className="m-auto flex justify-center items-center px-4">{children}</main>
-            </main>
-        </AuthContextProvider>
+        <Provider>
+            <main className="flex flex-col justify-center bg-neutral-800">{children}</main>
+        </Provider>
     );
 }

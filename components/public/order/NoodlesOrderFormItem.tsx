@@ -5,12 +5,12 @@ import ChipButton from "@/components/ChipButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import OrderFormItem from "./OrderFormItem";
 
 interface NoodlesOrderFormItemProps {
@@ -24,8 +24,6 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<Order.NoodlesItem.Frontend.Type>(Order.NoodlesItem.Frontend.State(noodles));
-
-    const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, "noodles", noodles.id) : 0), [orderFormData]);
 
     const isValidOrder = noodlesOrderFormData.quantity > 0 && noodlesOrderFormData.addOns.length >= noodles.minimumAddOns;
 

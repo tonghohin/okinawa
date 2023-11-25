@@ -109,7 +109,8 @@ export namespace Order {
 
     export namespace Frontend {
         export namespace Form {
-            export const Schema = Order.Schema.omit({ id: true }).extend({
+            export const Schema = Order.Schema.extend({
+                id: z.string().readonly().optional(),
                 name: z.string().trim().default(""),
                 email: z.string().trim().toLowerCase().default(""),
                 items: Items.Frontend.Schema.default(Items.Frontend.State),
@@ -123,7 +124,8 @@ export namespace Order {
         }
 
         export namespace Write {
-            export const Schema = Order.Schema.omit({ id: true }).extend({
+            export const Schema = Order.Schema.extend({
+                id: z.string().readonly().optional(),
                 items: Items.Schema
             });
 

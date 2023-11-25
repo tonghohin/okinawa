@@ -2,7 +2,7 @@
 
 import Section from "@/components/Section";
 import ShoppingCartSection from "@/components/public/order/cart/ShoppingCartSection";
-import { useOrderFormData } from "@/contexts/OrderFormContextProvider";
+import { useOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import EmptyCartModal from "../EmptyCartModal";
 
 export default function ShoppingCart() {

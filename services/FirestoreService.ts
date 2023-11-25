@@ -1,43 +1,84 @@
 import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
-import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { ZodError } from "zod";
 
 export default class FirestoreService {
     public static async getRiceMenu(): Promise<Menu.Rice.Item.Type[]> {
         const riceData = await getDocs(query(collection(db, "rice"), orderBy("price")));
         const riceMenu = riceData.docs.map((rice) => ({ id: rice.id, ...rice.data() }));
-        const validatedRiceMenu = Menu.Rice.Item.Schema.array().parse(riceMenu);
-        return validatedRiceMenu;
+        return Menu.Rice.Item.Schema.array().parse(riceMenu);
     }
 
     public static async getSnacksMenu(): Promise<Menu.Snacks.Item.Type[]> {
         const snacksData = await getDocs(query(collection(db, "snacks"), orderBy("price")));
         const snacksMenu = snacksData.docs.map((snack) => ({ id: snack.id, ...snack.data() }));
-        const validatedSnacksMenu = Menu.Snacks.Item.Schema.array().parse(snacksMenu);
-        return validatedSnacksMenu;
+        return Menu.Snacks.Item.Schema.array().parse(snacksMenu);
     }
 
     public static async getNoodlesMenu(): Promise<Menu.Noodles.Item.Type[]> {
         const noodlesData = await getDocs(query(collection(db, "noodles"), orderBy("price")));
         const noodlesMenu = noodlesData.docs.map((noodles) => ({ id: noodles.id, ...noodles.data() }));
-        const validatedNoodlesMenu = Menu.Noodles.Item.Schema.array().parse(noodlesMenu);
-        return validatedNoodlesMenu;
+        return Menu.Noodles.Item.Schema.array().parse(noodlesMenu);
+    }
+
+    private static async _getRiceItemById(riceItemId: string) {
+        const riceItem = await getDoc(doc(db, "rice", riceItemId));
+        return Menu.Rice.Item.Schema.parse({ id: riceItem.id, ...riceItem.data() });
+    }
+
+    private static async _getNoodlesItemById(noodlesItemId: string) {
+        const noodlesItem = await getDoc(doc(db, "noodles", noodlesItemId));
+        return Menu.Noodles.Item.Schema.parse({ id: noodlesItem.id, ...noodlesItem.data() });
+    }
+
+    private static async _getSnacksItemById(snacksItemId: string) {
+        const snacksItem = await getDoc(doc(db, "snacks", snacksItemId));
+        return Menu.Snacks.Item.Schema.parse({ id: snacksItem.id, ...snacksItem.data() });
     }
 
     public static async getOrders() {
-        const ordersData = await getDocs(query(collection(db, "orders"), orderBy("date")));
-        ordersData.docs.map((order) => {
-            console.log(order.data());
-            // return {
-            //     id: order.id,
-            //     category: order.data().category,
-            //     name: order.data().name,
-            //     price: order.data().price,
-            //     minimumAddOns: order.data().minimumAddOns
-            // };
+        const ordersData = await getDocs(query(collection(db, "orders"), orderBy("date", "desc")));
+        const orders = ordersData.docs.map((order) => {
+            return {
+                id: order.id,
+                ...order.data(),
+                date: (order.data().date as Timestamp).toDate()
+            };
         });
+        const validatedOrders = Order.Schema.array().parse(orders);
+        const joinedItems = Order.Items.Frontend.Schema.parse({
+            rice: [],
+            noodles: [],
+            snacks: []
+        });
+
+        for (const order of validatedOrders) {
+            for (const riceItem of order.items.rice) {
+                joinedItems.rice.push({
+                    item: await FirestoreService._getRiceItemById(riceItem.id),
+                    addOn: riceItem.addOn !== null ? await FirestoreService._getRiceItemById(riceItem.addOn) : riceItem.addOn,
+                    toUdon: riceItem.toUdon,
+                    quantity: riceItem.quantity
+                });
+            }
+            for (const noodlesItem of order.items.noodles) {
+                joinedItems.noodles.push({
+                    item: await FirestoreService._getNoodlesItemById(noodlesItem.id),
+                    addOns: await Promise.all(noodlesItem.addOns.map(async (addOn) => await FirestoreService._getNoodlesItemById(addOn))),
+                    quantity: noodlesItem.quantity
+                });
+            }
+            for (const snacksItem of order.items.snacks) {
+                joinedItems.snacks.push({
+                    item: await FirestoreService._getSnacksItemById(snacksItem.id),
+                    quantity: snacksItem.quantity
+                });
+            }
+        }
+        const validatedOrdersWithJoinedItems = validatedOrders.map((order) => ({ ...order, items: joinedItems }));
+        return Order.Frontend.Form.Schema.array().parse(validatedOrdersWithJoinedItems);
     }
 
     // public async test() {
