@@ -1,18 +1,19 @@
 "use client";
 
+import { OrderApi } from "@/api/Order";
 import InputContainer from "@/components/InputContainer";
 import Loading from "@/components/Loading";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
 import { useOrderFormData, useSetOrderFormData } from "@/contexts/OrderFormContextProvider";
 import { General } from "@/schemas/General";
+import FirestoreService from "@/services/FirestoreService";
+import { Tools } from "@/tools/Tools";
 import { IconAlertTriangleFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EmptyCartModal from "../EmptyCartModal";
 import AddressInput from "./AddressInput";
-import { Tools } from "@/tools/Tools";
-import FirestoreService from "@/services/FirestoreService";
 
 export default function Form() {
     const router = useRouter();
@@ -42,25 +43,15 @@ export default function Form() {
 
             if (orderFormData) {
                 const transformedData = Tools.Frontend.transformOrderFormData(orderFormData);
-                const createdOrderOd = await FirestoreService.getInstance().createOrder(transformedData);
-                if (createdOrderOd) {
-                    fetch("/order/api", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ orderId: createdOrderOd, orderFormData })
-                    });
+                const createdOrderId = await FirestoreService.createOrder(transformedData);
+                if (createdOrderId) {
+                    await OrderApi.sendEmail(createdOrderId, orderFormData);
                 }
                 router.push("/order/success");
             }
         } catch (error) {
             setIsLoading(false);
-            if (error instanceof Error) {
-                setErrorMessage(error.message);
-            } else {
-                setErrorMessage("落單唔成功，請試多次！");
-            }
+            setErrorMessage("落單唔成功，請試多次！");
         }
     }
 

@@ -6,9 +6,9 @@ import { Menu } from "@/schemas/Menu";
 import FirestoreService from "@/services/FirestoreService";
 
 export default async function MainMenu() {
-    const riceMenu = await FirestoreService.getInstance().getRiceMenu();
-    const snacksMenu = await FirestoreService.getInstance().getSnacksMenu();
-    const noodlesMenu = await FirestoreService.getInstance().getNoodlesMenu();
+    const riceMenu = await FirestoreService.getRiceMenu();
+    const snacksMenu = await FirestoreService.getSnacksMenu();
+    const noodlesMenu = await FirestoreService.getNoodlesMenu();
 
     return (
         <Tab

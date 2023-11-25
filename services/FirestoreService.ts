@@ -5,39 +5,28 @@ import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore"
 import { ZodError } from "zod";
 
 export default class FirestoreService {
-    private static instance: FirestoreService;
-
-    private constructor() {}
-
-    public static getInstance(): FirestoreService {
-        if (!FirestoreService.instance) {
-            FirestoreService.instance = new FirestoreService();
-        }
-        return FirestoreService.instance;
-    }
-
-    public async getRiceMenu(): Promise<Menu.Rice.Item.Type[]> {
+    public static async getRiceMenu(): Promise<Menu.Rice.Item.Type[]> {
         const riceData = await getDocs(query(collection(db, "rice"), orderBy("price")));
         const riceMenu = riceData.docs.map((rice) => ({ id: rice.id, ...rice.data() }));
         const validatedRiceMenu = Menu.Rice.Item.Schema.array().parse(riceMenu);
         return validatedRiceMenu;
     }
 
-    public async getSnacksMenu(): Promise<Menu.Snacks.Item.Type[]> {
+    public static async getSnacksMenu(): Promise<Menu.Snacks.Item.Type[]> {
         const snacksData = await getDocs(query(collection(db, "snacks"), orderBy("price")));
         const snacksMenu = snacksData.docs.map((snack) => ({ id: snack.id, ...snack.data() }));
         const validatedSnacksMenu = Menu.Snacks.Item.Schema.array().parse(snacksMenu);
         return validatedSnacksMenu;
     }
 
-    public async getNoodlesMenu(): Promise<Menu.Noodles.Item.Type[]> {
+    public static async getNoodlesMenu(): Promise<Menu.Noodles.Item.Type[]> {
         const noodlesData = await getDocs(query(collection(db, "noodles"), orderBy("price")));
         const noodlesMenu = noodlesData.docs.map((noodles) => ({ id: noodles.id, ...noodles.data() }));
         const validatedNoodlesMenu = Menu.Noodles.Item.Schema.array().parse(noodlesMenu);
         return validatedNoodlesMenu;
     }
 
-    public async getOrders() {
+    public static async getOrders() {
         const ordersData = await getDocs(query(collection(db, "orders"), orderBy("date")));
         ordersData.docs.map((order) => {
             console.log(order.data());
@@ -60,7 +49,7 @@ export default class FirestoreService {
     //     }
     // }
 
-    public async createOrder(orderFormData: Order.Frontend.Write.Type) {
+    public static async createOrder(orderFormData: Order.Frontend.Write.Type) {
         try {
             const validatedOrderFormData = Order.Frontend.Write.Schema.parse(orderFormData);
             const collectionRef = collection(db, "orders");
@@ -68,9 +57,11 @@ export default class FirestoreService {
             return createdOrder.id;
         } catch (error) {
             if (error instanceof ZodError) {
+                console.error("FirestoreService createOrder ZodError", error.issues);
                 const [firstError] = error.issues;
                 throw new Error(firstError.message);
             } else {
+                console.error("FirestoreService createOrder ZodError", error);
                 throw new Error("落單唔成功，請試多次！");
             }
         }

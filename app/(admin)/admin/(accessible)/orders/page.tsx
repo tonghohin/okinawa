@@ -1,7 +1,7 @@
 import FirestoreService from "@/services/FirestoreService";
 
 export default function AdminOrders() {
-    const orders = FirestoreService.getInstance().getOrders();
+    const orders = FirestoreService.getOrders();
 
     return <div>AdminOrders</div>;
 }

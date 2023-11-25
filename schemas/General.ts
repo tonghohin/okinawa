@@ -21,4 +21,13 @@ export namespace General {
 
         export const State = Schema.parse({});
     }
+
+    export namespace Response {
+        export const Schema = z.object({
+            success: z.boolean().readonly(),
+            message: z.coerce.string().trim().nullable().readonly()
+        });
+
+        export type Type = z.infer<typeof Schema>;
+    }
 }
