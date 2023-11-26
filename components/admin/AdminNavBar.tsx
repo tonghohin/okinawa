@@ -16,9 +16,6 @@ export default function AdminNavBar() {
                     沖繩味之賞 Admin
                 </Link>
                 <div className="flex items-center gap-4">
-                    <Link href="/admin/menu" className={`${pathname === "/admin/menu" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
-                        整Menu
-                    </Link>
                     <Link href="/admin/orders" className={`${pathname === "/admin/orders" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
                         睇Order
                     </Link>

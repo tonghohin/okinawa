@@ -1,3 +1,4 @@
+import { Utilities } from "@/Utilities/Utilities";
 import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import { Body, Column, Container, Font, Head, Hr, Html, Link, Preview, Row, Tailwind } from "@react-email/components";
@@ -35,7 +36,7 @@ export default function OrderConfirmation({ orderId, order }: OrderConfirmationP
                             <Hr className="border-yellow-500" />
                             <p>訂單編號：#{orderId}</p>
                             <p>訂單日期：{order.date.toLocaleDateString()}</p>
-                            {order.delivery && order.address ? <p>送餐地址：{Object.values(order.address).join(" ")}</p> : <p>自取地址：葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</p>}
+                            {order.delivery && order.address ? <p>送餐地址：{Utilities.getAddressLine(order.address)}</p> : <p>自取地址：葵涌 梨木道32-50號 金運工業大廈 第二座 Foodie City</p>}
                             {order.comments && <p>備註：{order.comments}</p>}
                         </section>
                         <section className="p-4">

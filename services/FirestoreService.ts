@@ -1,7 +1,8 @@
+import { Utilities } from "@/Utilities/Utilities";
 import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
-import { Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { ZodError } from "zod";
 
 export default class FirestoreService {
@@ -39,7 +40,7 @@ export default class FirestoreService {
     }
 
     public static async getOrders() {
-        const ordersData = await getDocs(query(collection(db, "orders"), orderBy("date", "desc")));
+        const ordersData = await getDocs(query(collection(db, "orders"), where("date", ">=", Timestamp.fromDate(Utilities.getToday())), orderBy("date", "desc")));
         const orders = ordersData.docs.map((order) => {
             return {
                 id: order.id,
@@ -48,13 +49,16 @@ export default class FirestoreService {
             };
         });
         const validatedOrders = Order.Schema.array().parse(orders);
-        const joinedItems = Order.Items.Frontend.Schema.parse({
-            rice: [],
-            noodles: [],
-            snacks: []
-        });
+
+        const ordersWithJoinedItems = [];
 
         for (const order of validatedOrders) {
+            const joinedItems = Order.Items.Frontend.Schema.parse({
+                rice: [],
+                noodles: [],
+                snacks: []
+            });
+
             for (const riceItem of order.items.rice) {
                 joinedItems.rice.push({
                     item: await FirestoreService._getRiceItemById(riceItem.id),
@@ -76,9 +80,9 @@ export default class FirestoreService {
                     quantity: snacksItem.quantity
                 });
             }
+            ordersWithJoinedItems.push({ ...order, items: joinedItems });
         }
-        const validatedOrdersWithJoinedItems = validatedOrders.map((order) => ({ ...order, items: joinedItems }));
-        return Order.Frontend.Form.Schema.array().parse(validatedOrdersWithJoinedItems);
+        return Order.Frontend.Form.Schema.array().parse(ordersWithJoinedItems);
     }
 
     // public async test() {
