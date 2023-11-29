@@ -11,11 +11,11 @@ export default function Total() {
 
     return (
         totalNumberOfItems > 0 && (
-            <ChipLink href="/order/cart" className="bg-sky-700 text-neutral-50 self-center">
-                <IconShoppingCart size={24} />
-                <span>${orderFormData?.total || 0}</span>
+            <ChipLink href="/order/cart" className="bg-sky-700 self-center">
+                <IconShoppingCart size={24} color="#fafafa" />
+                <span className="text-neutral-50">${orderFormData?.total || 0}</span>
                 <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-900 text-neutral-50">
-                    <span>{totalNumberOfItems}</span>
+                    <span className="text-neutral-50">{totalNumberOfItems}</span>
                 </div>
             </ChipLink>
         )

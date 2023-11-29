@@ -107,8 +107,8 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
                             </BigCircleButton>
                         </div>
                         <ChipButton className="self-center bg-sky-700" onClick={handleAddToCart} disabled={!isValidOrder}>
-                            <span>加落購物車</span>
-                            <span>${Tools.Frontend.getOrderSubtotal(riceOrderFormData) || rice.price}</span>
+                            <span className="text-neutral-50">加落購物車</span>
+                            <span className="text-neutral-50">${Tools.Frontend.getOrderSubtotal(riceOrderFormData) || rice.price}</span>
                         </ChipButton>
                     </Section>
                 </Modal>

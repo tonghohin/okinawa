@@ -20,8 +20,8 @@ export default function OrderFormItem({ orderItem, orderItemCategory, setIsModal
             <span>{orderItem.name}</span>
             <div className="flex items-center gap-4">
                 {itemCount > 0 && (
-                    <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-700/80 text-neutral-50">
-                        <span>{itemCount}</span>
+                    <div className="flex items-center justify-center w-6 h-6 text-xs rounded-full bg-sky-700/80">
+                        <span className="text-neutral-50">{itemCount}</span>
                     </div>
                 )}
                 <span>${orderItem.price}</span>

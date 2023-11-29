@@ -77,16 +77,16 @@ export default function ShoppingCartItem({ index, category, orderItem, editable,
                         <span className="flex gap-2 rounded-full px-2 py-1 border border-yellow-500">
                             {orderItem.quantity === 1 ? (
                                 <button type="button" className="hover:bg-yellow-500 rounded-full" onClick={() => handleQuantityChange(false)}>
-                                    <IconTrash className="text-yellow-800" size={24} />
+                                    <IconTrash color="#854d0e" size={24} />
                                 </button>
                             ) : (
                                 <button type="button" className="hover:bg-yellow-500 rounded-full">
-                                    <IconMinus className="text-yellow-800" size={24} onClick={() => handleQuantityChange(false)} />
+                                    <IconMinus color="#854d0e" size={24} onClick={() => handleQuantityChange(false)} />
                                 </button>
                             )}
                             <span>{orderItem.quantity}</span>
                             <button type="button" className="hover:bg-yellow-500 rounded-full">
-                                <IconPlus className="text-yellow-800" size={24} onClick={() => handleQuantityChange(true)} />
+                                <IconPlus color="#854d0e" size={24} onClick={() => handleQuantityChange(true)} />
                             </button>
                         </span>
                     ) : (

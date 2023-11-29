@@ -107,6 +107,12 @@ export namespace Order {
 
     export type Type = z.infer<typeof Schema>;
 
+    export namespace Partial {
+        export const Schema = Order.Schema.partial();
+
+        export type Type = z.infer<typeof Schema>;
+    }
+
     export namespace Frontend {
         export namespace Form {
             export const Schema = Order.Schema.extend({

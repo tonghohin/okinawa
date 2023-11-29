@@ -1,5 +1,6 @@
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
+import FirestoreService from "@/services/FirestoreService";
 import { notDeepStrictEqual } from "assert";
 
 export namespace Tools {
@@ -149,6 +150,43 @@ export namespace Tools {
                     quantity: snacksOrderItem.quantity
                 };
             });
+        }
+
+        export async function transformOrderFromBackend(orderData: Order.Type[]) {
+            const ordersWithJoinedItems = [];
+
+            for (const order of orderData) {
+                const joinedItems = Order.Items.Frontend.Schema.parse({
+                    rice: [],
+                    noodles: [],
+                    snacks: []
+                });
+
+                for (const riceItem of order.items.rice) {
+                    joinedItems.rice.push({
+                        item: await FirestoreService.getRiceItemById(riceItem.id),
+                        addOn: riceItem.addOn !== null ? await FirestoreService.getRiceItemById(riceItem.addOn) : riceItem.addOn,
+                        toUdon: riceItem.toUdon,
+                        quantity: riceItem.quantity
+                    });
+                }
+                for (const noodlesItem of order.items.noodles) {
+                    joinedItems.noodles.push({
+                        item: await FirestoreService.getNoodlesItemById(noodlesItem.id),
+                        addOns: await Promise.all(noodlesItem.addOns.map(async (addOn) => await FirestoreService.getNoodlesItemById(addOn))),
+                        quantity: noodlesItem.quantity
+                    });
+                }
+                for (const snacksItem of order.items.snacks) {
+                    joinedItems.snacks.push({
+                        item: await FirestoreService.getSnacksItemById(snacksItem.id),
+                        quantity: snacksItem.quantity
+                    });
+                }
+                ordersWithJoinedItems.push({ ...order, items: joinedItems });
+            }
+
+            return Order.Frontend.Form.Schema.array().parse(ordersWithJoinedItems);
         }
     }
 

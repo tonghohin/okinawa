@@ -20,7 +20,7 @@ export default function ShoppingCartSection({ category, editable, preservedOrder
         orderFormData &&
         !!orderItems?.length && (
             <section className="bg-yellow-400 p-4 flex flex-col gap-4">
-                <h1 className="text-lg border-b border-yellow-600 flex justify-between">
+                <h1 className="border-b border-yellow-600 flex justify-between">
                     <span>{Menu.Categories.Mapping[category]}</span>
                     <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, category)} </span>
                 </h1>

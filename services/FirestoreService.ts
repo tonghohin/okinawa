@@ -1,8 +1,8 @@
-import { Utilities } from "@/Utilities/Utilities";
 import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
-import { Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
+import { Tools } from "@/tools/Tools";
+import { Timestamp, addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { ZodError } from "zod";
 
 export default class FirestoreService {
@@ -24,23 +24,23 @@ export default class FirestoreService {
         return Menu.Noodles.Item.Schema.array().parse(noodlesMenu);
     }
 
-    private static async _getRiceItemById(riceItemId: string) {
+    public static async getRiceItemById(riceItemId: string) {
         const riceItem = await getDoc(doc(db, "rice", riceItemId));
         return Menu.Rice.Item.Schema.parse({ id: riceItem.id, ...riceItem.data() });
     }
 
-    private static async _getNoodlesItemById(noodlesItemId: string) {
+    public static async getNoodlesItemById(noodlesItemId: string) {
         const noodlesItem = await getDoc(doc(db, "noodles", noodlesItemId));
         return Menu.Noodles.Item.Schema.parse({ id: noodlesItem.id, ...noodlesItem.data() });
     }
 
-    private static async _getSnacksItemById(snacksItemId: string) {
+    public static async getSnacksItemById(snacksItemId: string) {
         const snacksItem = await getDoc(doc(db, "snacks", snacksItemId));
         return Menu.Snacks.Item.Schema.parse({ id: snacksItem.id, ...snacksItem.data() });
     }
 
-    public static async getOrders() {
-        const ordersData = await getDocs(query(collection(db, "orders"), where("date", ">=", Timestamp.fromDate(Utilities.getToday())), orderBy("date", "desc")));
+    public static async getOldOrders() {
+        const ordersData = await getDocs(query(collection(db, "orders"), where("delivered", "==", true), orderBy("date", "desc")));
         const orders = ordersData.docs.map((order) => {
             return {
                 id: order.id,
@@ -49,40 +49,8 @@ export default class FirestoreService {
             };
         });
         const validatedOrders = Order.Schema.array().parse(orders);
-
-        const ordersWithJoinedItems = [];
-
-        for (const order of validatedOrders) {
-            const joinedItems = Order.Items.Frontend.Schema.parse({
-                rice: [],
-                noodles: [],
-                snacks: []
-            });
-
-            for (const riceItem of order.items.rice) {
-                joinedItems.rice.push({
-                    item: await FirestoreService._getRiceItemById(riceItem.id),
-                    addOn: riceItem.addOn !== null ? await FirestoreService._getRiceItemById(riceItem.addOn) : riceItem.addOn,
-                    toUdon: riceItem.toUdon,
-                    quantity: riceItem.quantity
-                });
-            }
-            for (const noodlesItem of order.items.noodles) {
-                joinedItems.noodles.push({
-                    item: await FirestoreService._getNoodlesItemById(noodlesItem.id),
-                    addOns: await Promise.all(noodlesItem.addOns.map(async (addOn) => await FirestoreService._getNoodlesItemById(addOn))),
-                    quantity: noodlesItem.quantity
-                });
-            }
-            for (const snacksItem of order.items.snacks) {
-                joinedItems.snacks.push({
-                    item: await FirestoreService._getSnacksItemById(snacksItem.id),
-                    quantity: snacksItem.quantity
-                });
-            }
-            ordersWithJoinedItems.push({ ...order, items: joinedItems });
-        }
-        return Order.Frontend.Form.Schema.array().parse(ordersWithJoinedItems);
+        const ordersWithJoinedItems = await Tools.Frontend.transformOrderFromBackend(validatedOrders);
+        return ordersWithJoinedItems;
     }
 
     // public async test() {
@@ -93,6 +61,23 @@ export default class FirestoreService {
     //         await updateDoc(doc(collectionRef, noodles.id), { minimumAddOns: 0 });
     //     }
     // }
+
+    public static async updateOrder(orderId: string, fieldsToUpdate: Order.Partial.Type) {
+        try {
+            const validatedFieldsToUpdate = Order.Partial.Schema.parse(fieldsToUpdate);
+            const orderRef = doc(db, "orders", orderId);
+            const updateOrder = await updateDoc(orderRef, validatedFieldsToUpdate);
+        } catch (error) {
+            if (error instanceof ZodError) {
+                console.error("FirestoreService updateOrder ZodError", error.issues);
+                const [firstError] = error.issues;
+                throw new Error(firstError.message);
+            } else {
+                console.error("FirestoreService updateOrder", error);
+                throw new Error("請試多次！");
+            }
+        }
+    }
 
     public static async createOrder(orderFormData: Order.Frontend.Write.Type) {
         try {
@@ -106,7 +91,7 @@ export default class FirestoreService {
                 const [firstError] = error.issues;
                 throw new Error(firstError.message);
             } else {
-                console.error("FirestoreService createOrder ZodError", error);
+                console.error("FirestoreService createOrder", error);
                 throw new Error("落單唔成功，請試多次！");
             }
         }
