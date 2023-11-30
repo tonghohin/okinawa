@@ -13,7 +13,7 @@ export default function NewOrders() {
     const [orders, setOrders] = useState(Order.Frontend.Form.Schema.array().parse([]));
 
     useEffect(() => {
-        onSnapshot(query(collection(db, "orders"), where("delivered", "==", false), orderBy("date", "desc"), limit(5)), async (snapshot) => {
+        const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", false), orderBy("date", "desc"), limit(5)), async (snapshot) => {
             const orders = snapshot.docs.map((order) => {
                 return {
                     id: order.id,
@@ -25,7 +25,20 @@ export default function NewOrders() {
             const ordersWithJoinedItems = await Tools.Frontend.transformOrderFromBackend(validatedOrders);
             setOrders(ordersWithJoinedItems);
         });
+        return () => unsubscribe();
     }, []);
 
-    return <Section padding>{orders.length === 0 ? <Skeleton /> : orders.map((order) => <OrderCard key={order.id} order={order} />)}</Section>;
+    return (
+        <Section padding>
+            {orders.length === 0 ? (
+                <>
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                </>
+            ) : (
+                orders.map((order) => <OrderCard key={order.id} order={order} />)
+            )}
+        </Section>
+    );
 }
