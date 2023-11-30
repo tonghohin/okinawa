@@ -17,10 +17,10 @@ export default function AdminNavBar() {
                 </Link>
                 <div className="flex items-center gap-4">
                     <Link href="/admin/orders/old" className={`${pathname === "/admin/orders/old" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
-                        睇舊Order
+                        舊Order
                     </Link>
                     <Link href="/admin/orders" className={`${pathname === "/admin/orders" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
-                        睇新Order
+                        新Order
                     </Link>
                     <ChipButton className="bg-yellow-700" onClick={logOut}>
                         登出

@@ -41,7 +41,7 @@ export default function Orders({ isOld }: OrdersProps) {
                     <Skeleton />
                 </>
             ) : (
-                orders.map((order) => <OrderCard key={order.id} order={order} completed={isOld} />)
+                orders.map((order) => <OrderCard key={order.id} order={order} setOrders={setOrders} completed={isOld} />)
             )}
         </Section>
     );

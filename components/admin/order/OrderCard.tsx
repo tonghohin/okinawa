@@ -1,15 +1,29 @@
 import { Utilities } from "@/Utilities/Utilities";
 import Accordion from "@/components/Accordion";
+import ChipButton from "@/components/ChipButton";
+import Loading from "@/components/Loading";
 import ShoppingCartSection from "@/components/public/order/cart/ShoppingCartSection";
 import { Order } from "@/schemas/Order";
-import CompleteOrder from "./CompleteOrder";
+import FirestoreService from "@/services/FirestoreService";
+import { useState } from "react";
 
 interface OrderCardProps {
     order: Order.Frontend.Form.Type;
+    setOrders: React.Dispatch<React.SetStateAction<Order.Frontend.Form.Type[]>>;
     completed: boolean;
 }
 
-export default function OrderCard({ order, completed }: OrderCardProps) {
+export default function OrderCard({ order, setOrders, completed }: OrderCardProps) {
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    async function handleCompleteOrder() {
+        if (order.id) {
+            setIsDeleting(true);
+            await FirestoreService.updateOrder(order.id, { delivered: true });
+            setOrders((prevOrders) => prevOrders.filter((prevOrder) => prevOrder.id !== order.id));
+        }
+    }
+
     return (
         <section className={`flex flex-col gap-4 bg-yellow-500 rounded p-4 ${order.delivered && "opacity-60"}`}>
             <p className="flex justify-between">
@@ -34,7 +48,11 @@ export default function OrderCard({ order, completed }: OrderCardProps) {
             {/* <ChipLink href={`/admin/orders/${order.id}`} className="bg-yellow-600">
                 更改訂單
             </ChipLink> */}
-            {!completed && order.id && <CompleteOrder orderId={order.id} />}
+            {!completed && order.id && (
+                <ChipButton className="bg-green-700" onClick={handleCompleteOrder}>
+                    {isDeleting ? <Loading /> : <span>完成訂單</span>}
+                </ChipButton>
+            )}
         </section>
     );
 }
