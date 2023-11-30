@@ -31,9 +31,9 @@ export default function OrderCard({ order }: OrderCardProps) {
                 <ShoppingCartSection category="noodles" preservedOrderFormData={order} />
                 <ShoppingCartSection category="snacks" preservedOrderFormData={order} />
             </Accordion>
-            <ChipLink href={`/admin/orders/${order.id}`} className="bg-yellow-600">
+            {/* <ChipLink href={`/admin/orders/${order.id}`} className="bg-yellow-600">
                 更改訂單
-            </ChipLink>
+            </ChipLink> */}
             {order.id && <CompleteOrder orderId={order.id} />}
         </section>
     );
