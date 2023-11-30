@@ -9,11 +9,15 @@ import { Timestamp, collection, limit, onSnapshot, orderBy, query, where } from 
 import { useEffect, useState } from "react";
 import OrderCard from "./OrderCard";
 
-export default function NewOrders() {
+interface OrdersProps {
+    isOld: boolean;
+}
+
+export default function Orders({ isOld }: OrdersProps) {
     const [orders, setOrders] = useState(Order.Frontend.Form.Schema.array().parse([]));
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", false), orderBy("date", "desc"), limit(5)), async (snapshot) => {
+        const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", isOld), orderBy("date", "desc"), limit(5)), async (snapshot) => {
             const orders = snapshot.docs.map((order) => {
                 return {
                     id: order.id,
@@ -37,7 +41,7 @@ export default function NewOrders() {
                     <Skeleton />
                 </>
             ) : (
-                orders.map((order) => <OrderCard key={order.id} order={order} completed={false} />)
+                orders.map((order) => <OrderCard key={order.id} order={order} completed={isOld} />)
             )}
         </Section>
     );

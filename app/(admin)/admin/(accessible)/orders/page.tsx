@@ -1,5 +1,5 @@
-import NewOrders from "@/components/admin/order/NewOrders";
+import Orders from "@/components/admin/order/Orders";
 
 export default async function AdminOrders() {
-    return <NewOrders />;
+    return <Orders isOld={false} />;
 }
