@@ -8,7 +8,7 @@ export default async function OldOrders() {
     return (
         <Section padding>
             {oldOrders.map((order) => (
-                <OrderCard key={order.id} order={order} />
+                <OrderCard key={order.id} order={order} completed={true} />
             ))}
         </Section>
     );

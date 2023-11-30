@@ -37,7 +37,7 @@ export default function NewOrders() {
                     <Skeleton />
                 </>
             ) : (
-                orders.map((order) => <OrderCard key={order.id} order={order} />)
+                orders.map((order) => <OrderCard key={order.id} order={order} completed={false} />)
             )}
         </Section>
     );
