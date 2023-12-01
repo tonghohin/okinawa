@@ -14,21 +14,35 @@ interface OrdersProps {
 }
 
 export default function Orders({ isOld }: OrdersProps) {
+    const [newOrderId, setNewOrderId] = useState<string[]>([]);
     const [orders, setOrders] = useState(Order.Frontend.Form.Schema.array().parse([]));
 
     useEffect(() => {
         const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", isOld), orderBy("date", "desc"), limit(5)), async (snapshot) => {
-            const orders = snapshot.docs.map((order) => {
-                return {
-                    id: order.id,
-                    ...order.data(),
-                    date: (order.data().date as Timestamp).toDate()
-                };
-            });
-            const validatedOrders = Order.Schema.array().parse(orders);
+            const newOrders = [];
+            const ordersData = [];
+
+            for (const order of snapshot.docChanges()) {
+                if (!isOld) {
+                    if (order.type === "added") {
+                        newOrders.push(order.doc.id);
+                    }
+                }
+
+                ordersData.push({
+                    id: order.doc.id,
+                    ...order.doc.data(),
+                    date: (order.doc.data().date as Timestamp).toDate()
+                });
+            }
+
+            setNewOrderId(newOrders);
+
+            const validatedOrders = Order.Schema.array().parse(ordersData);
             const ordersWithJoinedItems = await Tools.Frontend.transformOrderFromBackend(validatedOrders);
-            setOrders(ordersWithJoinedItems);
+            setOrders((prevOrders) => [...ordersWithJoinedItems, ...prevOrders]);
         });
+
         return () => unsubscribe();
     }, []);
 
@@ -41,7 +55,7 @@ export default function Orders({ isOld }: OrdersProps) {
                     <Skeleton />
                 </>
             ) : (
-                orders.map((order) => <OrderCard key={order.id} order={order} setOrders={setOrders} completed={isOld} />)
+                orders.map((order) => <OrderCard key={order.id} order={order} setOrders={setOrders} completed={isOld} newOrderId={newOrderId} />)
             )}
         </Section>
     );

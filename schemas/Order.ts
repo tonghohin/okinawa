@@ -99,7 +99,6 @@ export namespace Order {
         total: z.coerce.number().finite().safe().min(1).default(0),
         delivery: z.boolean().default(false),
         address: General.Address.Schema.nullable().default(null),
-        // date: z.coerce.date().min(new Date(), { message: "回到未來" }).default(new Date()),
         date: z.coerce.date().default(new Date()),
         comments: z.string().trim().nullable().default(null),
         delivered: z.boolean().default(false)

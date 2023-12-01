@@ -43,7 +43,7 @@ export default function Form() {
             setIsLoading(true);
 
             if (orderFormData) {
-                const transformedData = Tools.Frontend.transformOrderFormData(orderFormData);
+                const transformedData = Tools.Frontend.transformOrderFormData({ ...orderFormData, date: new Date() });
                 const createdOrderId = await FirestoreService.createOrder(transformedData);
                 if (createdOrderId) {
                     await OrderApi.sendEmail(createdOrderId, orderFormData);
