@@ -6,9 +6,9 @@ import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import EmptyCartModal from "../EmptyCartModal";
 
 export default function ShoppingCart() {
-    const orderFormData = useOrderFormDataStore((state) => state.formData);
+    const orderFormDataTotal = useOrderFormDataStore((state) => state.formData.total);
 
-    return orderFormData?.total === 0 ? (
+    return orderFormDataTotal === 0 ? (
         <EmptyCartModal />
     ) : (
         <Section>

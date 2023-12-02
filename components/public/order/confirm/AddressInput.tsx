@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 
 export default function AddressInput() {
     const inputRef = useRef<HTMLInputElement>(null);
-    const orderFormData = useOrderFormDataStore((state) => state.formData);
+    const orderFormDataAddress = useOrderFormDataStore((state) => state.formData.address);
     const updateWholeAddress = useOrderFormDataStore((state) => state.updateWholeAddress);
     const updateAddress = useOrderFormDataStore((state) => state.updateAddress);
     const updateAddressRegion = useOrderFormDataStore((state) => state.updateAddressRegion);
@@ -110,33 +110,33 @@ export default function AddressInput() {
             <div className="flex gap-4 flex-wrap">
                 <InputContainer>
                     <label htmlFor="floor">樓層</label>
-                    <input type="text" id="floor" name="floor" required value={orderFormData.address?.floor || ""} onChange={updateAddress} />
+                    <input type="text" id="floor" name="floor" value={orderFormDataAddress?.floor || ""} onChange={updateAddress} />
                 </InputContainer>
                 <InputContainer>
                     <label htmlFor="flat">單位</label>
-                    <input type="text" id="flat" name="flat" required value={orderFormData.address?.flat || ""} onChange={updateAddress} />
+                    <input type="text" id="flat" name="flat" value={orderFormDataAddress?.flat || ""} onChange={updateAddress} />
                 </InputContainer>
             </div>
             <InputContainer>
                 <label htmlFor="building">大廈</label>
-                <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData.address?.building || ""} onChange={updateAddress} />
+                <input ref={inputRef} type="text" id="building" name="building" required value={orderFormDataAddress?.building || ""} onChange={updateAddress} />
             </InputContainer>
             <InputContainer>
                 <label htmlFor="street">街道</label>
-                <input type="text" id="street" name="street" required value={orderFormData.address?.street || ""} onChange={updateAddress} />
+                <input type="text" id="street" name="street" required value={orderFormDataAddress?.street || ""} onChange={updateAddress} />
             </InputContainer>
             <InputContainer>
                 <label htmlFor="district">地區</label>
-                <input type="text" id="district" name="district" required value={orderFormData.address?.district} onChange={updateAddress} />
+                <input type="text" id="district" name="district" required value={orderFormDataAddress?.district} onChange={updateAddress} />
             </InputContainer>
             <div className="flex gap-4">
-                <ToggleButton on={orderFormData.address?.region === "香港島"} onClick={() => updateAddressRegion("香港島")}>
+                <ToggleButton on={orderFormDataAddress?.region === "香港島"} onClick={() => updateAddressRegion("香港島")}>
                     香港島
                 </ToggleButton>
-                <ToggleButton on={orderFormData.address?.region === "九龍"} onClick={() => updateAddressRegion("九龍")}>
+                <ToggleButton on={orderFormDataAddress?.region === "九龍"} onClick={() => updateAddressRegion("九龍")}>
                     九龍
                 </ToggleButton>
-                <ToggleButton on={orderFormData.address?.region === "新界"} onClick={() => updateAddressRegion("新界")}>
+                <ToggleButton on={orderFormDataAddress?.region === "新界"} onClick={() => updateAddressRegion("新界")}>
                     新界
                 </ToggleButton>
             </div>

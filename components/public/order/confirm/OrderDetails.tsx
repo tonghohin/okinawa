@@ -7,21 +7,23 @@ import { useEffect, useRef } from "react";
 import EmptyCartModal from "../EmptyCartModal";
 
 export default function OrderDetails() {
-    const orderFormData = useOrderFormDataStore((state) => state.formData);
+    const orderFormDataTotal = useOrderFormDataStore((state) => state.formData.total);
+    const orderFormDataItems = useOrderFormDataStore((state) => state.formData.items);
     const resetFormData = useOrderFormDataStore((state) => state.resetFormData);
-    const preservedOrderFormData = useRef(orderFormData);
+    const preservedOrderFormDataItems = useRef(orderFormDataItems);
+    const preservedOrderFormDataTotal = useRef(orderFormDataTotal);
 
     useEffect(() => resetFormData(), []);
 
-    return preservedOrderFormData?.current?.total === 0 ? (
+    return preservedOrderFormDataTotal?.current === 0 ? (
         <EmptyCartModal />
     ) : (
         <div className="rounded border p-4 border-yellow-600 self-stretch">
             <Section noGap>
-                <h1 className="text-lg text-center underline">Total ${preservedOrderFormData?.current?.total}</h1>
-                <ShoppingCartSection category="rice" preservedOrderFormData={preservedOrderFormData?.current} />
-                <ShoppingCartSection category="noodles" preservedOrderFormData={preservedOrderFormData?.current} />
-                <ShoppingCartSection category="snacks" preservedOrderFormData={preservedOrderFormData?.current} />
+                <h1 className="text-lg text-center underline">Total ${preservedOrderFormDataTotal.current}</h1>
+                <ShoppingCartSection category="rice" preservedOrderFormDataItems={preservedOrderFormDataItems.current} />
+                <ShoppingCartSection category="noodles" preservedOrderFormDataItems={preservedOrderFormDataItems.current} />
+                <ShoppingCartSection category="snacks" preservedOrderFormDataItems={preservedOrderFormDataItems.current} />
             </Section>
         </div>
     );

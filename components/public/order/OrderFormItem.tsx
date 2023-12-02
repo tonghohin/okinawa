@@ -1,9 +1,7 @@
 import CircleButton from "@/components/CircleButton";
 import { Menu } from "@/schemas/Menu";
 import useOrderFormDataStore from "@/stores/orderFormDataStore";
-import { Tools } from "@/tools/Tools";
 import { IconPlus } from "@tabler/icons-react";
-import { useMemo } from "react";
 
 interface OrderFormItemProps {
     orderItem: Menu.Rice.Item.Type | Menu.Noodles.Item.Type | Menu.Snacks.Item.Type;
@@ -12,8 +10,7 @@ interface OrderFormItemProps {
 }
 
 export default function OrderFormItem({ orderItem, orderItemCategory, setIsModalOpen }: OrderFormItemProps) {
-    const orderFormData = useOrderFormDataStore((state) => state.formData);
-    const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, orderItemCategory, orderItem.id) : 0), [orderFormData]);
+    const itemCount = useOrderFormDataStore((state) => state.getItemCount(orderItemCategory, orderItem.id));
 
     return (
         <section className="flex gap-4 items-center justify-between border border-yellow-500 rounded p-2 cursor-pointer hover:bg-yellow-500 transition-all" onClick={() => setIsModalOpen(true)}>

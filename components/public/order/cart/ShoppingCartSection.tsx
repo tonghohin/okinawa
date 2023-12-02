@@ -9,20 +9,20 @@ import ShoppingCartItem from "./ShoppingCartItem";
 interface ShoppingCartSectionProps {
     category: Menu.Categories.Type;
     editable?: boolean;
-    preservedOrderFormData?: Order.Frontend.Form.Type;
+    preservedOrderFormDataItems?: Order.Items.Frontend.Type;
 }
 
-export default function ShoppingCartSection({ category, editable, preservedOrderFormData }: ShoppingCartSectionProps) {
-    const orderFormData = preservedOrderFormData || useOrderFormDataStore((state) => state.formData);
-    const orderItems = orderFormData?.items[category];
+export default function ShoppingCartSection({ category, editable, preservedOrderFormDataItems }: ShoppingCartSectionProps) {
+    const orderFormDataItems = preservedOrderFormDataItems || useOrderFormDataStore((state) => state.formData.items);
+    const totalByCategory = useOrderFormDataStore((state) => state.getTotalByCategory(category));
+    const orderItems = orderFormDataItems[category];
 
     return (
-        orderFormData &&
         !!orderItems?.length && (
             <section className="bg-yellow-400 p-4 flex flex-col gap-4">
                 <h1 className="border-b border-yellow-600 flex justify-between">
                     <span>{Menu.Categories.Mapping[category]}</span>
-                    <span>Subtotal: ${Tools.Frontend.getTotalByCategory(orderFormData, category)} </span>
+                    <span>Subtotal: ${totalByCategory} </span>
                 </h1>
                 {orderItems?.map((orderItem, index) => (
                     <ShoppingCartItem key={index} index={index} category={category} orderItem={orderItem} editable={editable}>

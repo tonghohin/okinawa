@@ -6,6 +6,10 @@ import { create } from "zustand";
 
 interface OrderFormDataState {
     formData: Order.Frontend.Form.Type;
+    getTotalNumberOfItems: () => number;
+    getItemCount: (category: Menu.Categories.Type, orderItemId: string) => number;
+    getTotalByCategory: (category: Menu.Categories.Type) => number;
+
     updateFormData: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     updateOrder: (order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) => void;
     updateOrderItemQuantity: (increment: boolean, index: number, category: Menu.Categories.Type) => void;
@@ -19,6 +23,10 @@ interface OrderFormDataState {
 
 const useOrderFormDataStore = create<OrderFormDataState>()((set, get) => ({
     formData: Order.Frontend.Form.State,
+    getTotalNumberOfItems: () => Tools.Frontend.getTotalNumberOfItems(get().formData),
+    getItemCount: (category, orderItemId) => Tools.Frontend.getNumberOfItems(get().formData.items, category, orderItemId),
+    getTotalByCategory: (category) => Tools.Frontend.getTotalByCategory(get().formData, category),
+
     updateFormData: (event) =>
         set((state) => ({
             formData: { ...state.formData, [event.target.name]: event.target.value }
