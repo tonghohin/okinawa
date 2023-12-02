@@ -2,10 +2,10 @@
 
 import Section from "@/components/Section";
 import Skeleton from "@/components/Skeleton";
-import { db } from "@/firebase/configuration";
 import { Order } from "@/schemas/Order";
+import FirebaseService from "@/services/FirebaseService";
 import { Tools } from "@/tools/Tools";
-import { Timestamp, collection, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { Timestamp, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import OrderCard from "./OrderCard";
 
@@ -18,7 +18,7 @@ export default function Orders({ isOld }: OrdersProps) {
     const [orders, setOrders] = useState(Order.Frontend.Form.Schema.array().parse([]));
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", isOld), orderBy("date", "desc")), async (snapshot) => {
+        const unsubscribe = onSnapshot(query(collection(FirebaseService.db, "orders"), where("delivered", "==", isOld), orderBy("date", "desc")), async (snapshot) => {
             const ordersData = snapshot.docs.map((order) => ({
                 id: order.id,
                 ...order.data(),

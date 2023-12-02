@@ -19,7 +19,7 @@ interface RiceOrderFormItemProps {
 }
 
 export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemProps) {
-    const updateRiceOrder = useOrderFormDataStore((state) => state.updateRiceOrder);
+    const updateOrder = useOrderFormDataStore((state) => state.updateOrder);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [riceOrderFormData, setRiceOrderFormData] = useState(Order.RiceItem.Frontend.State(rice));
@@ -51,7 +51,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     function handleAddToCart() {
         if (riceOrderFormData.quantity > 0) {
-            updateRiceOrder(riceOrderFormData);
+            updateOrder(riceOrderFormData, "rice");
         }
         setIsModalOpen(false);
         setRiceOrderFormData(Order.RiceItem.Frontend.State(rice));

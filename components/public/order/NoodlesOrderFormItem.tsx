@@ -19,7 +19,7 @@ interface NoodlesOrderFormItemProps {
 }
 
 export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFormItemProps) {
-    const updateNoodlesOrder = useOrderFormDataStore((state) => state.updateNoodlesOrder);
+    const updateOrder = useOrderFormDataStore((state) => state.updateOrder);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<Order.NoodlesItem.Frontend.Type>(Order.NoodlesItem.Frontend.State(noodles));
@@ -45,7 +45,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     function handleAddToCart() {
         if (noodlesOrderFormData.quantity > 0) {
-            updateNoodlesOrder(noodlesOrderFormData);
+            updateOrder(noodlesOrderFormData, "noodles");
         }
         setIsModalOpen(false);
         setNoodlesOrderFormData(Order.NoodlesItem.Frontend.State(noodles));

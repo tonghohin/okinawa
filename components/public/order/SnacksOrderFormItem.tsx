@@ -17,7 +17,7 @@ interface SnacksOrderFormItemProps {
 }
 
 export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps) {
-    const updateSnacksOrder = useOrderFormDataStore((state) => state.updateSnacksOrder);
+    const updateOrder = useOrderFormDataStore((state) => state.updateOrder);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [snacksOrderFormData, setSnacksOrderFormData] = useState<Order.SnacksItem.Frontend.Type>(Order.SnacksItem.Frontend.State(snack));
@@ -36,7 +36,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
 
     function handleAddToCart() {
         if (snacksOrderFormData.quantity > 0) {
-            updateSnacksOrder(snacksOrderFormData);
+            updateOrder(snacksOrderFormData, "snacks");
         }
         setIsModalOpen(false);
         setSnacksOrderFormData(Order.SnacksItem.Frontend.State(snack));

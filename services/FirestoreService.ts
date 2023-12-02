@@ -1,46 +1,46 @@
-import { db } from "@/firebase/configuration";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import { Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { ZodError } from "zod";
+import FirebaseService from "./FirebaseService";
 
 export default class FirestoreService {
     public static async getRiceMenu(): Promise<Menu.Rice.Item.Type[]> {
-        const riceData = await getDocs(query(collection(db, "rice"), orderBy("price")));
+        const riceData = await getDocs(query(collection(FirebaseService.db, "rice"), orderBy("price")));
         const riceMenu = riceData.docs.map((rice) => ({ id: rice.id, ...rice.data() }));
         return Menu.Rice.Item.Schema.array().parse(riceMenu);
     }
 
     public static async getSnacksMenu(): Promise<Menu.Snacks.Item.Type[]> {
-        const snacksData = await getDocs(query(collection(db, "snacks"), orderBy("price")));
+        const snacksData = await getDocs(query(collection(FirebaseService.db, "snacks"), orderBy("price")));
         const snacksMenu = snacksData.docs.map((snack) => ({ id: snack.id, ...snack.data() }));
         return Menu.Snacks.Item.Schema.array().parse(snacksMenu);
     }
 
     public static async getNoodlesMenu(): Promise<Menu.Noodles.Item.Type[]> {
-        const noodlesData = await getDocs(query(collection(db, "noodles"), orderBy("price")));
+        const noodlesData = await getDocs(query(collection(FirebaseService.db, "noodles"), orderBy("price")));
         const noodlesMenu = noodlesData.docs.map((noodles) => ({ id: noodles.id, ...noodles.data() }));
         return Menu.Noodles.Item.Schema.array().parse(noodlesMenu);
     }
 
     public static async getRiceItemById(riceItemId: string) {
-        const riceItem = await getDoc(doc(db, "rice", riceItemId));
+        const riceItem = await getDoc(doc(FirebaseService.db, "rice", riceItemId));
         return Menu.Rice.Item.Schema.parse({ id: riceItem.id, ...riceItem.data() });
     }
 
     public static async getNoodlesItemById(noodlesItemId: string) {
-        const noodlesItem = await getDoc(doc(db, "noodles", noodlesItemId));
+        const noodlesItem = await getDoc(doc(FirebaseService.db, "noodles", noodlesItemId));
         return Menu.Noodles.Item.Schema.parse({ id: noodlesItem.id, ...noodlesItem.data() });
     }
 
     public static async getSnacksItemById(snacksItemId: string) {
-        const snacksItem = await getDoc(doc(db, "snacks", snacksItemId));
+        const snacksItem = await getDoc(doc(FirebaseService.db, "snacks", snacksItemId));
         return Menu.Snacks.Item.Schema.parse({ id: snacksItem.id, ...snacksItem.data() });
     }
 
     public static async getOldOrders() {
-        const ordersData = await getDocs(query(collection(db, "orders"), where("delivered", "==", true), orderBy("date", "desc")));
+        const ordersData = await getDocs(query(collection(FirebaseService.db, "orders"), where("delivered", "==", true), orderBy("date", "desc")));
         const orders = ordersData.docs.map((order) => {
             return {
                 id: order.id,
@@ -56,7 +56,7 @@ export default class FirestoreService {
     public static async updateOrder(orderId: string, fieldsToUpdate: Order.Partial.Type) {
         try {
             const validatedFieldsToUpdate = Order.Partial.Schema.parse(fieldsToUpdate);
-            const orderRef = doc(db, "orders", orderId);
+            const orderRef = doc(FirebaseService.db, "orders", orderId);
             await updateDoc(orderRef, validatedFieldsToUpdate);
         } catch (error) {
             if (error instanceof ZodError) {
@@ -73,7 +73,7 @@ export default class FirestoreService {
     public static async createOrder(orderFormData: Order.Frontend.Write.Type) {
         try {
             const validatedOrderFormData = Order.Frontend.Write.Schema.parse(orderFormData);
-            const collectionRef = collection(db, "orders");
+            const collectionRef = collection(FirebaseService.db, "orders");
             const createdOrder = await addDoc(collectionRef, validatedOrderFormData);
             return createdOrder.id;
         } catch (error) {

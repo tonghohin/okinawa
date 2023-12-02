@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/contexts/admin/AuthContextProvider";
+import useAuthStore from "@/stores/authStore";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import Loading from "../Loading";
@@ -12,7 +12,14 @@ interface AuthGuardProps {
 
 export default function AuthGuard({ isAccessible, children }: AuthGuardProps) {
     const router = useRouter();
-    const { user, isPending } = useAuth();
+
+    const checkAuthState = useAuthStore((state) => state.checkAuthState);
+    const user = useAuthStore((state) => state.user);
+    const isPending = useAuthStore((state) => state.isPending);
+
+    useEffect(() => {
+        checkAuthState();
+    }, []);
 
     useEffect(() => {
         if (!isPending) {

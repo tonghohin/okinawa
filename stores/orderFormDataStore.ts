@@ -7,9 +7,7 @@ import { create } from "zustand";
 interface OrderFormDataState {
     formData: Order.Frontend.Form.Type;
     updateFormData: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    updateRiceOrder: (riceOrder: Order.RiceItem.Frontend.Type) => void;
-    updateNoodlesOrder: (noodlesOrder: Order.NoodlesItem.Frontend.Type) => void;
-    updateSnacksOrder: (snacksOrder: Order.SnacksItem.Frontend.Type) => void;
+    updateOrder: (order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) => void;
     updateOrderItemQuantity: (increment: boolean, index: number, category: Menu.Categories.Type) => void;
     updateTotal: () => void;
     updateDelivery: (isDelivery: boolean) => void;
@@ -22,50 +20,18 @@ interface OrderFormDataState {
 const useOrderFormDataStore = create<OrderFormDataState>()((set, get) => ({
     formData: Order.Frontend.Form.State,
     updateFormData: (event) =>
+        set((state) => ({
+            formData: { ...state.formData, [event.target.name]: event.target.value }
+        })),
+    updateOrder: (order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) => {
         set((state) => {
-            return {
-                formData: { ...state.formData, [event.target.name]: event.target.value }
-            };
-        }),
-    updateRiceOrder: (riceOrder: Order.RiceItem.Frontend.Type) => {
-        set((state) => {
-            const isSameOrderExists = Tools.Frontend.checkOrderExists(state.formData, riceOrder, "rice");
+            const isSameOrderExists = Tools.Frontend.checkOrderExists(state.formData, order, category);
             return {
                 formData: {
                     ...state.formData,
                     items: {
                         ...state.formData.items,
-                        rice: isSameOrderExists === false ? [...state.formData.items.rice, riceOrder] : state.formData.items.rice.map((riceOrderItem, index) => (index === isSameOrderExists ? { ...riceOrderItem, quantity: riceOrderItem.quantity + riceOrder.quantity } : riceOrderItem))
-                    }
-                }
-            };
-        });
-        get().updateTotal();
-    },
-    updateNoodlesOrder: (noodlesOrder: Order.NoodlesItem.Frontend.Type) => {
-        set((state) => {
-            const isSameOrderExists = Tools.Frontend.checkOrderExists(state.formData, noodlesOrder, "noodles");
-            return {
-                formData: {
-                    ...state.formData,
-                    items: {
-                        ...state.formData.items,
-                        noodles: isSameOrderExists === false ? [...state.formData.items.noodles, noodlesOrder] : state.formData.items.noodles.map((noodlesOrderItem, index) => (index === isSameOrderExists ? { ...noodlesOrderItem, quantity: noodlesOrderItem.quantity + noodlesOrder.quantity } : noodlesOrderItem))
-                    }
-                }
-            };
-        });
-        get().updateTotal();
-    },
-    updateSnacksOrder: (snacksOrder: Order.SnacksItem.Frontend.Type) => {
-        set((state) => {
-            const isSameOrderExists = Tools.Frontend.checkOrderExists(state.formData, snacksOrder, "snacks");
-            return {
-                formData: {
-                    ...state.formData,
-                    items: {
-                        ...state.formData.items,
-                        snacks: isSameOrderExists === false ? [...state.formData.items.snacks, snacksOrder] : state.formData.items.snacks.map((snacksOrderItem, index) => (index === isSameOrderExists ? { ...snacksOrderItem, quantity: snacksOrderItem.quantity + snacksOrder.quantity } : snacksOrderItem))
+                        [category]: isSameOrderExists === false ? [...state.formData.items[category], order] : state.formData.items[category].map((orderItem, index) => (index === isSameOrderExists ? { ...orderItem, quantity: orderItem.quantity + order.quantity } : orderItem))
                     }
                 }
             };
@@ -129,56 +95,44 @@ const useOrderFormDataStore = create<OrderFormDataState>()((set, get) => ({
         get().updateTotal();
     },
     updateTotal: () =>
-        set((state) => {
-            return {
-                formData: {
-                    ...state.formData,
-                    total: Tools.Frontend.getTotal(state.formData.items)
-                }
-            };
-        }),
+        set((state) => ({
+            formData: {
+                ...state.formData,
+                total: Tools.Frontend.getTotal(state.formData.items)
+            }
+        })),
     updateWholeAddress: (address) =>
-        set((state) => {
-            return {
-                formData: { ...state.formData, address: address }
-            };
-        }),
+        set((state) => ({
+            formData: { ...state.formData, address: address }
+        })),
     updateAddress: (event) =>
-        set((state) => {
-            return {
-                formData: state.formData.address
-                    ? {
-                          ...state.formData,
-                          address: {
-                              ...state.formData.address,
-                              [event.target.name]: event.target.value
-                          }
+        set((state) => ({
+            formData: state.formData.address
+                ? {
+                      ...state.formData,
+                      address: {
+                          ...state.formData.address,
+                          [event.target.name]: event.target.value
                       }
-                    : state.formData
-            };
-        }),
+                  }
+                : state.formData
+        })),
     updateAddressRegion: (regionName) =>
-        set((state) => {
-            return {
-                formData: state.formData.address ? { ...state.formData, address: { ...state.formData.address, region: regionName } } : state.formData
-            };
-        }),
+        set((state) => ({
+            formData: state.formData.address ? { ...state.formData, address: { ...state.formData.address, region: regionName } } : state.formData
+        })),
     updateDelivery: (isDelivery) =>
-        set((state) => {
-            return {
-                formData: {
-                    ...state.formData,
-                    delivery: isDelivery,
-                    address: isDelivery ? General.Address.State : null
-                }
-            };
-        }),
+        set((state) => ({
+            formData: {
+                ...state.formData,
+                delivery: isDelivery,
+                address: isDelivery ? General.Address.State : null
+            }
+        })),
     resetFormData: () =>
-        set(() => {
-            return {
-                formData: Order.Frontend.Form.State
-            };
-        })
+        set(() => ({
+            formData: Order.Frontend.Form.State
+        }))
 }));
 
 export default useOrderFormDataStore;

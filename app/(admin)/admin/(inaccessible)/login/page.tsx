@@ -3,7 +3,7 @@
 import InputContainer from "@/components/InputContainer";
 import Section from "@/components/Section";
 import SquareButton from "@/components/SquareButton";
-import { logIn } from "@/contexts/admin/AuthContextProvider";
+import FirebaseService from "@/services/FirebaseService";
 import { useState } from "react";
 
 export default function Login() {
@@ -22,7 +22,7 @@ export default function Login() {
     async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-            await logIn(formData);
+            await FirebaseService.logIn(formData);
         } catch (error) {
             if (error) {
                 setErrorMessage("Email/Password 唔啱喎");

@@ -1,6 +1,6 @@
 "use client";
 
-import { logOut } from "@/contexts/admin/AuthContextProvider";
+import FirebaseService from "@/services/FirebaseService";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ChipButton from "../ChipButton";
@@ -22,7 +22,7 @@ export default function AdminNavBar() {
                     <Link href="/admin/orders" className={`${pathname === "/admin/orders" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>
                         新Order
                     </Link>
-                    <ChipButton className="bg-yellow-700" onClick={logOut}>
+                    <ChipButton className="bg-yellow-700" onClick={FirebaseService.logOut}>
                         登出
                     </ChipButton>
                 </div>
