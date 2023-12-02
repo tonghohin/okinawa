@@ -6,30 +6,44 @@ import PulsingDot from "@/components/PulsingDot";
 import ShoppingCartSection from "@/components/public/order/cart/ShoppingCartSection";
 import { Order } from "@/schemas/Order";
 import FirestoreService from "@/services/FirestoreService";
+import { IconArrowBackUp } from "@tabler/icons-react";
 import { useState } from "react";
 
 interface OrderCardProps {
     order: Order.Frontend.Form.Type;
     setOrders: React.Dispatch<React.SetStateAction<Order.Frontend.Form.Type[]>>;
     completed: boolean;
-    newOrderId: string[];
 }
 
-export default function OrderCard({ order, setOrders, completed, newOrderId }: OrderCardProps) {
-    const [isDeleting, setIsDeleting] = useState(false);
+export default function OrderCard({ order, setOrders, completed }: OrderCardProps) {
+    const [isLoading, setIsLoading] = useState(false);
 
     async function handleCompleteOrder() {
         if (order.id) {
-            setIsDeleting(true);
+            setIsLoading(true);
             await FirestoreService.updateOrder(order.id, { delivered: true });
             setOrders((prevOrders) => prevOrders.filter((prevOrder) => prevOrder.id !== order.id));
+        }
+    }
+
+    async function handleRevertCompleteOrder() {
+        if (order.id) {
+            setIsLoading(true);
+            await FirestoreService.updateOrder(order.id, { delivered: false, read: false });
+            setOrders((prevOrders) => prevOrders.filter((prevOrder) => prevOrder.id !== order.id));
+        }
+    }
+
+    async function handleReadOrder() {
+        if (order.id && !order.read) {
+            await FirestoreService.updateOrder(order.id, { read: true });
         }
     }
 
     return (
         <section className={`flex flex-col gap-4 bg-yellow-500 rounded p-4 ${order.delivered && "opacity-60"}`}>
             <div className="flex justify-between items-center">
-                <p className="flex-1">{order.id && newOrderId.includes(order.id) && <PulsingDot />}</p>
+                <p className="flex-1">{!order.read && <PulsingDot />}</p>
                 <p className="flex gap-2">
                     <span>{order.date.toLocaleDateString()}</span>
                     <span>{order.date.toLocaleTimeString()}</span>
@@ -43,7 +57,7 @@ export default function OrderCard({ order, setOrders, completed, newOrderId }: O
             <p>Email: {order.email}</p>
             {order.address && <p>地址：{Utilities.getAddressLine(order.address)}</p>}
             <p>Total: ${order.total}</p>
-            <Accordion title="訂單詳情">
+            <Accordion title="訂單詳情" onOpen={handleReadOrder}>
                 <ShoppingCartSection category="rice" preservedOrderFormData={order} />
                 <ShoppingCartSection category="noodles" preservedOrderFormData={order} />
                 <ShoppingCartSection category="snacks" preservedOrderFormData={order} />
@@ -51,11 +65,16 @@ export default function OrderCard({ order, setOrders, completed, newOrderId }: O
             {/* <ChipLink href={`/admin/orders/${order.id}`} className="bg-yellow-600">
                 更改訂單
             </ChipLink> */}
-            {!completed && order.id && (
-                <ChipButton className="bg-green-700" onClick={handleCompleteOrder}>
-                    {isDeleting ? <Loading /> : <span>完成訂單</span>}
-                </ChipButton>
-            )}
+            {order.id &&
+                (!completed ? (
+                    <ChipButton className="bg-green-700" onClick={handleCompleteOrder}>
+                        {isLoading ? <Loading /> : <span>完成訂單</span>}
+                    </ChipButton>
+                ) : (
+                    <ChipButton className="bg-green-800" onClick={handleRevertCompleteOrder}>
+                        {isLoading ? <Loading /> : <IconArrowBackUp size={24} />}
+                    </ChipButton>
+                ))}
         </section>
     );
 }

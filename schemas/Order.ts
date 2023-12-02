@@ -101,7 +101,8 @@ export namespace Order {
         address: General.Address.Schema.nullable().default(null),
         date: z.coerce.date().default(new Date()),
         comments: z.string().trim().nullable().default(null),
-        delivered: z.boolean().default(false)
+        delivered: z.boolean().default(false),
+        read: z.boolean().default(false)
     });
 
     export type Type = z.infer<typeof Schema>;

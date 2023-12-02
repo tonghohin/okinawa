@@ -14,33 +14,20 @@ interface OrdersProps {
 }
 
 export default function Orders({ isOld }: OrdersProps) {
-    const [newOrderId, setNewOrderId] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [orders, setOrders] = useState(Order.Frontend.Form.Schema.array().parse([]));
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", isOld), orderBy("date", "desc"), limit(5)), async (snapshot) => {
-            const newOrders = [];
-            const ordersData = [];
-
-            for (const order of snapshot.docChanges()) {
-                if (!isOld) {
-                    if (order.type === "added") {
-                        newOrders.push(order.doc.id);
-                    }
-                }
-
-                ordersData.push({
-                    id: order.doc.id,
-                    ...order.doc.data(),
-                    date: (order.doc.data().date as Timestamp).toDate()
-                });
-            }
-
-            setNewOrderId(newOrders);
-
+        const unsubscribe = onSnapshot(query(collection(db, "orders"), where("delivered", "==", isOld), orderBy("date", "desc")), async (snapshot) => {
+            const ordersData = snapshot.docs.map((order) => ({
+                id: order.id,
+                ...order.data(),
+                date: (order.data().date as Timestamp).toDate()
+            }));
             const validatedOrders = Order.Schema.array().parse(ordersData);
             const ordersWithJoinedItems = await Tools.Frontend.transformOrderFromBackend(validatedOrders);
-            setOrders((prevOrders) => [...ordersWithJoinedItems, ...prevOrders]);
+            setOrders(ordersWithJoinedItems);
+            setIsLoading(false);
         });
 
         return () => unsubscribe();
@@ -48,14 +35,18 @@ export default function Orders({ isOld }: OrdersProps) {
 
     return (
         <Section padding>
-            {orders.length === 0 ? (
+            {isLoading ? (
                 <>
                     <Skeleton />
                     <Skeleton />
                     <Skeleton />
                 </>
+            ) : orders.length === 0 ? (
+                <section className={`flex flex-col gap-4 bg-yellow-500 rounded p-4`}>
+                    <p>{isOld ? "冇舊Order" : "冇新Order"}</p>
+                </section>
             ) : (
-                orders.map((order) => <OrderCard key={order.id} order={order} setOrders={setOrders} completed={isOld} newOrderId={newOrderId} />)
+                orders.map((order) => <OrderCard key={order.id} order={order} setOrders={setOrders} completed={isOld} />)
             )}
         </Section>
     );

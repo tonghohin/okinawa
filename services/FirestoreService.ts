@@ -53,20 +53,11 @@ export default class FirestoreService {
         return ordersWithJoinedItems;
     }
 
-    // public async test() {
-    //     const collectionRef = collection(db, "noodles");
-    //     const noodlesData = await getDocs(query(collection(db, "noodles"), where("category", "==", "addOn")));
-    //     for (const noodles of noodlesData.docs) {
-    //         console.log("hihi", noodles.id);
-    //         await updateDoc(doc(collectionRef, noodles.id), { minimumAddOns: 0 });
-    //     }
-    // }
-
     public static async updateOrder(orderId: string, fieldsToUpdate: Order.Partial.Type) {
         try {
             const validatedFieldsToUpdate = Order.Partial.Schema.parse(fieldsToUpdate);
             const orderRef = doc(db, "orders", orderId);
-            const updateOrder = await updateDoc(orderRef, validatedFieldsToUpdate);
+            await updateDoc(orderRef, validatedFieldsToUpdate);
         } catch (error) {
             if (error instanceof ZodError) {
                 console.error("FirestoreService updateOrder ZodError", error.issues);

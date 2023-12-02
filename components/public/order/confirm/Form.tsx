@@ -10,7 +10,7 @@ import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFo
 import { General } from "@/schemas/General";
 import FirestoreService from "@/services/FirestoreService";
 import { Tools } from "@/tools/Tools";
-import { IconAlertTriangleFilled } from "@tabler/icons-react";
+import { IconAlertCircle } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EmptyCartModal from "../EmptyCartModal";
@@ -52,7 +52,11 @@ export default function Form() {
             }
         } catch (error) {
             setIsLoading(false);
-            setErrorMessage("落單唔成功，請試多次！");
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage("落單唔成功，請試多次！");
+            }
         }
     }
 
@@ -62,9 +66,9 @@ export default function Form() {
         <form onSubmit={handleFormSubmit}>
             <Section backgroundColor="bg-yellow-400" padding>
                 {errorMessage && (
-                    <div className="flex justify-center items-center gap-4 text-red-600">
-                        <IconAlertTriangleFilled size={24} />
-                        <span>{errorMessage}</span>
+                    <div className="flex justify-center items-center gap-2">
+                        <IconAlertCircle size={24} color="#dc2626" />
+                        <span className="text-red-600">{errorMessage}</span>
                     </div>
                 )}
                 <InputContainer>
