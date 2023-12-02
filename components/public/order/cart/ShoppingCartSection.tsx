@@ -1,11 +1,10 @@
 "use client";
 
-import { useOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import ShoppingCartItem from "./ShoppingCartItem";
-import useOrderFormDataStore from "@/stores/orderFormDataStore";
 
 interface ShoppingCartSectionProps {
     category: Menu.Categories.Type;
