@@ -4,9 +4,9 @@ import BigCircleButton from "@/components/BigCircleButton";
 import ChipButton from "@/components/ChipButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
@@ -17,8 +17,7 @@ interface SnacksOrderFormItemProps {
 }
 
 export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps) {
-    const orderFormData = useOrderFormData();
-    const setOrderFormData = useSetOrderFormData();
+    const updateSnacksOrder = useOrderFormDataStore((state) => state.updateSnacksOrder);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [snacksOrderFormData, setSnacksOrderFormData] = useState<Order.SnacksItem.Frontend.Type>(Order.SnacksItem.Frontend.State(snack));
@@ -37,17 +36,7 @@ export default function SnacksOrderFormItem({ snack }: SnacksOrderFormItemProps)
 
     function handleAddToCart() {
         if (snacksOrderFormData.quantity > 0) {
-            if (orderFormData && setOrderFormData) {
-                const isSameOrderExists = Tools.Frontend.checkOrderExists(orderFormData, snacksOrderFormData, "snacks");
-
-                setOrderFormData((prevOrderFormData) => ({
-                    ...prevOrderFormData,
-                    items: {
-                        ...prevOrderFormData.items,
-                        snacks: isSameOrderExists === false ? [...prevOrderFormData.items.snacks, snacksOrderFormData] : prevOrderFormData.items.snacks.map((snacksOrderItem, index) => (index === isSameOrderExists ? { ...snacksOrderItem, quantity: snacksOrderItem.quantity + snacksOrderFormData.quantity } : snacksOrderItem))
-                    }
-                }));
-            }
+            updateSnacksOrder(snacksOrderFormData);
         }
         setIsModalOpen(false);
         setSnacksOrderFormData(Order.SnacksItem.Frontend.State(snack));

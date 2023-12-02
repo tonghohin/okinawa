@@ -5,9 +5,9 @@ import ChipButton from "@/components/ChipButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import { IconCheck, IconMinus, IconPlus, IconX } from "@tabler/icons-react";
 import { useState } from "react";
@@ -19,8 +19,7 @@ interface RiceOrderFormItemProps {
 }
 
 export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemProps) {
-    const orderFormData = useOrderFormData();
-    const setOrderFormData = useSetOrderFormData();
+    const updateRiceOrder = useOrderFormDataStore((state) => state.updateRiceOrder);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [riceOrderFormData, setRiceOrderFormData] = useState(Order.RiceItem.Frontend.State(rice));
@@ -52,16 +51,7 @@ export default function RiceOrderFormItem({ rice, addOns }: RiceOrderFormItemPro
 
     function handleAddToCart() {
         if (riceOrderFormData.quantity > 0) {
-            if (orderFormData && setOrderFormData) {
-                const isSameOrderExists = Tools.Frontend.checkOrderExists(orderFormData, riceOrderFormData, "rice");
-                setOrderFormData((prevOrderFormData) => ({
-                    ...prevOrderFormData,
-                    items: {
-                        ...prevOrderFormData.items,
-                        rice: isSameOrderExists === false ? [...prevOrderFormData.items.rice, riceOrderFormData] : prevOrderFormData.items.rice.map((riceOrderItem, index) => (index === isSameOrderExists ? { ...riceOrderItem, quantity: riceOrderItem.quantity + riceOrderFormData.quantity } : riceOrderItem))
-                    }
-                }));
-            }
+            updateRiceOrder(riceOrderFormData);
         }
         setIsModalOpen(false);
         setRiceOrderFormData(Order.RiceItem.Frontend.State(rice));

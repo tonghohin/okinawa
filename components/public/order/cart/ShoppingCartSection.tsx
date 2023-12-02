@@ -5,6 +5,7 @@ import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
 import { Tools } from "@/tools/Tools";
 import ShoppingCartItem from "./ShoppingCartItem";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 
 interface ShoppingCartSectionProps {
     category: Menu.Categories.Type;
@@ -13,7 +14,7 @@ interface ShoppingCartSectionProps {
 }
 
 export default function ShoppingCartSection({ category, editable, preservedOrderFormData }: ShoppingCartSectionProps) {
-    const orderFormData = preservedOrderFormData || useOrderFormData();
+    const orderFormData = preservedOrderFormData || useOrderFormDataStore((state) => state.formData);
     const orderItems = orderFormData?.items[category];
 
     return (

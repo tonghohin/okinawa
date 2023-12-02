@@ -1,14 +1,16 @@
 import InputContainer from "@/components/InputContainer";
 import ToggleButton from "@/components/ToggleButton";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { General } from "@/schemas/General";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useRef } from "react";
 
 export default function AddressInput() {
     const inputRef = useRef<HTMLInputElement>(null);
-    const orderFormData = useOrderFormData();
-    const setOrderFormData = useSetOrderFormData();
+    const orderFormData = useOrderFormDataStore((state) => state.formData);
+    const updateWholeAddress = useOrderFormDataStore((state) => state.updateWholeAddress);
+    const updateAddress = useOrderFormDataStore((state) => state.updateAddress);
+    const updateAddressRegion = useOrderFormDataStore((state) => state.updateAddressRegion);
 
     const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
@@ -97,72 +99,44 @@ export default function AddressInput() {
                     const place = autocomplete.getPlace();
                     const addressComponents = place.address_components || [];
                     const addressName = place.name || "";
-                    if (setOrderFormData) {
-                        setOrderFormData((prevOrderFormData) => ({ ...prevOrderFormData, address: getAddress(addressComponents, addressName) }));
-                    }
+                    updateWholeAddress(getAddress(addressComponents, addressName));
                 });
             }
         })();
     }, []);
-
-    function handleAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let { name, value } = event.target;
-
-        if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => {
-                return prevOrderFormData.address
-                    ? {
-                          ...prevOrderFormData,
-                          address: {
-                              ...prevOrderFormData.address,
-                              [name]: value
-                          }
-                      }
-                    : prevOrderFormData;
-            });
-        }
-    }
-
-    function handleRegionChange(regionName: General.Regions.Type) {
-        if (setOrderFormData) {
-            setOrderFormData((prevOrderFormData) => {
-                return prevOrderFormData.address ? { ...prevOrderFormData, address: { ...prevOrderFormData.address, region: regionName } } : prevOrderFormData;
-            });
-        }
-    }
 
     return (
         <>
             <div className="flex gap-4 flex-wrap">
                 <InputContainer>
                     <label htmlFor="floor">樓層</label>
-                    <input type="text" id="floor" name="floor" required value={orderFormData?.address?.floor || ""} onChange={handleAddressChange} />
+                    <input type="text" id="floor" name="floor" required value={orderFormData.address?.floor || ""} onChange={updateAddress} />
                 </InputContainer>
                 <InputContainer>
                     <label htmlFor="flat">單位</label>
-                    <input type="text" id="flat" name="flat" required value={orderFormData?.address?.flat || ""} onChange={handleAddressChange} />
+                    <input type="text" id="flat" name="flat" required value={orderFormData.address?.flat || ""} onChange={updateAddress} />
                 </InputContainer>
             </div>
             <InputContainer>
                 <label htmlFor="building">大廈</label>
-                <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData?.address?.building || ""} onChange={handleAddressChange} />
+                <input ref={inputRef} type="text" id="building" name="building" required value={orderFormData.address?.building || ""} onChange={updateAddress} />
             </InputContainer>
             <InputContainer>
                 <label htmlFor="street">街道</label>
-                <input type="text" id="street" name="street" required value={orderFormData?.address?.street || ""} onChange={handleAddressChange} />
+                <input type="text" id="street" name="street" required value={orderFormData.address?.street || ""} onChange={updateAddress} />
             </InputContainer>
             <InputContainer>
                 <label htmlFor="district">地區</label>
-                <input type="text" id="district" name="district" required value={orderFormData?.address?.district} onChange={handleAddressChange} />
+                <input type="text" id="district" name="district" required value={orderFormData.address?.district} onChange={updateAddress} />
             </InputContainer>
             <div className="flex gap-4">
-                <ToggleButton on={orderFormData?.address?.region === "香港島"} onClick={() => handleRegionChange("香港島")}>
+                <ToggleButton on={orderFormData.address?.region === "香港島"} onClick={() => updateAddressRegion("香港島")}>
                     香港島
                 </ToggleButton>
-                <ToggleButton on={orderFormData?.address?.region === "九龍"} onClick={() => handleRegionChange("九龍")}>
+                <ToggleButton on={orderFormData.address?.region === "九龍"} onClick={() => updateAddressRegion("九龍")}>
                     九龍
                 </ToggleButton>
-                <ToggleButton on={orderFormData?.address?.region === "新界"} onClick={() => handleRegionChange("新界")}>
+                <ToggleButton on={orderFormData.address?.region === "新界"} onClick={() => updateAddressRegion("新界")}>
                     新界
                 </ToggleButton>
             </div>

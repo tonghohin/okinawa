@@ -1,6 +1,7 @@
 import CircleButton from "@/components/CircleButton";
 import { useOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import { IconPlus } from "@tabler/icons-react";
 import { useMemo } from "react";
@@ -12,7 +13,7 @@ interface OrderFormItemProps {
 }
 
 export default function OrderFormItem({ orderItem, orderItemCategory, setIsModalOpen }: OrderFormItemProps) {
-    const orderFormData = useOrderFormData();
+    const orderFormData = useOrderFormDataStore((state) => state.formData);
     const itemCount = useMemo(() => (orderFormData ? Tools.Frontend.getNumberOfItems(orderFormData.items, orderItemCategory, orderItem.id) : 0), [orderFormData]);
 
     return (

@@ -1,6 +1,6 @@
-import { useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 
@@ -13,57 +13,7 @@ interface ShoppingCartNoodlesItemProps {
 }
 
 export default function ShoppingCartItem({ index, category, orderItem, editable, children }: ShoppingCartNoodlesItemProps) {
-    const setOrderFormData = useSetOrderFormData();
-
-    function handleQuantityChange(increment: boolean) {
-        if (setOrderFormData) {
-            if (increment) {
-                setOrderFormData((prevOrderFormData) => ({
-                    ...prevOrderFormData,
-                    items: {
-                        ...prevOrderFormData.items,
-                        [category]: prevOrderFormData.items[category].map((orderItem, i) => {
-                            if (i === index) {
-                                return {
-                                    ...orderItem,
-                                    quantity: orderItem.quantity + 1
-                                };
-                            } else {
-                                return orderItem;
-                            }
-                        })
-                    }
-                }));
-            } else {
-                if (orderItem.quantity === 1) {
-                    setOrderFormData((prevOrderFormData) => ({
-                        ...prevOrderFormData,
-                        items: {
-                            ...prevOrderFormData.items,
-                            [category]: prevOrderFormData.items[category].filter((orderItem, i) => i !== index)
-                        }
-                    }));
-                } else {
-                    setOrderFormData((prevOrderFormData) => ({
-                        ...prevOrderFormData,
-                        items: {
-                            ...prevOrderFormData.items,
-                            [category]: prevOrderFormData.items[category].map((orderItem, i) => {
-                                if (i === index) {
-                                    return {
-                                        ...orderItem,
-                                        quantity: orderItem.quantity - 1
-                                    };
-                                } else {
-                                    return orderItem;
-                                }
-                            })
-                        }
-                    }));
-                }
-            }
-        }
-    }
+    const updateOrderItemQuantity = useOrderFormDataStore((state) => state.updateOrderItemQuantity);
 
     return (
         <div className={`${editable && "cursor-pointer"}`}>
@@ -76,17 +26,17 @@ export default function ShoppingCartItem({ index, category, orderItem, editable,
                     {editable ? (
                         <span className="flex gap-2 rounded-full px-2 py-1 border border-yellow-500">
                             {orderItem.quantity === 1 ? (
-                                <button type="button" className="hover:bg-yellow-500 rounded-full" onClick={() => handleQuantityChange(false)}>
+                                <button type="button" className="hover:bg-yellow-500 rounded-full" onClick={() => updateOrderItemQuantity(false, index, category)}>
                                     <IconTrash color="#854d0e" size={24} />
                                 </button>
                             ) : (
                                 <button type="button" className="hover:bg-yellow-500 rounded-full">
-                                    <IconMinus color="#854d0e" size={24} onClick={() => handleQuantityChange(false)} />
+                                    <IconMinus color="#854d0e" size={24} onClick={() => updateOrderItemQuantity(false, index, category)} />
                                 </button>
                             )}
                             <span>{orderItem.quantity}</span>
                             <button type="button" className="hover:bg-yellow-500 rounded-full">
-                                <IconPlus color="#854d0e" size={24} onClick={() => handleQuantityChange(true)} />
+                                <IconPlus color="#854d0e" size={24} onClick={() => updateOrderItemQuantity(true, index, category)} />
                             </button>
                         </span>
                     ) : (

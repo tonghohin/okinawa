@@ -5,9 +5,9 @@ import ChipButton from "@/components/ChipButton";
 import Modal from "@/components/Modal";
 import Section from "@/components/Section";
 import ToggleButton from "@/components/ToggleButton";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
 import { Menu } from "@/schemas/Menu";
 import { Order } from "@/schemas/Order";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
@@ -19,8 +19,7 @@ interface NoodlesOrderFormItemProps {
 }
 
 export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFormItemProps) {
-    const orderFormData = useOrderFormData();
-    const setOrderFormData = useSetOrderFormData();
+    const updateNoodlesOrder = useOrderFormDataStore((state) => state.updateNoodlesOrder);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [noodlesOrderFormData, setNoodlesOrderFormData] = useState<Order.NoodlesItem.Frontend.Type>(Order.NoodlesItem.Frontend.State(noodles));
@@ -46,16 +45,7 @@ export default function NoodlesOrderFormItem({ noodles, addOns }: NoodlesOrderFo
 
     function handleAddToCart() {
         if (noodlesOrderFormData.quantity > 0) {
-            if (orderFormData && setOrderFormData) {
-                const isSameOrderExists = Tools.Frontend.checkOrderExists(orderFormData, noodlesOrderFormData, "noodles");
-                setOrderFormData((prevOrderFormData) => ({
-                    ...prevOrderFormData,
-                    items: {
-                        ...prevOrderFormData.items,
-                        noodles: isSameOrderExists === false ? [...prevOrderFormData.items.noodles, noodlesOrderFormData] : prevOrderFormData.items.noodles.map((noodlesOrderItem, index) => (index === isSameOrderExists ? { ...noodlesOrderItem, quantity: noodlesOrderItem.quantity + noodlesOrderFormData.quantity } : noodlesOrderItem))
-                    }
-                }));
-            }
+            updateNoodlesOrder(noodlesOrderFormData);
         }
         setIsModalOpen(false);
         setNoodlesOrderFormData(Order.NoodlesItem.Frontend.State(noodles));

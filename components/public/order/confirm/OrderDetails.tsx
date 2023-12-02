@@ -2,17 +2,16 @@
 
 import Section from "@/components/Section";
 import ShoppingCartSection from "@/components/public/order/cart/ShoppingCartSection";
-import { useOrderFormData, useSetOrderFormData } from "@/contexts/public/OrderFormContextProvider";
-import { Order } from "@/schemas/Order";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { useEffect, useRef } from "react";
 import EmptyCartModal from "../EmptyCartModal";
 
 export default function OrderDetails() {
-    const orderFormData = useOrderFormData();
-    const setOrderFormData = useSetOrderFormData();
+    const orderFormData = useOrderFormDataStore((state) => state.formData);
+    const resetFormData = useOrderFormDataStore((state) => state.resetFormData);
     const preservedOrderFormData = useRef(orderFormData);
 
-    useEffect(() => setOrderFormData?.(Order.Frontend.Form.State), []);
+    useEffect(() => resetFormData(), []);
 
     return preservedOrderFormData?.current?.total === 0 ? (
         <EmptyCartModal />

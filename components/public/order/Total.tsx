@@ -1,13 +1,13 @@
 "use client";
 
 import ChipLink from "@/components/ChipLink";
-import { useOrderFormData } from "@/contexts/public/OrderFormContextProvider";
+import useOrderFormDataStore from "@/stores/orderFormDataStore";
 import { Tools } from "@/tools/Tools";
 import { IconShoppingCart } from "@tabler/icons-react";
 
 export default function Total() {
-    const orderFormData = useOrderFormData();
-    const totalNumberOfItems = orderFormData ? Tools.Frontend.getTotalNumberOfItems(orderFormData) : 0;
+    const orderFormData = useOrderFormDataStore((state) => state.formData);
+    const totalNumberOfItems = Tools.Frontend.getTotalNumberOfItems(orderFormData);
 
     return (
         totalNumberOfItems > 0 && (

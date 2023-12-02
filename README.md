@@ -5,6 +5,7 @@
 -   TypeScript
 -   Next.js
 -   Zod
+-   Zustand
 -   Firebase
 -   Firestore
 -   Resend
