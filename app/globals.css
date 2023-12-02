@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Roboto', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+#root {
+  margin: 0;
+}
+
+main {
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+}
+
+button {
+  white-space: nowrap;
+}
+
+@layer base {
+  * {
+    @apply text-neutral-800;
+  }
+
+  input {
+    @apply bg-yellow-300 border border-yellow-500 rounded p-2;
+  }
+
+  textarea {
+    @apply bg-yellow-300 border border-yellow-500 rounded p-2;
+  }
+
+  label {
+    @apply text-sm
+  }
+
+  iframe {
+    @apply absolute w-full h-full rounded;
+  }
+
+
+}
