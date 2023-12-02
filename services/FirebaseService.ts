@@ -12,28 +12,27 @@ export default class FirebaseService {
         messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
         appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
     };
-    private static _app = initializeApp(this._firebaseConfig);
-    private static _auth = getAuth(this._app);
+    private static _app = initializeApp(FirebaseService._firebaseConfig);
+    private static _auth = getAuth(FirebaseService._app);
 
-    public static currentUser = this._auth.currentUser;
-    public static db = getFirestore(this._app);
+    public static currentUser = FirebaseService._auth.currentUser;
+    public static db = getFirestore(FirebaseService._app);
 
-    public static async checkAuthState(action: (user: User | null) => void) {
-        onAuthStateChanged(this._auth, (user) => {
-            console.log("User state changed.");
+    public static checkAuthState(action: (user: User | null) => void) {
+        onAuthStateChanged(FirebaseService._auth, (user) => {
             action(user);
         });
     }
 
     public static async logIn(credential: General.Credentials.Type) {
-        signInWithEmailAndPassword(this._auth, credential.email, credential.password);
+        signInWithEmailAndPassword(FirebaseService._auth, credential.email, credential.password);
     }
 
     public static async logOut() {
-        signOut(this._auth);
+        signOut(FirebaseService._auth);
     }
 
     public static async resetPassword(email: string) {
-        sendPasswordResetEmail(this._auth, email);
+        sendPasswordResetEmail(FirebaseService._auth, email);
     }
 }

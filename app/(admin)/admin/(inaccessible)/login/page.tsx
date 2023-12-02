@@ -3,11 +3,12 @@
 import InputContainer from "@/components/InputContainer";
 import Section from "@/components/Section";
 import SquareButton from "@/components/SquareButton";
+import { General } from "@/schemas/General";
 import FirebaseService from "@/services/FirebaseService";
 import { useState } from "react";
 
 export default function Login() {
-    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [formData, setFormData] = useState(General.Credentials.State);
     const [errorMessage, setErrorMessage] = useState("");
 
     function handleFormDataChange(e: React.ChangeEvent<HTMLInputElement>) {

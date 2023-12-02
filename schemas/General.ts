@@ -33,10 +33,12 @@ export namespace General {
 
     export namespace Credentials {
         export const Schema = z.object({
-            email: z.string().email({ message: "Email format唔啱" }).default(""),
-            password: z.coerce.string().min(6, { message: "密碼要6個字" }).default("")
+            email: z.string().default(""),
+            password: z.coerce.string().default("")
         });
 
         export type Type = z.infer<typeof Schema>;
+
+        export const State = Schema.parse({});
     }
 }

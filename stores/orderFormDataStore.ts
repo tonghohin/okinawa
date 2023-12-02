@@ -23,7 +23,7 @@ const useOrderFormDataStore = create<OrderFormDataState>()((set, get) => ({
         set((state) => ({
             formData: { ...state.formData, [event.target.name]: event.target.value }
         })),
-    updateOrder: (order: Order.RiceItem.Frontend.Type | Order.NoodlesItem.Frontend.Type | Order.SnacksItem.Frontend.Type, category: Menu.Categories.Type) => {
+    updateOrder: (order, category) => {
         set((state) => {
             const isSameOrderExists = Tools.Frontend.checkOrderExists(state.formData, order, category);
             return {
@@ -38,7 +38,7 @@ const useOrderFormDataStore = create<OrderFormDataState>()((set, get) => ({
         });
         get().updateTotal();
     },
-    updateOrderItemQuantity: (increment: boolean, index: number, category: Menu.Categories.Type) => {
+    updateOrderItemQuantity: (increment, index, category) => {
         set((state) => {
             if (increment) {
                 return {
