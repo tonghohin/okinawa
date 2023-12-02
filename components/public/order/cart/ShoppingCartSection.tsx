@@ -18,13 +18,13 @@ export default function ShoppingCartSection({ category, editable, preservedOrder
     const orderItems = orderFormDataItems[category];
 
     return (
-        !!orderItems?.length && (
+        !!orderItems.length && (
             <section className="bg-yellow-400 p-4 flex flex-col gap-4">
                 <h1 className="border-b border-yellow-600 flex justify-between">
                     <span>{Menu.Categories.Mapping[category]}</span>
                     <span>Subtotal: ${totalByCategory} </span>
                 </h1>
-                {orderItems?.map((orderItem, index) => (
+                {orderItems.map((orderItem, index) => (
                     <ShoppingCartItem key={index} index={index} category={category} orderItem={orderItem} editable={editable}>
                         {/* rice */}
                         {"addOn" in orderItem && (

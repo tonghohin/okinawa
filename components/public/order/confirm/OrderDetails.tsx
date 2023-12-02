@@ -15,7 +15,7 @@ export default function OrderDetails() {
 
     useEffect(() => resetFormData(), []);
 
-    return preservedOrderFormDataTotal?.current === 0 ? (
+    return preservedOrderFormDataTotal.current === 0 ? (
         <EmptyCartModal />
     ) : (
         <div className="rounded border p-4 border-yellow-600 self-stretch">
