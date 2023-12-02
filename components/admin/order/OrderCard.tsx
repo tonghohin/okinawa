@@ -58,9 +58,9 @@ export default function OrderCard({ order, setOrders, completed }: OrderCardProp
             {order.address && <p>地址：{Utilities.getAddressLine(order.address)}</p>}
             <p>Total: ${order.total}</p>
             <Accordion title="訂單詳情" onOpen={handleReadOrder}>
-                <ShoppingCartSection category="rice" preservedOrderFormData={order} />
-                <ShoppingCartSection category="noodles" preservedOrderFormData={order} />
-                <ShoppingCartSection category="snacks" preservedOrderFormData={order} />
+                <ShoppingCartSection category="rice" preservedOrderFormDataItems={order.items} />
+                <ShoppingCartSection category="noodles" preservedOrderFormDataItems={order.items} />
+                <ShoppingCartSection category="snacks" preservedOrderFormDataItems={order.items} />
             </Accordion>
             {/* <ChipLink href={`/admin/orders/${order.id}`} className="bg-yellow-600">
                 更改訂單
