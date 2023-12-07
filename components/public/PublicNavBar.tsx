@@ -11,7 +11,7 @@ export default function PublicNavBar() {
         <nav>
             <Section center padding>
                 <Link href="/" className="text-2xl">
-                    沖繩味之賞
+                    虛擬餐廳
                 </Link>
                 <div className="flex items-center gap-4">
                     <Link href="/menu" className={`border-b-2 hover:border-b-2 hover:border-neutral-800 ${pathname === "/menu" ? "border-neutral-800" : "border-transparent"}`}>

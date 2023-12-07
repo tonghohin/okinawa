@@ -13,7 +13,7 @@ export default function AdminNavBar() {
         <nav>
             <Section backgroundColor="bg-yellow-600" center padding>
                 <Link href="/admin" className="text-2xl">
-                    沖繩味之賞 Admin
+                    虛擬餐廳 Admin
                 </Link>
                 <div className="flex items-center gap-4">
                     <Link href="/admin/orders/old" className={`${pathname === "/admin/orders/old" && "border-b-2 border-neutral-800"} hover:border-b-2 hover:border-neutral-800`}>

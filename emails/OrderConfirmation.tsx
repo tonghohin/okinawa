@@ -23,11 +23,11 @@ export default function OrderConfirmation({ orderId, order }: OrderConfirmationP
                     fontWeight={400}
                     fontStyle="normal"
                 />
-                <Preview>訂單確認 - 沖繩味之賞 [{orderId}]</Preview>
+                <Preview>訂單確認 - 虛擬餐廳 [{orderId}]</Preview>
                 <Body>
                     <Container>
                         <section className="bg-yellow-400 p-4">
-                            <h2>訂單確認 - 沖繩味之賞 [#{orderId}]</h2>
+                            <h2>訂單確認 - 虛擬餐廳 [#{orderId}]</h2>
                             <p className="text-lg">Hello {order.name}!</p>
                             <p className="text-lg">好消息！我們已經收到您嘅訂單！</p>
                         </section>

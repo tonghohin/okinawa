@@ -33,7 +33,7 @@ export default function Login() {
 
     return (
         <form onSubmit={handleFormSubmit}>
-            <Section title="沖繩味之賞 Admin" backgroundColor="bg-yellow-400" padding center>
+            <Section title="虛擬餐廳 Admin" backgroundColor="bg-yellow-400" padding center>
                 <InputContainer>
                     <label htmlFor="email">Email</label>
                     <input type="email" name="email" placeholder="abc@example.com" value={formData.email} onChange={handleFormDataChange} />

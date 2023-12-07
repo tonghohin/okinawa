@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const { orderId, orderFormData } = await request.json();
     try {
         const order = Order.Frontend.Form.Schema.parse(orderFormData);
-        const email = await ResendService.sendEmail([order.email], `訂單確認 - 沖繩味之賞 [#${orderId}]`, OrderConfirmation({ orderId, order }));
+        const email = await ResendService.sendEmail([order.email], `訂單確認 - 虛擬餐廳 [#${orderId}]`, OrderConfirmation({ orderId, order }));
         if (!email.success && email.message) throw new Error(email.message);
 
         return NextResponse.json(General.Response.Schema.parse({ success: true, message: null }));

@@ -5,8 +5,8 @@ import "./globals.css";
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "沖繩味之賞",
-    description: "沖繩味之賞 關東煮"
+    title: "虛擬餐廳",
+    description: "虛擬餐廳 關東煮"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
